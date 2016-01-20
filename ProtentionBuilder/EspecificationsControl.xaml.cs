@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Urbbox.AutoCAD.ProtentionBuilder.ViewModels;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder
 {
@@ -22,6 +23,8 @@ namespace Urbbox.AutoCAD.ProtentionBuilder
     {
         public EspecificationsControl()
         {
+            DataContext = new EspecificationsViewModel();
+
             InitializeComponent();
         }
     }

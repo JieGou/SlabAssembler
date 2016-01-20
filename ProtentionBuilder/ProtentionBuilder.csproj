@@ -94,8 +94,14 @@
     <Compile Include="EspecificationsControl.xaml.cs">
       <DependentUpon>EspecificationsControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Manufacture\Modulation.cs" />
+    <Compile Include="Manufacture\Part.cs" />
+    <Compile Include="Manufacture\Variations\PivotPoint.cs" />
     <Compile Include="Plugin.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\EspecificationsViewModel.cs" />
+    <Compile Include="ViewModels\ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

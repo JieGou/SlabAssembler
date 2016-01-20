@@ -4,13 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Urbbox.AutoCAD.ProtentionBuilder"
-             mc:Ignorable="d" 
+             xmlns:vm="clr-namespace:Urbbox.AutoCAD.ProtentionBuilder.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:EspecificationsViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="600" d:DesignWidth="300" Background="White">
     <StackPanel>
-        <GroupBox x:Name="groupBox" Header="Selecione as Peças" Margin="10,15,10,0" VerticalAlignment="Top" Height="143">
+        <Grid Margin="5,10,5,5" Height="31">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="81"/>
+                <ColumnDefinition Width="Auto" MinWidth="209"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="label3" Content="Modulação" Grid.ColumnSpan="2" Margin="5,0,0,0"/>
+            <ComboBox x:Name="ModulationComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="203" Height="22" ItemsSource="{Binding Path=Modulations}" SelectedValue="{Binding Path=SelectedModulation.Value}" SelectedItem="{Binding Path=SelectedModulation}"/>
+
+        </Grid>
+        <GroupBox x:Name="groupBox" Header="Selecione as Peças" Margin="10,10,10,0" VerticalAlignment="Top" Height="143">
             <StackPanel HorizontalAlignment="Left" Margin="0,10,0,0" Width="270">
                 <Label x:Name="label" Content="Forma/Caixa"/>
-                <ComboBox x:Name="comboBox" Margin="5,0"/>
+                <ComboBox x:Name="FormComboBox" Margin="5,0"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -18,11 +29,11 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Width="135">
                         <Label x:Name="label1" Content="LP"/>
-                        <ComboBox x:Name="comboBox1" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="125" Margin="5,0,0,0"/>
+                        <ComboBox x:Name="LpComboBox" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="125" Margin="5,0,0,0"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130">
                         <Label x:Name="label1_Copy" Content="LD"/>
-                        <ComboBox x:Name="comboBox1_Copy" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="130"/>
+                        <ComboBox x:Name="LdComboBox" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="130"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>
@@ -30,15 +41,15 @@
         <GroupBox x:Name="groupBox_Copy" Header="Obstáculos (Camadas)" Margin="10,15,10,0" VerticalAlignment="Top" Height="192">
             <StackPanel HorizontalAlignment="Left" Margin="0,10,-2,-2" Width="270">
                 <Label x:Name="label2" Content="Pilares"/>
-                <ComboBox x:Name="comboBox2" Margin="0,0,5,0"/>
+                <ComboBox x:Name="PillarsComboBox" Margin="0,0,5,0"/>
                 <Label x:Name="label2_Copy" Content="Vigas"/>
-                <ComboBox x:Name="comboBox2_Copy" Margin="0,0,5,0"/>
+                <ComboBox x:Name="GirdersComboBox" Margin="0,0,5,0"/>
                 <Label x:Name="label2_Copy1" Content="Vazios"/>
-                <ComboBox x:Name="comboBox2_Copy1" Margin="0,0,5,0"/>
+                <ComboBox x:Name="EmptiesComboBox" Margin="0,0,5,0"/>
             </StackPanel>
         </GroupBox>
-        <Label x:Name="label4" Content="Nenhum contorno selecionado." HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" Width="280" Padding="5" FontSize="10.667"/>
-        <Button x:Name="selectBtn" Content="Selecionar Contorno" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="280" Height="30" Panel.ZIndex="5"/>
-        <Button x:Name="drawBtn" Content="Desenhar Laje" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="280" Height="30" Panel.ZIndex="5"/>
+        <Label x:Name="OutlineSelectStatusLabel" Content="Nenhum contorno selecionado." HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" Width="280" Padding="5" FontSize="10.667"/>
+        <Button x:Name="SelectButton" Content="Selecionar Contorno" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="280" Height="30" Panel.ZIndex="5"/>
+        <Button x:Name="DrawButton" Content="Desenhar Laje" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="280" Height="30" Panel.ZIndex="5"/>
     </StackPanel>
 </UserControl>
