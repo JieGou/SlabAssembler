@@ -91,12 +91,14 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\ConfigurationManager.cs" />
     <Compile Include="EspecificationsControl.xaml.cs">
       <DependentUpon>EspecificationsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Manufacture\Modulation.cs" />
     <Compile Include="Manufacture\Part.cs" />
     <Compile Include="Manufacture\Variations\PivotPoint.cs" />
+    <Compile Include="Manufacture\Variations\UsageType.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -105,6 +107,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\Configurations.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Include="EspecificationsControl.xaml">

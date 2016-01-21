@@ -1,0 +1,13 @@
+﻿{
+  "parts": [
+    {
+      "Height": 61,
+      "Modulation": { "Size": 61 },
+      "Name": "Plasterit",
+      "Pivot": 7,
+      "ReferenceName": "PLASTERIT",
+      "UsageType": 0,
+      "Width": 61
+    }
+  ]
+}

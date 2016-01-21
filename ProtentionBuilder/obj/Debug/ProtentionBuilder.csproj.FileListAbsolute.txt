@@ -10,3 +10,4 @@ C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Especificatio
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.AutoCAD.ProtentionBuilder.Plugin.g.resources
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.AutoCAD.ProtentionBuilder.Plugin.dll
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.AutoCAD.ProtentionBuilder.Plugin.pdb
+C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\bin\Debug\Resources\Configurations.json

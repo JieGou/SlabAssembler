@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Urbbox.AutoCAD.ProtentionBuilder.Annotations;
+using System.Windows.Controls;
+using Urbbox.AutoCAD.ProtentionBuilder.Database;
 using Urbbox.AutoCAD.ProtentionBuilder.Manufacture;
+using Urbbox.AutoCAD.ProtentionBuilder.Manufacture.Variations;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
 {
@@ -19,16 +17,21 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
             set { _selectedModulation = value; OnPropertyChanged(); }
         }
 
-        public List<Modulation> Modulations { get; }
+        public ObservableCollection<Modulation> Modulations { get; }
+        public ObservableCollection<Part> FormsAndBoxes { get; }
+        public ObservableCollection<Part> LpList { get; }
+        public ObservableCollection<Part> LdList { get; }
 
-        public EspecificationsViewModel()
+        public EspecificationsViewModel(ConfigurationManager configurationManager)
         {
-            Modulations = new List<Modulation>()
-            {
-                new Modulation(61),
-                new Modulation(80)
-            };
-            SelectedModulation = Modulations.First();
+            Collection<Part> parts = configurationManager.GetParts() as Collection<Part>;
+
+            Modulations = parts?.Select(p => p.Modulation) as ObservableCollection<Modulation>;
+            FormsAndBoxes = parts?.Where(p => p.UsageType == UsageType.Box || p.UsageType == UsageType.Form) as ObservableCollection<Part>;
+            LpList = parts?.Where(p => p.UsageType == UsageType.Lp) as ObservableCollection<Part>;
+            LdList = parts?.Where(p => p.UsageType == UsageType.Ld) as ObservableCollection<Part>;
+
+            SelectedModulation = Modulations?.First();
         }
     }
 }

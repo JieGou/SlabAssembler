@@ -3,27 +3,36 @@ using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
+using Urbbox.AutoCAD.ProtentionBuilder.Database;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder
 {
     public class Plugin
     {
         private static PaletteSet _mainPallet;
+        private static ConfigurationManager _configurationManager;
 
         [CommandMethod("URBPROTENSION")]
         public static void ShowPallet()
         {
             if (_mainPallet != null) return;
             _mainPallet = InitializeMainPallet();
+            _mainPallet.PaletteSetDestroy += _mainPallet_PaletteSetDestroy;
+            _configurationManager = new ConfigurationManager(@"Resources\Configurations.json");
                 
             var especificationsControl = new ElementHost
             {
                 AutoSize = true,
                 Dock = DockStyle.Fill,
-                Child = new EspecificationsControl()
+                Child = new EspecificationsControl(_configurationManager)
             };
 
             _mainPallet.Add("Especificações", especificationsControl);
+        }
+
+        private static void _mainPallet_PaletteSetDestroy(object sender, System.EventArgs e)
+        {
+            _mainPallet = null;
         }
 
         private static PaletteSet InitializeMainPallet()
@@ -32,8 +41,9 @@ namespace Urbbox.AutoCAD.ProtentionBuilder
             {
                 Size = new Size(300, 600),
                 DockEnabled = (DockSides) ((int) DockSides.Left + (int) DockSides.Right),
+                MinimumSize = new Size(300, 500),
                 Visible = true,
-                KeepFocus = true
+                KeepFocus = true,
             };
         }
     }

@@ -1,4 +1,6 @@
-﻿using Urbbox.AutoCAD.ProtentionBuilder.Manufacture.Variations;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Urbbox.AutoCAD.ProtentionBuilder.Manufacture.Variations;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder.Manufacture
 {
@@ -10,5 +12,15 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Manufacture
         public float Height { get; set; }
         public Modulation Modulation { get; set; }
         public PivotPoint PivotPoint { get; set; }
+        public UsageType UsageType { get; set; }
+        public string Layer { get; set; }
+
+        public Part() { }
+
+        public Part(string name, string referenceName)
+        {
+            Name = name;
+            ReferenceName = referenceName;
+        }
     }
 }

@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Urbbox.AutoCAD.ProtentionBuilder"
-             xmlns:vm="clr-namespace:Urbbox.AutoCAD.ProtentionBuilder.ViewModels"
+             xmlns:viewModels="clr-namespace:Urbbox.AutoCAD.ProtentionBuilder.ViewModels"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance vm:EspecificationsViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="600" d:DesignWidth="300" Background="White">
+             d:DataContext="{d:DesignData viewModels:EspecificationsViewModel}"
+             d:DesignHeight="600" d:DesignWidth="300" Background="White" Loaded="UserControl_Loaded">
     <StackPanel>
         <Grid Margin="5,10,5,5" Height="31">
             <Grid.ColumnDefinitions>
@@ -15,13 +15,13 @@
                 <ColumnDefinition Width="Auto" MinWidth="209"/>
             </Grid.ColumnDefinitions>
             <Label x:Name="label3" Content="Modulação" Grid.ColumnSpan="2" Margin="5,0,0,0"/>
-            <ComboBox x:Name="ModulationComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="203" Height="22" ItemsSource="{Binding Path=Modulations}" SelectedValue="{Binding Path=SelectedModulation.Value}" SelectedItem="{Binding Path=SelectedModulation}"/>
+            <ComboBox x:Name="ModulationComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="203" Height="22" ItemsSource="{Binding Path=Modulations}" SelectedItem="{Binding Path=SelectedModulation, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Value"/>
 
         </Grid>
         <GroupBox x:Name="groupBox" Header="Selecione as Peças" Margin="10,10,10,0" VerticalAlignment="Top" Height="143">
             <StackPanel HorizontalAlignment="Left" Margin="0,10,0,0" Width="270">
                 <Label x:Name="label" Content="Forma/Caixa"/>
-                <ComboBox x:Name="FormComboBox" Margin="5,0"/>
+                <ComboBox x:Name="FormComboBox" Margin="5,0" ItemsSource="{Binding Path=FormsAndBoxes}" DisplayMemberPath="Name"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -29,11 +29,11 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Width="135">
                         <Label x:Name="label1" Content="LP"/>
-                        <ComboBox x:Name="LpComboBox" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="125" Margin="5,0,0,0"/>
+                        <ComboBox x:Name="LpComboBox" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="125" Margin="5,0,0,0" ItemsSource="{Binding Source=LpList}" DisplayMemberPath="Name"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130">
                         <Label x:Name="label1_Copy" Content="LD"/>
-                        <ComboBox x:Name="LdComboBox" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="130"/>
+                        <ComboBox x:Name="LdComboBox" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="130" ItemsSource="{Binding Path=LdList}" DisplayMemberPath="Name"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>
