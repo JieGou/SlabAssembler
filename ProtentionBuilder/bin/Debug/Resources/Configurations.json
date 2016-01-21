@@ -2,12 +2,33 @@
   "parts": [
     {
       "Height": 61,
-      "Modulation": { "Size": 61 },
+      "Layer": "FORMAS",
+      "Modulation": 61,
       "Name": "Plasterit",
-      "Pivot": 7,
+      "PivotPoint": 7,
       "ReferenceName": "PLASTERIT",
       "UsageType": 0,
       "Width": 61
+    },
+    {
+      "Height": 61,
+      "Layer": "CAIXAS IMPACTO",
+      "Modulation": 61,
+      "Name": "Caixa 61x61",
+      "PivotPoint": 0,
+      "ReferenceName": "CAIXA 61x61",
+      "UsageType": 1,
+      "Width": 61
+    },
+    {
+      "Height": 80,
+      "Layer": "CAIXAS IMPACTO",
+      "Modulation": 80,
+      "Name": "Caixa 80x80",
+      "PivotPoint": 0,
+      "ReferenceName": "CAIXA 80x80",
+      "UsageType": 1,
+      "Width": 80
     }
   ]
 }

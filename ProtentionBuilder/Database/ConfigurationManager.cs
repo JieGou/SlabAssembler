@@ -14,7 +14,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Database
 {
     public class ConfigurationManager
     {
-        private JObject _dataJObject;
+        private JObject _configurationData;
 
         public ConfigurationManager(string configurationFile)
         {
@@ -23,31 +23,16 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Database
 
         private void LoadData(string configurationFile)
         {
-            using (var file = File.OpenText(configurationFile))
-            using (var reader = new JsonTextReader(file))
-            {
-                _dataJObject = (JObject) JToken.ReadFrom(reader);
-            }
+            _configurationData = JObject.Parse(File.ReadAllText(configurationFile));
         }
 
-
-        public IEnumerable<Part> GetParts()
+        public List<Part> GetParts()
         {
-            try
-            {
-                var parts = _dataJObject["parts"] as JArray;
-                return parts?.Select(p => JsonConvert.DeserializeObject<Part>(p.ToString())).ToList();
-            }
-            catch (Exception)
-            {
-                InvalidJson();
-                return new List<Part>();
-            }
+            var parts = _configurationData["parts"] as JArray;
+            if (parts == null) return new List<Part>();
+
+            return parts.Select(p => new Part(p as JObject)).ToList<Part>();
         }
 
-        private void InvalidJson()
-        {
-            MessageBox.Show("O arquivo de configurações está inválido.", "Configurações", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
     }
 }

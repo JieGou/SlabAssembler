@@ -95,7 +95,6 @@
     <Compile Include="EspecificationsControl.xaml.cs">
       <DependentUpon>EspecificationsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Manufacture\Modulation.cs" />
     <Compile Include="Manufacture\Part.cs" />
     <Compile Include="Manufacture\Variations\PivotPoint.cs" />
     <Compile Include="Manufacture\Variations\UsageType.cs" />

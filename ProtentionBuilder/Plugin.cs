@@ -17,7 +17,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder
         {
             if (_mainPallet != null) return;
             _mainPallet = InitializeMainPallet();
-            _mainPallet.PaletteSetDestroy += _mainPallet_PaletteSetDestroy;
+            _mainPallet.StateChanged += _mainPallet_StateChanged;
             _configurationManager = new ConfigurationManager(@"Resources\Configurations.json");
                 
             var especificationsControl = new ElementHost
@@ -30,9 +30,10 @@ namespace Urbbox.AutoCAD.ProtentionBuilder
             _mainPallet.Add("Especificações", especificationsControl);
         }
 
-        private static void _mainPallet_PaletteSetDestroy(object sender, System.EventArgs e)
+        private static void _mainPallet_StateChanged(object sender, PaletteSetStateEventArgs e)
         {
-            _mainPallet = null;
+            if (e.NewState == StateEventIndex.Hide)
+                _mainPallet = null;
         }
 
         private static PaletteSet InitializeMainPallet()

@@ -15,7 +15,7 @@
                 <ColumnDefinition Width="Auto" MinWidth="209"/>
             </Grid.ColumnDefinitions>
             <Label x:Name="label3" Content="Modulação" Grid.ColumnSpan="2" Margin="5,0,0,0"/>
-            <ComboBox x:Name="ModulationComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="203" Height="22" ItemsSource="{Binding Path=Modulations}" SelectedItem="{Binding Path=SelectedModulation, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Value"/>
+            <ComboBox x:Name="ModulationComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="203" Height="22" ItemsSource="{Binding Path=Modulations}" SelectedItem="{Binding Path=SelectedModulation, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True"/>
 
         </Grid>
         <GroupBox x:Name="groupBox" Header="Selecione as Peças" Margin="10,10,10,0" VerticalAlignment="Top" Height="143">
