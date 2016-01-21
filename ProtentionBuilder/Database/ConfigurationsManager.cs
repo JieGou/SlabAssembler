@@ -12,11 +12,11 @@ using Urbbox.AutoCAD.ProtentionBuilder.Manufacture;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder.Database
 {
-    public class ConfigurationManager
+    public class ConfigurationsManager
     {
         private JObject _configurationData;
 
-        public ConfigurationManager(string configurationFile)
+        public ConfigurationsManager(string configurationFile)
         {
             LoadData(configurationFile);
         }
@@ -29,9 +29,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Database
         public List<Part> GetParts()
         {
             var parts = _configurationData["parts"] as JArray;
-            if (parts == null) return new List<Part>();
-
-            return parts.Select(p => new Part(p as JObject)).ToList<Part>();
+            return parts?.Select(p => new Part(p as JObject)).ToList<Part>() ?? new List<Part>();
         }
 
     }

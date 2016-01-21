@@ -91,16 +91,24 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\ConfigurationManager.cs" />
+    <Compile Include="AlgorythimControl.xaml.cs">
+      <DependentUpon>AlgorythimControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Database\AcManager.cs" />
+    <Compile Include="Database\ConfigurationsManager.cs" />
     <Compile Include="EspecificationsControl.xaml.cs">
       <DependentUpon>EspecificationsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Manufacture\Part.cs" />
     <Compile Include="Manufacture\Variations\PivotPoint.cs" />
     <Compile Include="Manufacture\Variations\UsageType.cs" />
+    <Compile Include="PartsControl.xaml.cs">
+      <DependentUpon>PartsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AlgorythimViewModel.cs" />
     <Compile Include="ViewModels\EspecificationsViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
   </ItemGroup>
@@ -111,7 +119,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="AlgorythimControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EspecificationsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PartsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

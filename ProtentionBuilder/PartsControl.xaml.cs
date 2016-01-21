@@ -12,20 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Urbbox.AutoCAD.ProtentionBuilder.Database;
-using Urbbox.AutoCAD.ProtentionBuilder.ViewModels;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder
 {
     /// <summary>
-    /// Interaction logic for EspecificationsControl.xaml
+    /// Interaction logic for PartsControl.xaml
     /// </summary>
-    public partial class EspecificationsControl : UserControl
+    public partial class PartsControl : UserControl
     {
-        public EspecificationsControl(ConfigurationsManager manager, AcManager ac)
+        public PartsControl()
         {
             InitializeComponent();
-            DataContext = new EspecificationsViewModel(manager, ac);
         }
     }
 }

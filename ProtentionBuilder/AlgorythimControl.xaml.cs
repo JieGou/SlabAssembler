@@ -18,14 +18,15 @@ using Urbbox.AutoCAD.ProtentionBuilder.ViewModels;
 namespace Urbbox.AutoCAD.ProtentionBuilder
 {
     /// <summary>
-    /// Interaction logic for EspecificationsControl.xaml
+    /// Interaction logic for AlgorythimControl.xaml
     /// </summary>
-    public partial class EspecificationsControl : UserControl
+    public partial class AlgorythimControl : UserControl
     {
-        public EspecificationsControl(ConfigurationsManager manager, AcManager ac)
+        public AlgorythimControl(ConfigurationsManager configurations)
         {
             InitializeComponent();
-            DataContext = new EspecificationsViewModel(manager, ac);
+            DataContext = new AlgorythimViewModel(configurations);
         }
+
     }
 }

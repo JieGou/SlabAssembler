@@ -11,3 +11,7 @@ C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.AutoCA
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.AutoCAD.ProtentionBuilder.Plugin.dll
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.AutoCAD.ProtentionBuilder.Plugin.pdb
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\bin\Debug\Resources\Configurations.json
+C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\AlgorythimControl.g.cs
+C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\PartsControl.g.cs
+C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\AlgorythimControl.baml
+C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\PartsControl.baml

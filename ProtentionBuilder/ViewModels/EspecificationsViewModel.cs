@@ -18,24 +18,28 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
             set { _selectedModulation = value; OnPropertyChanged(); }
         }
 
-        public ObservableCollection<int> Modulations { set; get; }
-        public ObservableCollection<Part> FormsAndBoxes { set; get; }
-        public ObservableCollection<Part> LpList { set; get; }
-        public ObservableCollection<Part> LdList { set; get; }
+        public ObservableCollection<int> Modulations { get; }
+        public ObservableCollection<Part> FormsAndBoxes { get; }
+        public ObservableCollection<Part> LpList { get; }
+        public ObservableCollection<Part> LdList { get; }
+        public ObservableCollection<string> Layers { get; } 
 
         private readonly List<Part> _parts;
 
-        public EspecificationsViewModel(ConfigurationManager configurationManager)
+        public EspecificationsViewModel(ConfigurationsManager configurationsManager, AcManager ac)
         {
-            _parts = configurationManager.GetParts();
+            _parts = configurationsManager.GetParts();
 
             Modulations = new ObservableCollection<int>(_parts.GroupBy(p => p.Modulation).Select(g => g.Key));
+
             FormsAndBoxes = new ObservableCollection<Part>();
             LdList = new ObservableCollection<Part>();
             LpList = new ObservableCollection<Part>();
+            Layers = new ObservableCollection<string>(ac.GetLayers());
 
             SelectedModulation = Modulations.First();
         }
+
 
         private void SetParts()
         {
