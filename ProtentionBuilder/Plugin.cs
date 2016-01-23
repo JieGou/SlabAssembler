@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
 using Urbbox.AutoCAD.ProtentionBuilder.Database;
-using Urbbox.AutoCAD.ProtentionBuilder.ViewModels;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder
@@ -17,6 +17,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder
         private static AcManager _acManager;
 
         [CommandMethod("URBPROTENSION")]
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static void ShowPallet()
         {
             if (_mainPallet != null) return;

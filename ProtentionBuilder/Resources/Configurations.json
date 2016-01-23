@@ -179,6 +179,176 @@
       "Height": 4,
       "PivotPoint": 2,
       "UsageType": 3
+    },
+    {
+      "Modulation": 61,
+      "Name": "183",
+      "ReferenceName": "LD 183",
+      "Layer": "LONGDISTR",
+      "Width": 183,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 5
+    },
+    {
+      "Modulation": 61,
+      "Name": "150",
+      "ReferenceName": "LD 150",
+      "Layer": "LONGDISTR",
+      "Width": 150,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 5
+    },
+    {
+      "Modulation": 61,
+      "Name": "122",
+      "ReferenceName": "LD 122",
+      "Layer": "LONGDISTR",
+      "Width": 122,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 5
+    },
+    {
+      "Modulation": 61,
+      "Name": "100",
+      "ReferenceName": "LD 100",
+      "Layer": "LONGDISTR",
+      "Width": 100,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 5
+    },
+    {
+      "Modulation": 61,
+      "Name": "80",
+      "ReferenceName": "LD 80",
+      "Layer": "LONGDISTR",
+      "Width": 80,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 5
+    },
+    {
+      "Modulation": 61,
+      "Name": "61",
+      "ReferenceName": "LD 61",
+      "Layer": "LONGDISTR",
+      "Width": 61,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 5
+    },
+    {
+      "Modulation": 61,
+      "Name": "50",
+      "ReferenceName": "LD 50",
+      "Layer": "LONGDISTR",
+      "Width": 50,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 5
+    },
+    {
+      "Modulation": 80,
+      "Name": "160",
+      "ReferenceName": "LD 160",
+      "Layer": "LONGDISTR",
+      "Width": 160,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 5
+    },
+    {
+      "Modulation": 61,
+      "Name": "183",
+      "ReferenceName": "LDS 183",
+      "Layer": "LONGDISTR",
+      "Width": 183,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 6
+    },
+    {
+      "Modulation": 61,
+      "Name": "150",
+      "ReferenceName": "LDS 150",
+      "Layer": "LONGDISTR",
+      "Width": 150,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 6
+    },
+    {
+      "Modulation": 61,
+      "Name": "122",
+      "ReferenceName": "LDS 122",
+      "Layer": "LONGDISTR",
+      "Width": 122,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 6
+    },
+    {
+      "Modulation": 61,
+      "Name": "100",
+      "ReferenceName": "LDS 100",
+      "Layer": "LONGDISTR",
+      "Width": 100,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 6
+    },
+    {
+      "Modulation": 61,
+      "Name": "80",
+      "ReferenceName": "LDS 80",
+      "Layer": "LONGDISTR",
+      "Width": 80,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 6
+    },
+    {
+      "Modulation": 61,
+      "Name": "61",
+      "ReferenceName": "LDS 61",
+      "Layer": "LONGDISTR",
+      "Width": 61,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 6
+    },
+    {
+      "Modulation": 61,
+      "Name": "50",
+      "ReferenceName": "LDS 50",
+      "Layer": "LONGDISTR",
+      "Width": 50,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 6
+    },
+    {
+      "Modulation": 80,
+      "Name": "160",
+      "ReferenceName": "LDS 160",
+      "Layer": "LONGDISTR",
+      "Width": 160,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 6
+    },
+    {
+      "Modulation": 61,
+      "Name": "Cabeça",
+      "ReferenceName": "CABEÇA COM PINO",
+      "Layer": "CABEÇA",
+      "Width": 5,
+      "Height": 8,
+      "PivotPoint": 0,
+      "UsageType": 7
     }
   ]
 }
