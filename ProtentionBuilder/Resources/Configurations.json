@@ -1,34 +1,184 @@
 ﻿{
   "parts": [
     {
-      "Height": 61,
-      "Layer": "FORMAS",
       "Modulation": 61,
       "Name": "Plasterit",
-      "PivotPoint": 7,
       "ReferenceName": "PLASTERIT",
-      "UsageType": 0,
-      "Width": 61
+      "Layer": "PLASTERIT",
+      "Width": 61,
+      "Height": 61,
+      "PivotPoint": 7,
+      "UsageType": 0
     },
     {
-      "Height": 61,
-      "Layer": "CAIXAS IMPACTO",
       "Modulation": 61,
       "Name": "Caixa 61x61",
-      "PivotPoint": 0,
       "ReferenceName": "CAIXA 61x61",
-      "UsageType": 1,
-      "Width": 61
+      "Layer": "CAIXAS IMPACTO",
+      "Width": 61,
+      "Height": 61,
+      "PivotPoint": 0,
+      "UsageType": 1
     },
     {
-      "Height": 80,
-      "Layer": "CAIXAS IMPACTO",
       "Modulation": 80,
       "Name": "Caixa 80x80",
-      "PivotPoint": 0,
       "ReferenceName": "CAIXA 80x80",
-      "UsageType": 1,
-      "Width": 80
+      "Layer": "CAIXAS IMPACTO",
+      "Width": 80,
+      "Height": 80,
+      "PivotPoint": 0,
+      "UsageType": 1
+    },
+    {
+      "Modulation": 61,
+      "Name": "305",
+      "ReferenceName": "LP 305",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 305,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 2
+    },
+    {
+      "Modulation": 61,
+      "Name": "244",
+      "ReferenceName": "LP 244",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 244,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 2
+    },
+    {
+      "Modulation": 61,
+      "Name": "183",
+      "ReferenceName": "LP 183",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 183,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 2
+    },
+    {
+      "Modulation": 61,
+      "Name": "122",
+      "ReferenceName": "LP 122",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 122,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 2
+    },
+    {
+      "Modulation": 80,
+      "Name": "240",
+      "ReferenceName": "LP 240",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 240,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 2
+    },
+    {
+      "Modulation": 80,
+      "Name": "160",
+      "ReferenceName": "LP 160",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 160,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 2
+    },
+    {
+      "Modulation": 61,
+      "Name": "103",
+      "ReferenceName": "LP 103",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 103,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 4
+    },
+    {
+      "Modulation": 61,
+      "Name": "87",
+      "ReferenceName": "LP 87",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 87,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 4
+    },
+    {
+      "Modulation": 80,
+      "Name": "190",
+      "ReferenceName": "LP 190",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 190,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 4
+    },
+    {
+      "Modulation": 80,
+      "Name": "150",
+      "ReferenceName": "LP 150",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 150,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 4
+    },
+    {
+      "Modulation": 80,
+      "Name": "150",
+      "ReferenceName": "LP 150",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 150,
+      "Height": 4,
+      "PivotPoint": 1,
+      "UsageType": 4
+    },
+    {
+      "Modulation": 61,
+      "Name": "213",
+      "ReferenceName": "LP PART 213",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 213,
+      "Height": 4,
+      "PivotPoint": 2,
+      "UsageType": 3
+    },
+    {
+      "Modulation": 61,
+      "Name": "138",
+      "ReferenceName": "LP PARTIDA 138",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 138,
+      "Height": 4,
+      "PivotPoint": 2,
+      "UsageType": 3
+    },
+    {
+      "Modulation": 80,
+      "Name": "140",
+      "ReferenceName": "LP PARTIDA 140",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 140,
+      "Height": 4,
+      "PivotPoint": 2,
+      "UsageType": 3
+    },
+    {
+      "Modulation": 80,
+      "Name": "100",
+      "ReferenceName": "LP PARTIDA 100",
+      "Layer": "LONGPRINCIPAL",
+      "Width": 100,
+      "Height": 4,
+      "PivotPoint": 2,
+      "UsageType": 3
     }
   ]
 }

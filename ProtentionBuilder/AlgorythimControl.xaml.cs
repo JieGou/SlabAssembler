@@ -22,10 +22,13 @@ namespace Urbbox.AutoCAD.ProtentionBuilder
     /// </summary>
     public partial class AlgorythimControl : UserControl
     {
-        public AlgorythimControl(ConfigurationsManager configurations)
+        public AlgorythimViewModel ViewModel { get; private set; }
+
+        public AlgorythimControl(EspecificationsControl especificationsControl,  ConfigurationsManager configurations)
         {
             InitializeComponent();
-            DataContext = new AlgorythimViewModel(configurations);
+            ViewModel = new AlgorythimViewModel(especificationsControl.ViewModel, configurations);
+            DataContext = ViewModel;
         }
 
     }

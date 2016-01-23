@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -9,15 +10,33 @@ using Urbbox.AutoCAD.ProtentionBuilder.Manufacture.Variations;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
 {
-    class AlgorythimViewModel : ViewModel
+    public class AlgorythimViewModel : ViewModel
     {
-        public ObservableCollection<Part> StartLpList;
+        public ObservableCollection<Part> StartLpList { get; }
+        private readonly EspecificationsViewModel _especificationsViewModel;
+        private readonly List<Part> _parts; 
 
-        public AlgorythimViewModel(ConfigurationsManager configurations)
+        public AlgorythimViewModel(EspecificationsViewModel especifications, ConfigurationsManager configurations)
         {
-            var parts = configurations.GetParts();
+            _especificationsViewModel = especifications;
+            _especificationsViewModel.PropertyChanged += EspecificationsViewModel_PropertyChanged;
+            _parts = configurations.GetParts();
 
-            StartLpList = new ObservableCollection<Part>(parts.Where(p => p.UsageType == UsageType.StartLp));
+            StartLpList = new ObservableCollection<Part>();
+            SetParts();
+        }
+
+        private void SetParts()
+        {
+            StartLpList.Clear();
+            foreach (var part in _parts.Where(p => p.UsageType == UsageType.StartLp && p.Modulation == _especificationsViewModel.SelectedModulation))
+                    StartLpList.Add(part);
+        }
+
+        private void EspecificationsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_especificationsViewModel.SelectedModulation))
+                SetParts();
         }
     }
 }

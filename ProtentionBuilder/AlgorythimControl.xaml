@@ -15,7 +15,7 @@
                 <CheckBox x:Name="checkBox" Content="Utilizar LDS" Margin="10,10,0,0"/>
                 <CheckBox x:Name="checkBox_Copy" Content="Utilizar LP Final" Margin="10,10,0,0"/>
                 <CheckBox x:Name="checkBox_Copy1" Content="Utilizar LP de Partida" Margin="10,10,0,0"/>
-                <ComboBox x:Name="comboBox" Margin="10,5,10,10" ItemsSource="{Binding Path=StartLpList}"/>
+                <ComboBox x:Name="comboBox" Margin="10,5,10,10" ItemsSource="{Binding Path=StartLpList}" DisplayMemberPath="Name"/>
             </StackPanel>
         </GroupBox>
         <GroupBox x:Name="groupBox_Copy" Header="Distancias Constantes" Margin="5,10,5,0" RenderTransformOrigin="0.5,0.5" Height="153">

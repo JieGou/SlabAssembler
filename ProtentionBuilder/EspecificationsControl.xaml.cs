@@ -22,10 +22,15 @@ namespace Urbbox.AutoCAD.ProtentionBuilder
     /// </summary>
     public partial class EspecificationsControl : UserControl
     {
+        public EspecificationsViewModel ViewModel { get; set; }
+
+
         public EspecificationsControl(ConfigurationsManager manager, AcManager ac)
         {
             InitializeComponent();
-            DataContext = new EspecificationsViewModel(manager, ac);
+            ViewModel = new EspecificationsViewModel(manager, ac);
+            DataContext = ViewModel;
         }
+
     }
 }

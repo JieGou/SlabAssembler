@@ -5,6 +5,7 @@ using System.Windows.Forms.Integration;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
 using Urbbox.AutoCAD.ProtentionBuilder.Database;
+using Urbbox.AutoCAD.ProtentionBuilder.ViewModels;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder
@@ -24,18 +25,19 @@ namespace Urbbox.AutoCAD.ProtentionBuilder
             _configurationsManager = new ConfigurationsManager(@"Resources\Configurations.json");
             _acManager = new AcManager(AcApplication.DocumentManager.MdiActiveDocument);
 
+            var especifications = new EspecificationsControl(_configurationsManager, _acManager);
             var especificationsControl = new ElementHost
             {
                 AutoSize = true,
                 Dock = DockStyle.Fill,
-                Child = new EspecificationsControl(_configurationsManager, _acManager)
+                Child = especifications
             };
 
             var algorythimControl = new ElementHost
             {
                 AutoSize = true,
                 Dock = DockStyle.Fill,
-                Child = new AlgorythimControl(_configurationsManager)
+                Child = new AlgorythimControl(especifications, _configurationsManager)
             };
 
             var partsControl = new ElementHost

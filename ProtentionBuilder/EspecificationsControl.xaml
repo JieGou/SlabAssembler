@@ -30,7 +30,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Width="135" Height="49">
                         <Label x:Name="label1" Content="LP" Margin="0,0,10,0"/>
-                        <ComboBox x:Name="LpComboBox" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="125" Margin="0" ItemsSource="{Binding Source=LpList}" DisplayMemberPath="Name"/>
+                        <ComboBox x:Name="LpComboBox" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="125" Margin="0" ItemsSource="{Binding Path=LpList}" DisplayMemberPath="Name"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="49" Width="122">
                         <Label x:Name="label1_Copy" Content="LD"/>
