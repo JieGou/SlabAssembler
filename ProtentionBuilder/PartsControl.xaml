@@ -10,7 +10,7 @@
         <Label x:Name="label" Content="Lista de Peças" VerticalAlignment="Top" FontSize="16" Padding="10,5" Margin="10,0"/>
         <TreeView x:Name="treeView" Height="390" Margin="10,0,10,15">
         </TreeView>
-        <Button x:Name="button" Content="Analisar Peças" Margin="10,0" />
-        <Button x:Name="button_Copy" Content="Adicionar Peça" Margin="10,10,10,0"/>
+        <Button x:Name="button" Content="Analisar Peças" Margin="10,0" Height="30" />
+        <Button x:Name="button_Copy" Content="Adicionar Peça" Margin="10,10,10,0" Height="30"/>
     </StackPanel>
 </UserControl>
