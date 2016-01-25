@@ -13,14 +13,28 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
     public class AlgorythimViewModel : ViewModel
     {
         public ObservableCollection<Part> StartLpList { get; }
-        private readonly EspecificationsViewModel _especificationsViewModel;
-        private readonly List<Part> _parts; 
+        public float OutlineDistance { get; set; }
+        public float DistanceBetweenLp { get; set; }
+        public float DistanceBetweenLpAndLd { get; set; }
+        public bool UseLds { get; set; }
+        public bool UseEndLp { get; set; }
+        public bool UseStartLp { get; set; }
 
-        public AlgorythimViewModel(EspecificationsViewModel especifications, ConfigurationsManager configurations)
+        private readonly EspecificationsViewModel _especificationsViewModel;
+        private readonly List<Part> _parts;
+
+        public AlgorythimViewModel(EspecificationsViewModel especifications, ConfigurationsManager configurationsManager)
         {
             _especificationsViewModel = especifications;
             _especificationsViewModel.PropertyChanged += EspecificationsViewModel_PropertyChanged;
-            _parts = configurations.GetParts();
+            _parts = configurationsManager.Data.Parts;
+
+            OutlineDistance = configurationsManager.Data.OutlineDistance;
+            DistanceBetweenLp = configurationsManager.Data.DistanceBetweenLp;
+            DistanceBetweenLpAndLd = configurationsManager.Data.DistanceBetweenLpAndLd;
+            UseLds = configurationsManager.Data.UseLds;
+            UseEndLp = configurationsManager.Data.UseEndLp;
+            UseStartLp = configurationsManager.Data.UseStartLp;
 
             StartLpList = new ObservableCollection<Part>();
             SetParts();

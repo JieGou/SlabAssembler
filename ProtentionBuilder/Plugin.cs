@@ -1,11 +1,11 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
 using Urbbox.AutoCAD.ProtentionBuilder.Database;
+using Urbbox.AutoCAD.ProtentionBuilder.Properties;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder
@@ -23,7 +23,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder
             if (_mainPallet != null) return;
             _mainPallet = InitializeMainPallet();
             _mainPallet.StateChanged += _mainPallet_StateChanged;
-            _configurationsManager = new ConfigurationsManager(@"Resources\Configurations.json");
+            _configurationsManager = new ConfigurationsManager(Resources.ConfigurationsFile);
             _acManager = new AcManager(AcApplication.DocumentManager.MdiActiveDocument);
 
             var especifications = new EspecificationsControl(_configurationsManager, _acManager);

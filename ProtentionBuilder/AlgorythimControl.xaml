@@ -12,26 +12,26 @@
 
         <GroupBox x:Name="groupBox" Header="Peças Opcionais" Margin="5,10,5,0">
             <StackPanel HorizontalAlignment="Left"  Margin="10,5,0,0" VerticalAlignment="Top" Width="270">
-                <CheckBox x:Name="checkBox" Content="Utilizar LDS" Margin="10,10,0,0"/>
-                <CheckBox x:Name="checkBox_Copy" Content="Utilizar LP Final" Margin="10,10,0,0"/>
-                <CheckBox x:Name="checkBox_Copy1" Content="Utilizar LP de Partida" Margin="10,10,0,0"/>
+                <CheckBox x:Name="checkBox" Content="Utilizar LDS" Margin="10,10,0,0" IsChecked="{Binding Path=UseLds, Mode=TwoWay}"/>
+                <CheckBox x:Name="checkBox_Copy" Content="Utilizar LP Final" Margin="10,10,0,0" IsChecked="{Binding Path=UseEndLp, Mode=TwoWay}"/>
+                <CheckBox x:Name="checkBox_Copy1" Content="Utilizar LP de Partida" Margin="10,10,0,0" IsChecked="{Binding Path=UseStartLp, Mode=TwoWay}"/>
                 <ComboBox x:Name="comboBox" Margin="10,5,10,10" ItemsSource="{Binding Path=StartLpList}" DisplayMemberPath="Name"/>
             </StackPanel>
         </GroupBox>
         <GroupBox x:Name="groupBox_Copy" Header="Distancias Constantes" Margin="5,10,5,0" RenderTransformOrigin="0.5,0.5" Height="153">
             <StackPanel Width="285">
                 <Grid Height="30" Margin="10,15,0,0">
-                    <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Margin="160,3,0,0"  VerticalAlignment="Top" Width="64"/>
+                    <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Margin="160,3,0,0"  VerticalAlignment="Top" Width="64" Text="{Binding OutlineDistance, Mode=TwoWay}"/>
                     <Label x:Name="label" Content="cm" HorizontalAlignment="Right" Margin="0,0,20,0" VerticalAlignment="Top"/>
                     <Label x:Name="label1" Content="Distancia do Contorno" Margin="0,0,120,0"/>
                 </Grid>
                 <Grid Height="30" Margin="10,5,0,0">
-                    <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Margin="160,3,0,0"  VerticalAlignment="Top" Width="64"/>
+                    <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Margin="160,3,0,0"  VerticalAlignment="Top" Width="64" Text="{Binding DistanceBetweenLp, Mode=TwoWay}"/>
                     <Label x:Name="label2" Content="cm" HorizontalAlignment="Right" Margin="0,0,20,0" VerticalAlignment="Top"/>
                     <Label x:Name="label3" Content="Distancia entre LPs" Margin="0,0,120,0"/>
                 </Grid>
                 <Grid Height="30" Margin="10,5,0,0">
-                    <TextBox x:Name="textBox2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Margin="160,3,0,0"  VerticalAlignment="Top" Width="64"/>
+                    <TextBox x:Name="textBox2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Margin="160,3,0,0"  VerticalAlignment="Top" Width="64" Text="{Binding DistanceBetweenLpAndLd, Mode=TwoWay}"/>
                     <Label x:Name="label4" Content="cm" HorizontalAlignment="Right" Margin="0,0,20,0" VerticalAlignment="Top"/>
                     <Label x:Name="label5" Content="Distancia entre LP e LD" Margin="0,0,120,0"/>
                 </Grid>

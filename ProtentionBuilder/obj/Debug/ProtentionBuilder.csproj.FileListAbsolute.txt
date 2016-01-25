@@ -1,7 +1,5 @@
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\bin\Debug\Urbbox.AutoCAD.ProtentionBuilder.Plugin.dll
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\bin\Debug\Urbbox.AutoCAD.ProtentionBuilder.Plugin.pdb
-C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\bin\Debug\Newtonsoft.Json.dll
-C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\ProtentionBuilder.csprojResolveAssemblyReference.cache
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\EspecificationsControl.g.cs
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.AutoCAD.ProtentionBuilder.Plugin_MarkupCompile.cache
@@ -10,8 +8,10 @@ C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Especificatio
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.AutoCAD.ProtentionBuilder.Plugin.g.resources
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.AutoCAD.ProtentionBuilder.Plugin.dll
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.AutoCAD.ProtentionBuilder.Plugin.pdb
-C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\bin\Debug\Resources\Configurations.json
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\AlgorythimControl.g.cs
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\PartsControl.g.cs
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\AlgorythimControl.baml
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\PartsControl.baml
+C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.AutoCAD.ProtentionBuilder.Properties.Resources.resources
+C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\ProtentionBuilder.csproj.GenerateResource.Cache
+C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\bin\Debug\Resources\Configurations.xml

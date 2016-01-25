@@ -6,15 +6,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Xml;
+using System.Xml.Serialization;
 using Urbbox.AutoCAD.ProtentionBuilder.Manufacture;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder.Database
 {
     public class ConfigurationsManager
     {
-        private JObject _configurationData;
+        [XmlRoot(nameof(ConfigurationData), IsNullable = false)]
+        public class ConfigurationData
+        {
+            [XmlArray(IsNullable = true)]
+            [XmlArrayItem(nameof(Part), typeof(Part))]
+            public List<Part> Parts { get; set; }
+            public float OutlineDistance { get; set; }
+            public float DistanceBetweenLp { get; set; }
+            public float DistanceBetweenLpAndLd { get; set; }
+            public bool UseLds { get; set; }
+            public bool UseEndLp { get; set; }
+            public bool UseStartLp { get; set; }
+        }
+
+        public ConfigurationData Data { get; private set; }
 
         public ConfigurationsManager(string configurationFile)
         {
@@ -23,13 +37,19 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Database
 
         private void LoadData(string configurationFile)
         {
-            _configurationData = JObject.Parse(File.ReadAllText(configurationFile));
+            var deserializer = new XmlSerializer(typeof(ConfigurationData));
+            TextReader reader = new StreamReader(configurationFile);
+            Data = (ConfigurationData) deserializer.Deserialize(reader);
+            reader.Close();
         }
 
-        public List<Part> GetParts()
+        private void SaveData(ConfigurationData data, string configurationFile)
         {
-            var parts = _configurationData["parts"] as JArray;
-            return parts?.Select(p => new Part(p as JObject)).ToList<Part>() ?? new List<Part>();
+            var serializer = new XmlSerializer(typeof(ConfigurationData));
+            using (TextWriter writer = new StreamWriter(configurationFile))
+            {
+                serializer.Serialize(writer, data);
+            }
         }
 
     }

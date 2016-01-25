@@ -28,7 +28,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
 
         public EspecificationsViewModel(ConfigurationsManager configurationsManager, AcManager ac)
         {
-            _parts = configurationsManager.GetParts();
+            _parts = configurationsManager.Data.Parts;
 
             Modulations = new ObservableCollection<int>(_parts.GroupBy(p => p.Modulation).Select(g => g.Key));
 
