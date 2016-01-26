@@ -22,7 +22,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Views
             _parts = configurationsManager.Data.Parts;
 
             foreach (var modulationGroup in _parts.GroupBy(p => p.Modulation)) {
-                var modulationTree = new TreeViewItem {Header = $"Modulação {modulationGroup.Key}"};
+                var modulationTree = new TreeViewItem {Header = $"Modulação {modulationGroup.Key}", IsExpanded = true};
 
                 foreach (var usageTypeGroup in modulationGroup.ToList().GroupBy(p => p.UsageType))
                 {
