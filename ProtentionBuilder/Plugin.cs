@@ -26,7 +26,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder
             _configurationsManager = new ConfigurationsManager(Resources.ConfigurationsFile);
             _acManager = new AcManager(AcApplication.DocumentManager.MdiActiveDocument);
 
-            var especifications = new EspecificationsControl(_configurationsManager, _acManager);
+            var especifications = new Views.EspecificationsControl(_configurationsManager, _acManager);
             var especificationsControl = new ElementHost
             {
                 AutoSize = true,
@@ -38,14 +38,14 @@ namespace Urbbox.AutoCAD.ProtentionBuilder
             {
                 AutoSize = true,
                 Dock = DockStyle.Fill,
-                Child = new AlgorythimControl(especifications, _configurationsManager)
+                Child = new Views.AlgorythimControl(especifications, _configurationsManager)
             };
 
             var partsControl = new ElementHost
             {
                 AutoSize = true,
                 Dock = DockStyle.Fill,
-                Child = new PartsControl()
+                Child = new Views.PartsControl(_configurationsManager)
             };
 
             _mainPallet.Add("Especificações", especificationsControl);

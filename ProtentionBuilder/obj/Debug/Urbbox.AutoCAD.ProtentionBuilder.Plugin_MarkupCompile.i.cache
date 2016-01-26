@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-31079845392
+3-1255245778
 1-1203705956
-19-1841065687
+191711740238
 262038511248
-AlgorythimControl.xaml;EspecificationsControl.xaml;PartsControl.xaml;
+Views\AlgorythimControl.xaml;Views\EspecificationsControl.xaml;Views\PartsControl.xaml;
 
-False
+True
 

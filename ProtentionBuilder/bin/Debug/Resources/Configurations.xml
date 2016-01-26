@@ -48,8 +48,6 @@
       <UsageType>Lp</UsageType>
     </Part>
     <Part Name="183" Modulation="61">
-      <Modulation>61</Modulation>
-      <Name>183</Name>
       <ReferenceName>LP 183</ReferenceName>
       <Layer>LONGPRINCIPAL</Layer>
       <Width>183</Width>
@@ -66,8 +64,6 @@
       <UsageType>Lp</UsageType>
     </Part>
     <Part Name="240" Modulation="80">
-      <Modulation>80</Modulation>
-      <Name>240</Name>
       <ReferenceName>LP 240</ReferenceName>
       <Layer>LONGPRINCIPAL</Layer>
       <Width>240</Width>
@@ -83,7 +79,7 @@
       <PivotPoint>MiddleLeft</PivotPoint>
       <UsageType>Lp</UsageType>
     </Part>
-    <Part Name="103" Modulation="41">
+    <Part Name="103" Modulation="61">
       <ReferenceName>LP 103</ReferenceName>
       <Layer>LONGPRINCIPAL</Layer>
       <Width>103</Width>
@@ -180,8 +176,6 @@
       <UsageType>Ld</UsageType>
     </Part>
     <Part Name="100" Modulation="61">
-      <Modulation>61</Modulation>
-      <Name>100</Name>
       <ReferenceName>LD 100</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>100</Width>
@@ -222,8 +216,6 @@
       <UsageType>Ld</UsageType>
     </Part>
     <Part Name="183" Modulation="61">
-      <Modulation>61</Modulation>
-      <Name>183</Name>
       <ReferenceName>LDS 183</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>183</Width>
