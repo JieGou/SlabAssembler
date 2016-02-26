@@ -30,12 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AcCoreMgd, Version=20.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD.NET.Core.20.0.1\lib\45\AcCoreMgd.dll</HintPath>
+    <Reference Include="AcCoreMgd, Version=20.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD.NET.Core.20.1.0\lib\45\AcCoreMgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AcCui, Version=20.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD.NET.20.0.1\lib\45\AcCui.dll</HintPath>
+    <Reference Include="AcCui, Version=20.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD.NET.20.1.0\lib\45\AcCui.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="AcDbMgd, Version=20.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -46,28 +46,28 @@
       <HintPath>..\packages\AutoCAD.NET.Model.20.1.0\lib\45\acdbmgdbrep.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AcDx, Version=20.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD.NET.20.0.1\lib\45\AcDx.dll</HintPath>
+    <Reference Include="AcDx, Version=20.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD.NET.20.1.0\lib\45\AcDx.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AcMgd, Version=20.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD.NET.20.0.1\lib\45\AcMgd.dll</HintPath>
+    <Reference Include="AcMgd, Version=20.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD.NET.20.1.0\lib\45\AcMgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AcMr, Version=20.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD.NET.20.0.1\lib\45\AcMr.dll</HintPath>
+    <Reference Include="AcMr, Version=20.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD.NET.20.1.0\lib\45\AcMr.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AcTcMgd, Version=20.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD.NET.20.0.1\lib\45\AcTcMgd.dll</HintPath>
+    <Reference Include="AcTcMgd, Version=20.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD.NET.20.1.0\lib\45\AcTcMgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AcWindows, Version=20.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD.NET.20.0.1\lib\45\AcWindows.dll</HintPath>
+    <Reference Include="AcWindows, Version=20.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD.NET.20.1.0\lib\45\AcWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AdWindows, Version=5.2.10.200, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD.NET.20.0.1\lib\45\AdWindows.dll</HintPath>
+    <Reference Include="AdWindows, Version=6.3.0.14, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD.NET.20.1.0\lib\45\AdWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -87,17 +87,26 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Building\Variations\UsageType.cs" />
+    <Compile Include="ViewModels\Commands\BaseCommand.cs" />
+    <Compile Include="ViewModels\Converters\PivotPointConverter.cs" />
+    <Compile Include="ViewModels\Converters\UsageTypeConverter.cs" />
+    <Compile Include="ViewModels\PartsViewModel.cs" />
+    <Compile Include="ViewModels\PartViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AlgorythimControl.xaml.cs">
       <DependentUpon>AlgorythimControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Database\AcManager.cs" />
     <Compile Include="Database\ConfigurationsManager.cs" />
+    <Compile Include="Views\PartView.xaml.cs">
+      <DependentUpon>PartView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EspecificationsControl.xaml.cs">
       <DependentUpon>EspecificationsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Manufacture\Part.cs" />
-    <Compile Include="Manufacture\Variations\PivotPoint.cs" />
-    <Compile Include="Manufacture\Variations\UsageType.cs" />
+    <Compile Include="Building\Part.cs" />
+    <Compile Include="Building\Variations\PivotPoint.cs" />
     <Compile Include="Views\PartsControl.xaml.cs">
       <DependentUpon>PartsControl.xaml</DependentUpon>
     </Compile>
@@ -111,7 +120,6 @@
     </Compile>
     <Compile Include="ViewModels\AlgorythimViewModel.cs" />
     <Compile Include="ViewModels\EspecificationsViewModel.cs" />
-    <Compile Include="ViewModels\ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -121,6 +129,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\AlgorythimControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

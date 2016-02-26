@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Windows.Input;
 using System.Xml.Serialization;
-using Urbbox.AutoCAD.ProtentionBuilder.Manufacture.Variations;
+using Urbbox.AutoCAD.ProtentionBuilder.Building.Variations;
 
-namespace Urbbox.AutoCAD.ProtentionBuilder.Manufacture
+namespace Urbbox.AutoCAD.ProtentionBuilder.Building
 {
     [Serializable]
     public class Part
@@ -19,6 +20,13 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Manufacture
 
         [XmlAttribute]
         public int Modulation { get; set; }
+
+        [XmlIgnore]
+        public ICommand EditCommand { get; set; }
+        [XmlIgnore]
+        public ICommand DeleteCommand { get; set; }
+        [XmlIgnore]
+        public ICommand SaveCommand { get; set; }
 
         public Part() { }
 

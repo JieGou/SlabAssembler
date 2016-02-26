@@ -51,6 +51,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder
             _mainPallet.Add("Especificações", especificationsControl);
             _mainPallet.Add("Algoritmo", algorythimControl);
             _mainPallet.Add("Peças", partsControl);
+            _configurationsManager.LoadData();
         }
 
         private static void _mainPallet_StateChanged(object sender, PaletteSetStateEventArgs e)

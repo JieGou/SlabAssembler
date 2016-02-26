@@ -1,41 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using Urbbox.AutoCAD.ProtentionBuilder.Building;
 using Urbbox.AutoCAD.ProtentionBuilder.Database;
-using Urbbox.AutoCAD.ProtentionBuilder.Manufacture;
-using Urbbox.AutoCAD.ProtentionBuilder.Manufacture.Variations;
+using Urbbox.AutoCAD.ProtentionBuilder.ViewModels;
+using Urbbox.AutoCAD.ProtentionBuilder.ViewModels.Commands;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder.Views
 {
     /// <summary>
     /// Interaction logic for PartsControl.xaml
     /// </summary>
-    public partial class PartsControl : UserControl
+    public partial class PartsControl
     {
-        private List<Part> _parts;
 
         public PartsControl(ConfigurationsManager configurationsManager)
         {
+            DataContext = new PartsViewModel(configurationsManager);
             InitializeComponent();
-
-            _parts = configurationsManager.Data.Parts;
-
-            foreach (var modulationGroup in _parts.GroupBy(p => p.Modulation)) {
-                var modulationTree = new TreeViewItem {Header = $"Modulação {modulationGroup.Key}", IsExpanded = true};
-
-                foreach (var usageTypeGroup in modulationGroup.ToList().GroupBy(p => p.UsageType))
-                {
-                    var usageTypeTree = new TreeViewItem { Header = usageTypeGroup.Key.ToNameString() };
-
-                    foreach (var part in usageTypeGroup.ToList())
-                        usageTypeTree.Items.Add(part.Name);
-
-                    modulationTree.Items.Add(usageTypeTree);
-                }
-
-                partsTreeView.Items.Add(modulationTree);
-            }
         }
 
     }

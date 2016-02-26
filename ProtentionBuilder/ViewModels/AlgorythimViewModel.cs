@@ -2,41 +2,109 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Urbbox.AutoCAD.ProtentionBuilder.Building;
+using Urbbox.AutoCAD.ProtentionBuilder.Building.Variations;
 using Urbbox.AutoCAD.ProtentionBuilder.Database;
-using Urbbox.AutoCAD.ProtentionBuilder.Manufacture;
-using Urbbox.AutoCAD.ProtentionBuilder.Manufacture.Variations;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
 {
-    public class AlgorythimViewModel : ViewModel
+    public class AlgorythimViewModel : ViewModelBase
     {
         public ObservableCollection<Part> StartLpList { get; }
-        public float OutlineDistance { get; set; }
-        public float DistanceBetweenLp { get; set; }
-        public float DistanceBetweenLpAndLd { get; set; }
-        public bool UseLds { get; set; }
-        public bool UseEndLp { get; set; }
-        public bool UseStartLp { get; set; }
+
+        public float OutlineDistance
+        {
+            get { return _outlineDistance; }
+            set
+            {
+                if (value.Equals(_outlineDistance)) return;
+                _outlineDistance = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public float DistanceBetweenLp
+        {
+            get { return _distanceBetweenLp; }
+            set
+            {
+                if (value.Equals(_distanceBetweenLp)) return;
+                _distanceBetweenLp = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public float DistanceBetweenLpAndLd
+        {
+            get { return _distanceBetweenLpAndLd; }
+            set
+            {
+                if (value.Equals(_distanceBetweenLpAndLd)) return;
+                _distanceBetweenLpAndLd = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseLds
+        {
+            get { return _useLds; }
+            set
+            {
+                if (value == _useLds) return;
+                _useLds = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseEndLp
+        {
+            get { return _useEndLp; }
+            set
+            {
+                if (value == _useEndLp) return;
+                _useEndLp = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseStartLp
+        {
+            get { return _useStartLp; }
+            set
+            {
+                if (value == _useStartLp) return;
+                _useStartLp = value;
+                OnPropertyChanged();
+            }
+        }
 
         private readonly EspecificationsViewModel _especificationsViewModel;
         private readonly List<Part> _parts;
+        private float _outlineDistance;
+        private float _distanceBetweenLp;
+        private float _distanceBetweenLpAndLd;
+        private bool _useLds;
+        private bool _useEndLp;
+        private bool _useStartLp;
 
         public AlgorythimViewModel(EspecificationsViewModel especifications, ConfigurationsManager configurationsManager)
         {
             _especificationsViewModel = especifications;
-            _especificationsViewModel.PropertyChanged += EspecificationsViewModel_PropertyChanged;
             _parts = configurationsManager.Data.Parts;
-
-            OutlineDistance = configurationsManager.Data.OutlineDistance;
-            DistanceBetweenLp = configurationsManager.Data.DistanceBetweenLp;
-            DistanceBetweenLpAndLd = configurationsManager.Data.DistanceBetweenLpAndLd;
-            UseLds = configurationsManager.Data.UseLds;
-            UseEndLp = configurationsManager.Data.UseEndLp;
-            UseStartLp = configurationsManager.Data.UseStartLp;
-
             StartLpList = new ObservableCollection<Part>();
+
+            _especificationsViewModel.PropertyChanged += EspecificationsViewModel_PropertyChanged;
+            configurationsManager.DataLoaded += ConfigurationsManager_DataLoaded;
+        }
+
+        private void ConfigurationsManager_DataLoaded(ConfigurationData data)
+        {
+            OutlineDistance = data.OutlineDistance;
+            DistanceBetweenLp = data.DistanceBetweenLp;
+            DistanceBetweenLpAndLd = data.DistanceBetweenLpAndLd;
+            UseLds = data.UseLds;
+            UseEndLp = data.UseEndLp;
+            UseStartLp = data.UseStartLp;
             SetParts();
         }
 

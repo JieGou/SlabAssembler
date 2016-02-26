@@ -4,7 +4,7 @@ using Urbbox.AutoCAD.ProtentionBuilder.Annotations;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
 {
-    public class ViewModel : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

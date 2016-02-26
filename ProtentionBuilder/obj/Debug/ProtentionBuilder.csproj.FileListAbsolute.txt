@@ -15,3 +15,6 @@ C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\PartsCo
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\AlgorythimControl.baml
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\EspecificationsControl.baml
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\PartsControl.baml
+C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\PartView.g.cs
+C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\PartView.baml
