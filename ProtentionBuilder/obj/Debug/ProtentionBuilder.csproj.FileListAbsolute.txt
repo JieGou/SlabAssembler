@@ -8,7 +8,6 @@ C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.AutoCA
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.AutoCAD.ProtentionBuilder.Plugin.pdb
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.AutoCAD.ProtentionBuilder.Properties.Resources.resources
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\ProtentionBuilder.csproj.GenerateResource.Cache
-C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\bin\Debug\Resources\Configurations.xml
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\AlgorythimControl.g.cs
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\EspecificationsControl.g.cs
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\PartsControl.g.cs
@@ -18,3 +17,4 @@ C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\PartsCo
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\PartWindow.g.cs
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\PartWindow.baml
+C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\bin\Debug\Resources\Configurations.Defaults.xml

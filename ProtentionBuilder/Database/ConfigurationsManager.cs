@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using Urbbox.AutoCAD.ProtentionBuilder.Building;
@@ -37,30 +38,56 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Database
         public ConfigurationData Data { get; set; }
         public event DataLoadedEventHandler DataLoaded;
         private readonly string _file;
+        private readonly string _defaults;
 
-        public ConfigurationsManager(string configurationFile)
+        public ConfigurationsManager(string configurationFile, string defaults)
         {
             _file = configurationFile;
+            _defaults = defaults;
             Data = new ConfigurationData();
         }
 
         public void LoadData()
         {
-            var deserializer = new XmlSerializer(typeof(ConfigurationData));
-            TextReader reader = new StreamReader(_file);
-            Data = (ConfigurationData) deserializer.Deserialize(reader);
-            reader.Close();
+            if (!File.Exists(_file)) CreateConfigurationFile();
 
+            var deserializer = new XmlSerializer(typeof(ConfigurationData));
+            using (TextReader reader = new StreamReader(_file))
+                Data = (ConfigurationData)deserializer.Deserialize(reader);
             DataLoaded?.Invoke(Data);
+        }
+
+        public void SavePart(Part part)
+        {
+            int id = part.GetHashCode();
+            for (int i = 0; i < Data.Parts.Count; i++)
+            {
+                if (Data.Parts[i].GetHashCode() == id)
+                {
+                    Data.Parts[i] = part;
+                    SaveData();
+                    return;
+                }
+            }
+
+            Data.Parts.Add(part);
+            SaveData();
+            return;
+        }
+
+        private void CreateConfigurationFile()
+        {
+            try {
+                File.Copy(_defaults, _file);
+            } catch (IOException) { }
+              catch (UnauthorizedAccessException) { }
         }
 
         public void SaveData()
         {
             var serializer = new XmlSerializer(typeof(ConfigurationData));
             using (TextWriter writer = new StreamWriter(_file))
-            {
                 serializer.Serialize(writer, Data);
-            }
 
             DataLoaded?.Invoke(Data);
         }
@@ -77,6 +104,17 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Database
             }
 
             return false;
+        }
+
+        public void ResetDefaults()
+        {
+            try
+            {
+                File.Delete(_file);
+                LoadData();
+            }
+            catch (IOException) { }
+            catch (UnauthorizedAccessException) { }
         }
     }
 }

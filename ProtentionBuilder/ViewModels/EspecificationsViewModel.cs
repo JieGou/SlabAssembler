@@ -8,7 +8,7 @@ using Urbbox.AutoCAD.ProtentionBuilder.Database;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
 {
-    public class EspecificationsViewModel : ViewModelBase
+    public class EspecificationsViewModel : ModelBase
     {
         private int _selectedModulation;
         public int SelectedModulation
@@ -41,6 +41,13 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
             SelectedModulation = 0;
 
             configurationsManager.DataLoaded += ConfigurationsManager_DataLoaded;
+            PropertyChanged += Especifications_PropertyChanged;
+        }
+
+        private void Especifications_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SelectedModulation))
+                SetParts();
         }
 
         private void ConfigurationsManager_DataLoaded(ConfigurationData data)
@@ -68,12 +75,5 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
                 LdList.Add(part);
         }
 
-        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            base.OnPropertyChanged(propertyName);
-
-            if (propertyName == nameof(SelectedModulation))
-                SetParts();
-        }
     }
 }

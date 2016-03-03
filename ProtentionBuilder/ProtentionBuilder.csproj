@@ -94,7 +94,7 @@
     <Compile Include="ViewModels\Converters\UsageTypeConverter.cs" />
     <Compile Include="ViewModels\PartsViewModel.cs" />
     <Compile Include="ViewModels\PartViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\ModelBase.cs" />
     <Compile Include="Views\AlgorythimControl.xaml.cs">
       <DependentUpon>AlgorythimControl.xaml</DependentUpon>
     </Compile>
@@ -153,7 +153,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Configurations.xml">
+    <Content Include="Resources\Configurations.Defaults.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

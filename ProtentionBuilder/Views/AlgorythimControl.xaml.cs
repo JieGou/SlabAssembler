@@ -11,10 +11,10 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Views
     {
         public AlgorythimViewModel ViewModel { get; private set; }
 
-        public AlgorythimControl(EspecificationsControl especificationsControl,  ConfigurationsManager configurations)
+        public AlgorythimControl(EspecificationsViewModel especificationsViewModel,  ConfigurationsManager configurations)
         {
             InitializeComponent();
-            ViewModel = new AlgorythimViewModel(especificationsControl.ViewModel, configurations);
+            ViewModel = new AlgorythimViewModel(ref especificationsViewModel, configurations);
             DataContext = ViewModel;
         }
 

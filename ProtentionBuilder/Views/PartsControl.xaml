@@ -56,5 +56,10 @@
         <Button Content="Analisar Peças" Margin="10,0" Height="30" />
     </StackPanel>
 
+    <UserControl.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="Resetar Padrões" Command="{Binding ResetCommand}"/>
+        </ContextMenu>
+    </UserControl.ContextMenu>
     
 </UserControl>

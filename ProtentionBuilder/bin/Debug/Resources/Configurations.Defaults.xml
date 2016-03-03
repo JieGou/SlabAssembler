@@ -1,291 +1,291 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ConfigurationData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <Parts>
-    <Part Name="Plasterit" Modulation="61">
-      <ReferenceName>PLASTERIT</ReferenceName>
-      <Width>61</Width>
-      <Height>61</Height>
-      <PivotPoint>BottomLeft</PivotPoint>
-      <UsageType>Form</UsageType>
-      <Layer>PLASTERIT</Layer>
-    </Part>
-    <Part Name="Caixa 61x61" Modulation="61">
-      <ReferenceName>CAIXA 61x61</ReferenceName>
-      <Width>61</Width>
-      <Height>61</Height>
-      <PivotPoint>MiddleCenter</PivotPoint>
-      <UsageType>Box</UsageType>
-      <Layer>CAIXAS IMPACTO</Layer>
-    </Part>
-    <Part Name="Caixa 80x80" Modulation="80">
-      <ReferenceName>CAIXA 80x80</ReferenceName>
-      <Width>80</Width>
-      <Height>80</Height>
-      <PivotPoint>MiddleCenter</PivotPoint>
-      <UsageType>Box</UsageType>
-      <Layer>CAIXAS IMPACTO</Layer>
-    </Part>
-    <Part Name="305" Modulation="61">
-      <ReferenceName>LP 305</ReferenceName>
-      <Width>305</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Lp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="244" Modulation="61">
-      <ReferenceName>LP 244</ReferenceName>
-      <Width>244</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Lp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="183" Modulation="61">
-      <ReferenceName>LP 183</ReferenceName>
-      <Width>183</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Lp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="122" Modulation="61">
-      <ReferenceName>LP 122</ReferenceName>
-      <Width>122</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Lp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="240" Modulation="80">
-      <ReferenceName>LP 240</ReferenceName>
-      <Width>240</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Lp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="160" Modulation="80">
-      <ReferenceName>LP 160</ReferenceName>
-      <Width>160</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Lp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="103" Modulation="61">
-      <ReferenceName>LP 103</ReferenceName>
-      <Width>103</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>EndLp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="87" Modulation="61">
-      <ReferenceName>LP 87</ReferenceName>
-      <Width>87</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>EndLp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="190" Modulation="80">
-      <ReferenceName>LP 190</ReferenceName>
-      <Width>190</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>EndLp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="150" Modulation="80">
-      <ReferenceName>LP 150</ReferenceName>
-      <Width>150</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>EndLp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="150" Modulation="80">
-      <ReferenceName>LP 150</ReferenceName>
-      <Width>150</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>EndLp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="213" Modulation="61">
-      <ReferenceName>LP PART 213</ReferenceName>
-      <Width>213</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleRight</PivotPoint>
-      <UsageType>StartLp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="138" Modulation="61">
-      <ReferenceName>LP PARTIDA 138</ReferenceName>
-      <Width>138</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleRight</PivotPoint>
-      <UsageType>StartLp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="140" Modulation="80">
-      <ReferenceName>LP PARTIDA 140</ReferenceName>
-      <Width>140</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleRight</PivotPoint>
-      <UsageType>StartLp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="100" Modulation="80">
-      <ReferenceName>LP PARTIDA 100</ReferenceName>
-      <Width>100</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleRight</PivotPoint>
-      <UsageType>StartLp</UsageType>
-      <Layer>LONGPRINCIPAL</Layer>
-    </Part>
-    <Part Name="183" Modulation="61">
-      <ReferenceName>LD 183</ReferenceName>
-      <Width>183</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Ld</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="150" Modulation="61">
-      <ReferenceName>LD 150</ReferenceName>
-      <Width>150</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Ld</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="122" Modulation="61">
-      <ReferenceName>LD 122</ReferenceName>
-      <Width>122</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Ld</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="100" Modulation="61">
-      <ReferenceName>LD 100</ReferenceName>
-      <Width>100</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Ld</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="80" Modulation="61">
-      <ReferenceName>LD 80</ReferenceName>
-      <Width>80</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Ld</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="61" Modulation="61">
-      <ReferenceName>LD 61</ReferenceName>
-      <Width>61</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Ld</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="50" Modulation="61">
-      <ReferenceName>LD 50</ReferenceName>
-      <Width>50</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Ld</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="160" Modulation="80">
-      <ReferenceName>LD 160</ReferenceName>
-      <Width>160</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Ld</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="183" Modulation="61">
-      <ReferenceName>LDS 183</ReferenceName>
-      <Width>183</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Lds</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="150" Modulation="61">
-      <ReferenceName>LDS 150</ReferenceName>
-      <Width>150</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Lds</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="122" Modulation="61">
-      <ReferenceName>LDS 122</ReferenceName>
-      <Width>122</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Lds</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="100" Modulation="61">
-      <ReferenceName>LDS 100</ReferenceName>
-      <Width>100</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Lds</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="80" Modulation="61">
-      <ReferenceName>LDS 80</ReferenceName>
-      <Width>80</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Lds</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="61" Modulation="61">
-      <ReferenceName>LDS 61</ReferenceName>
-      <Width>61</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Lds</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="50" Modulation="61">
-      <ReferenceName>LDS 50</ReferenceName>
-      <Width>50</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Lds</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="160" Modulation="80">
-      <ReferenceName>LDS 160</ReferenceName>
-      <Width>160</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
-      <UsageType>Lds</UsageType>
-      <Layer>LONGDISTR</Layer>
-    </Part>
-    <Part Name="Cabeça" Modulation="61">
-      <ReferenceName>CABEÇA COM PINO</ReferenceName>
-      <Width>5</Width>
-      <Height>8</Height>
-      <PivotPoint>MiddleCenter</PivotPoint>
-      <UsageType>Head</UsageType>
-      <Layer>CABEÇA</Layer>
-    </Part>
-  </Parts>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ConfigurationData>
   <OutlineDistance>10</OutlineDistance>
   <DistanceBetweenLp>0.2</DistanceBetweenLp>
   <DistanceBetweenLpAndLd>0.25</DistanceBetweenLpAndLd>
   <UseLds>false</UseLds>
   <UseEndLp>false</UseEndLp>
   <UseStartLp>false</UseStartLp>
+  <Parts>
+    <Part Name="Plasterit" Modulation="61">
+      <ReferenceName>PLASTERIT</ReferenceName>
+      <Layer>PLASTERIT</Layer>
+      <Width>61</Width>
+      <Height>61</Height>
+      <PivotPoint>BottomLeft</PivotPoint>
+      <UsageType>Form</UsageType>
+    </Part>
+    <Part Name="Caixa 61x61" Modulation="61">
+      <ReferenceName>CAIXA 61x61</ReferenceName>
+      <Layer>CAIXAS IMPACTO</Layer>
+      <Width>61</Width>
+      <Height>61</Height>
+      <PivotPoint>MiddleCenter</PivotPoint>
+      <UsageType>Box</UsageType>
+    </Part>
+    <Part Name="Caixa 80x80" Modulation="80">
+      <ReferenceName>CAIXA 80x80</ReferenceName>
+      <Layer>CAIXAS IMPACTO</Layer>
+      <Width>80</Width>
+      <Height>80</Height>
+      <PivotPoint>MiddleCenter</PivotPoint>
+      <UsageType>Box</UsageType>
+    </Part>
+    <Part Name="305" Modulation="61">
+      <ReferenceName>LP 305</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>305</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Lp</UsageType>
+    </Part>
+    <Part Name="244" Modulation="61">
+      <ReferenceName>LP 244</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>244</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Lp</UsageType>
+    </Part>
+    <Part Name="183" Modulation="61">
+      <ReferenceName>LP 183</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>183</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Lp</UsageType>
+    </Part>
+    <Part Name="122" Modulation="61">
+      <ReferenceName>LP 122</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>122</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Lp</UsageType>
+    </Part>
+    <Part Name="240" Modulation="80">
+      <ReferenceName>LP 240</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>240</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Lp</UsageType>
+    </Part>
+    <Part Name="160" Modulation="80">
+      <ReferenceName>LP 160</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>160</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Lp</UsageType>
+    </Part>
+    <Part Name="103" Modulation="61">
+      <ReferenceName>LP 103</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>103</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>EndLp</UsageType>
+    </Part>
+    <Part Name="87" Modulation="61">
+      <ReferenceName>LP 87</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>87</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>EndLp</UsageType>
+    </Part>
+    <Part Name="190" Modulation="80">
+      <ReferenceName>LP 190</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>190</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>EndLp</UsageType>
+    </Part>
+    <Part Name="150" Modulation="80">
+      <ReferenceName>LP 150</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>150</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>UsageType>StartLp
+      <UsageType>EndLp</UsageType>
+    </Part>
+    <Part Name="150" Modulation="80">
+      <ReferenceName>LP 150</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>150</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>EndLp</UsageType>
+    </Part>
+    <Part Name="213" Modulation="61">
+      <ReferenceName>LP PART 213</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>213</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleRight</PivotPoint>
+      <UsageType>StartLp</UsageType>
+    </Part>
+    <Part Name="138" Modulation="61">
+      <ReferenceName>LP PARTIDA 138</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>138</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleRight</PivotPoint>
+      <UsageType>StartLp</UsageType>
+    </Part>
+    <Part Name="140" Modulation="80">
+      <ReferenceName>LP PARTIDA 140</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>140</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleRight</PivotPoint>
+      <UsageType>StartLp</UsageType>
+    </Part>
+    <Part Name="100" Modulation="80">
+      <ReferenceName>LP PARTIDA 100</ReferenceName>
+      <Layer>LONGPRINCIPAL</Layer>
+      <Width>100</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleRight</PivotPoint>
+      <UsageType>StartLp</UsageType>
+    </Part>
+    <Part Name="183" Modulation="61">
+      <ReferenceName>LD 183</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>183</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Ld</UsageType>
+    </Part>
+    <Part Name="150" Modulation="61">
+      <ReferenceName>LD 150</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>150</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Ld</UsageType>
+    </Part>
+    <Part Name="122" Modulation="61">
+      <ReferenceName>LD 122</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>122</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Ld</UsageType>
+    </Part>
+    <Part Name="100" Modulation="61">
+      <ReferenceName>LD 100</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>100</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Ld</UsageType>
+    </Part>
+    <Part Name="80" Modulation="61">
+      <ReferenceName>LD 80</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>80</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Ld</UsageType>
+    </Part>
+    <Part Name="61" Modulation="61">
+      <ReferenceName>LD 61</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>61</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Ld</UsageType>
+    </Part>
+    <Part Name="50" Modulation="61">
+      <ReferenceName>LD 50</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>50</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Ld</UsageType>
+    </Part>
+    <Part Name="160" Modulation="80">
+      <ReferenceName>LD 160</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>160</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Ld</UsageType>
+    </Part>
+    <Part Name="183" Modulation="61">
+      <ReferenceName>LDS 183</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>183</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Lds</UsageType>
+    </Part>
+    <Part Name="150" Modulation="61">
+      <ReferenceName>LDS 150</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>150</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Lds</UsageType>
+    </Part>
+    <Part Name="122" Modulation="61">
+      <ReferenceName>LDS 122</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>122</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Lds</UsageType>
+    </Part>
+    <Part Name="100" Modulation="61">
+      <ReferenceName>LDS 100</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>100</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Lds</UsageType>
+    </Part>
+    <Part Name="80" Modulation="61">
+      <ReferenceName>LDS 80</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>80</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Lds</UsageType>
+    </Part>
+    <Part Name="61" Modulation="61">
+      <ReferenceName>LDS 61</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>61</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Lds</UsageType>
+    </Part>
+    <Part Name="50" Modulation="61">
+      <ReferenceName>LDS 50</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>50</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Lds</UsageType>
+    </Part>
+    <Part Name="160" Modulation="80">
+      <ReferenceName>LDS 160</ReferenceName>
+      <Layer>LONGDISTR</Layer>
+      <Width>160</Width>
+      <Height>4</Height>
+      <PivotPoint>MiddleLeft</PivotPoint>
+      <UsageType>Lds</UsageType>
+    </Part>
+    <Part Name="Cabeça" Modulation="61">
+      <ReferenceName>CABEÇA COM PINO</ReferenceName>
+      <Layer>CABEÇA</Layer>
+      <Width>5</Width>
+      <Height>8</Height>
+      <PivotPoint>MiddleCenter</PivotPoint>
+      <UsageType>Head</UsageType>
+    </Part>
+  </Parts>
 </ConfigurationData>

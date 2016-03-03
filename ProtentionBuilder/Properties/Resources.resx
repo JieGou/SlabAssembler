@@ -119,6 +119,10 @@
   </resheader>
   <data name="ConfigurationsFile" xml:space="preserve">
     <value>Resources/Configurations.xml</value>
-    <comment>Where all parts are stored in</comment>
+    <comment>Where all parts are stored (editable).</comment>
+  </data>
+  <data name="DefaultsConfigurationFile" xml:space="preserve">
+    <value>Resources/Configurations.Defaults.xml</value>
+    <comment>Where all parts are stored in.</comment>
   </data>
 </root>

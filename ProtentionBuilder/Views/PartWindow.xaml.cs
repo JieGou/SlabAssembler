@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Urbbox.AutoCAD.ProtentionBuilder.Building;
+using Urbbox.AutoCAD.ProtentionBuilder.Database;
 using Urbbox.AutoCAD.ProtentionBuilder.ViewModels;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder.Views
@@ -9,9 +10,9 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Views
     /// </summary>
     public partial class PartWindow : Window
     {
-        public PartWindow(Part part)
+        public PartWindow(ConfigurationsManager configurationsManager, Part part)
         {
-            DataContext = new PartViewModel(part);
+            DataContext = new PartViewModel(configurationsManager, part);
             InitializeComponent();
         }
     }

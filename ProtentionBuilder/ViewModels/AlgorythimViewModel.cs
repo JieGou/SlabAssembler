@@ -8,7 +8,7 @@ using Urbbox.AutoCAD.ProtentionBuilder.Database;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
 {
-    public class AlgorythimViewModel : ViewModelBase
+    public class AlgorythimViewModel : ModelBase
     {
         public ObservableCollection<Part> StartLpList { get; }
 
@@ -79,22 +79,24 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
         }
 
         private readonly EspecificationsViewModel _especificationsViewModel;
-        private readonly List<Part> _parts;
+        private List<Part> _parts;
         private float _outlineDistance;
         private float _distanceBetweenLp;
         private float _distanceBetweenLpAndLd;
         private bool _useLds;
         private bool _useEndLp;
         private bool _useStartLp;
+        private ConfigurationsManager _manager;
 
-        public AlgorythimViewModel(EspecificationsViewModel especifications, ConfigurationsManager configurationsManager)
+        public AlgorythimViewModel(ref EspecificationsViewModel especifications, ConfigurationsManager configurationsManager)
         {
             _especificationsViewModel = especifications;
-            _parts = configurationsManager.Data.Parts;
+            _manager = configurationsManager;
+            _parts = _manager.Data.Parts;
             StartLpList = new ObservableCollection<Part>();
 
             _especificationsViewModel.PropertyChanged += EspecificationsViewModel_PropertyChanged;
-            configurationsManager.DataLoaded += ConfigurationsManager_DataLoaded;
+            _manager.DataLoaded += ConfigurationsManager_DataLoaded;
         }
 
         private void ConfigurationsManager_DataLoaded(ConfigurationData data)
@@ -110,6 +112,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
 
         private void SetParts()
         {
+            _parts = _manager.Data.Parts;
             StartLpList.Clear();
             foreach (var part in _parts.Where(p => p.UsageType == UsageType.StartLp && p.Modulation == _especificationsViewModel.SelectedModulation))
                     StartLpList.Add(part);

@@ -68,5 +68,14 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Properties {
                 return ResourceManager.GetString("ConfigurationsFile", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resources/Configurations.Defaults.xml.
+        /// </summary>
+        internal static string DefaultsConfigurationFile {
+            get {
+                return ResourceManager.GetString("DefaultsConfigurationFile", resourceCulture);
+            }
+        }
     }
 }

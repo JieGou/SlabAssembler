@@ -10,7 +10,7 @@
              xmlns:v="clr-namespace:Urbbox.AutoCAD.ProtentionBuilder.Building.Variations"       
              xmlns:viewModels="clr-namespace:Urbbox.AutoCAD.ProtentionBuilder.ViewModels"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignData viewModels:PartViewModel}" Width="500" Height="380" ResizeMode="NoResize">
+             d:DataContext="{d:DesignData viewModels:PartViewModel}" Width="500" Height="380" ResizeMode="NoResize" Title="Definição de Peça">
     <Window.Resources>
         <converters:PivotPointConverter x:Key="PivotPointConverter"/>
         <converters:UsageTypeConverter x:Key="UsageTypeConverter"/>
@@ -20,7 +20,7 @@
     </Window.Resources>
     <StackPanel Margin="0,0,0,1" Background="#FFEBEBEB">
         <Label Padding="10,5" Content="Peça" FontSize="21.333" BorderThickness="0" Background="White" Margin="0" Foreground="#FF6C46AE"/>
-        <Grid d:DataContext="{d:DesignInstance {x:Type b:Part}}" Margin="0,20,0,0" Height="239">
+        <Grid d:DataContext="{d:DesignInstance {x:Type b:Part}}" Margin="0,20,10,0" Height="239">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -37,31 +37,31 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Label x:Name="label" Grid.Column="0" Grid.Row="0" Content="Nome" HorizontalAlignment="Right" Width="43"/>
-            <TextBox x:Name="textBox" Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" Text="{Binding Part.Name}" Margin="10,4,10,3" />
+            <TextBox x:Name="textBox" Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" Text="{Binding Part.Name, Mode=TwoWay}" Margin="10,4,10,3" />
 
             <Label x:Name="label_Copy1" Grid.Column="0" Grid.Row="1" Content="Referência" HorizontalAlignment="Right" Width="65"/>
-            <TextBox x:Name="textBox_Copy" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Part.ReferenceName}" Margin="10,3"/>
+            <TextBox x:Name="textBox_Copy" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Part.ReferenceName, Mode=TwoWay}" Margin="10,3"/>
 
             <Label x:Name="label_Copy" Grid.Column="0" Grid.Row="2" Content="Tipo" HorizontalAlignment="Right" Width="33"/>
-            <ComboBox x:Name="comboBox" Grid.Column="1" Grid.Row="2" SelectedItem="{Binding Part.UsageType, Converter={StaticResource UsageTypeConverter}}" ItemsSource="{Binding UsageTypesList, Mode=OneWay}" Margin="10,3,10,4"/>
+            <ComboBox x:Name="comboBox" Grid.Column="1" Grid.Row="2" SelectedItem="{Binding Part.UsageType, Mode=TwoWay, Converter={StaticResource UsageTypeConverter}}" ItemsSource="{Binding UsageTypesList, Mode=OneWay}" Margin="10,3,10,4"/>
 
             <Label x:Name="label_Copy2" Grid.Column="0" Grid.Row="3" Content="Ponto Pivot" HorizontalAlignment="Right" Width="71"/>
-            <ComboBox x:Name="comboBox_Copy" Grid.Column="1" Grid.Row="3" SelectedItem="{Binding Part.PivotPoint, Converter={StaticResource PivotPointConverter}}" ItemsSource="{Binding PivotPointList, Mode=OneWay}" Margin="10,3"/>
+            <ComboBox x:Name="comboBox_Copy" Grid.Column="1" Grid.Row="3" SelectedItem="{Binding Part.PivotPoint, Mode=TwoWay, Converter={StaticResource PivotPointConverter}}" ItemsSource="{Binding PivotPointList, Mode=OneWay}" Margin="10,3"/>
 
             <Label x:Name="label_Copy3" Grid.Column="0" Grid.Row="4" Content="Comprimento" HorizontalAlignment="Right" Width="83"/>
-            <TextBox x:Name="textBox_Copy1" Grid.Column="1" Grid.Row="4" TextWrapping="Wrap" Text="{Binding Part.Width}" Margin="10,4,10,3" />
+            <TextBox x:Name="textBox_Copy1" Grid.Column="1" Grid.Row="4" TextWrapping="Wrap" Text="{Binding Part.Width, Mode=TwoWay}" Margin="10,4,10,3" />
 
             <Label x:Name="label_Copy4" Grid.Column="0" Grid.Row="5" Content="Largura" Margin="0,0,0,26" HorizontalAlignment="Right" Grid.RowSpan="2" Width="50"/>
-            <TextBox x:Name="textBox_Copy2" Grid.Column="1" Grid.Row="5" TextWrapping="Wrap" Text="{Binding Part.Height}" Margin="10,3"/>
+            <TextBox x:Name="textBox_Copy2" Grid.Column="1" Grid.Row="5" TextWrapping="Wrap" Text="{Binding Part.Height, Mode=TwoWay}" Margin="10,3"/>
 
             <Label x:Name="label_Copy5" Grid.Column="0" Grid.Row="6" Content="Camada" HorizontalAlignment="Right" Width="53"/>
-            <TextBox x:Name="textBox_Copy3" Grid.Column="1" Grid.Row="6" TextWrapping="Wrap" Text="{Binding Part.Layer}" Margin="10,3,10,4"/>
+            <TextBox x:Name="textBox_Copy3" Grid.Column="1" Grid.Row="6" TextWrapping="Wrap" Text="{Binding Part.Layer, Mode=TwoWay}" Margin="10,3,10,4"/>
 
             <Label x:Name="label_Copy6" Grid.Column="0" Grid.Row="7" Content=" Modulação" HorizontalAlignment="Right" Width="73"/>
-            <TextBox x:Name="textBox_Copy4" Grid.Column="1" Grid.Row="7" TextWrapping="Wrap" Text="{Binding Part.Modulation}" Margin="10,3"/>
+            <TextBox x:Name="textBox_Copy4" Grid.Column="1" Grid.Row="7" TextWrapping="Wrap" Text="{Binding Part.Modulation, Mode=TwoWay}" Margin="10,3"/>
         </Grid>
         <StackPanel Height="33" Margin="5,0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Salvar" Command="{Binding Part.SaveCommand}" Width="100" Margin="0,0,5,0" />
+            <Button Content="Salvar" Command="{Binding SaveCommand}" Width="100" Margin="0,0,5,0" />
         </StackPanel>
     </StackPanel>
 </Window>

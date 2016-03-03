@@ -17,13 +17,12 @@ namespace Urbbox.AutoCAD.ProtentionBuilder
         private static AcManager _acManager;
 
         [CommandMethod("URBPROTENSION")]
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static void ShowPallet()
         {
             if (_mainPallet != null) return;
             _mainPallet = InitializeMainPallet();
             _mainPallet.StateChanged += _mainPallet_StateChanged;
-            _configurationsManager = new ConfigurationsManager(Resources.ConfigurationsFile);
+            _configurationsManager = new ConfigurationsManager(Resources.ConfigurationsFile, Resources.DefaultsConfigurationFile);
             _acManager = new AcManager(AcApplication.DocumentManager.MdiActiveDocument);
 
             var especifications = new Views.EspecificationsControl(_configurationsManager, _acManager);
@@ -38,7 +37,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder
             {
                 AutoSize = true,
                 Dock = DockStyle.Fill,
-                Child = new Views.AlgorythimControl(especifications, _configurationsManager)
+                Child = new Views.AlgorythimControl(especifications.ViewModel, _configurationsManager)
             };
 
             var partsControl = new ElementHost
