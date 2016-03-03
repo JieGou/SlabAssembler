@@ -1,4 +1,4 @@
-﻿<Window x:Class="Urbbox.AutoCAD.ProtentionBuilder.Views.PartView"
+﻿<Window x:Class="Urbbox.AutoCAD.ProtentionBuilder.Views.PartWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -61,7 +61,7 @@
             <TextBox x:Name="textBox_Copy4" Grid.Column="1" Grid.Row="7" TextWrapping="Wrap" Text="{Binding Part.Modulation}" Margin="10,3"/>
         </Grid>
         <StackPanel Height="33" Margin="5,0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Salvar" Command="{Binding Part.SaveCommand}" Width="100" />
+            <Button Content="Salvar" Command="{Binding Part.SaveCommand}" Width="100" Margin="0,0,5,0" />
         </StackPanel>
     </StackPanel>
 </Window>

@@ -21,20 +21,10 @@
             <Label x:Name="label" Content="Lista de Peças" VerticalAlignment="Top" FontSize="18" Padding="10,5" Margin="10,3,10,0" Width="160"/>
         </StackPanel>
         
-        <ListView x:Name="PartsListView" Margin="10,0,10,5" ItemsSource="{Binding Parts}" Height="400">
+        <ListView x:Name="PartsListView" Margin="10,0,10,5" ItemsSource="{Binding Parts}" SelectedItem="{Binding SelectedPart, Mode=TwoWay}" Height="400">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Nome de Referência" Width="160" DisplayMemberBinding="{Binding ReferenceName}" />
-                    <GridViewColumn Width="110">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Button Content="Editar" Command="{Binding EditCommand}" Margin="0,0,5,0" BorderBrush="{x:Null}" FontSize="9" Padding="8,5" />
-                                    <Button Content="Deletar" Command="{Binding DeleteCommand}" BorderBrush="{x:Null}" FontSize="9" Padding="8,5"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                    <GridViewColumn Header="Nome de Referência" Width="280" DisplayMemberBinding="{Binding ReferenceName}" />
                 </GridView>
             </ListView.View>
             
@@ -56,8 +46,13 @@
                 </GroupStyle>
             </ListBox.GroupStyle>
         </ListView>
-        
-        <Button Content="Adicionar Peça" Margin="10,0,10,5" Height="30" Command="{Binding CreatePartCommand}" />
+
+        <StackPanel Orientation="Horizontal" Margin="10,0,10,5">
+            <Button Content="Adicionar" Margin="0,0,5,0" Height="25" Command="{Binding CreatePartCommand}" Width="130" />
+            <Button Content="Editar" Margin="0,0,5,0" Height="25" Command="{Binding EditSelectedPartCommand}" CommandParameter="{Binding SelectedItem, ElementName=PartsListView}" Width="70"/>
+            <Button Content="Remover" Margin="0" Height="25" Command="{Binding DeleteSelectedPartCommand}" CommandParameter="{Binding SelectedItem, ElementName=PartsListView}" Width="70"/>
+        </StackPanel>
+
         <Button Content="Analisar Peças" Margin="10,0" Height="30" />
     </StackPanel>
 

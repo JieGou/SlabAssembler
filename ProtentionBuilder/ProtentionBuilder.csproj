@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="Building\Variations\UsageType.cs" />
     <Compile Include="ViewModels\Commands\BaseCommand.cs" />
+    <Compile Include="ViewModels\Commands\RelayCommand.cs" />
     <Compile Include="ViewModels\Converters\PivotPointConverter.cs" />
     <Compile Include="ViewModels\Converters\UsageTypeConverter.cs" />
     <Compile Include="ViewModels\PartsViewModel.cs" />
@@ -99,8 +100,8 @@
     </Compile>
     <Compile Include="Database\AcManager.cs" />
     <Compile Include="Database\ConfigurationsManager.cs" />
-    <Compile Include="Views\PartView.xaml.cs">
-      <DependentUpon>PartView.xaml</DependentUpon>
+    <Compile Include="Views\PartWindow.xaml.cs">
+      <DependentUpon>PartWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EspecificationsControl.xaml.cs">
       <DependentUpon>EspecificationsControl.xaml</DependentUpon>
@@ -132,7 +133,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PartView.xaml">
+    <Page Include="Views\PartWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using Urbbox.AutoCAD.ProtentionBuilder.Building.Variations;
@@ -6,7 +7,7 @@ using Urbbox.AutoCAD.ProtentionBuilder.Building.Variations;
 namespace Urbbox.AutoCAD.ProtentionBuilder.Building
 {
     [Serializable]
-    public class Part
+    public class Part : IEqualityComparer
     {
         public string ReferenceName { get; set; }
         public float Width { get; set; }
@@ -21,19 +22,22 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Building
         [XmlAttribute]
         public int Modulation { get; set; }
 
-        [XmlIgnore]
-        public ICommand EditCommand { get; set; }
-        [XmlIgnore]
-        public ICommand DeleteCommand { get; set; }
-        [XmlIgnore]
-        public ICommand SaveCommand { get; set; }
-
         public Part() { }
 
         public Part(string name, string referenceName)
         {
             Name = name;
             ReferenceName = referenceName;
+        }
+
+        bool IEqualityComparer.Equals(object x, object y)
+        {
+            return ((Part)x).ReferenceName == ((Part)y).ReferenceName;
+        }
+
+        int IEqualityComparer.GetHashCode(object obj)
+        {  
+            return ((Part) obj).ReferenceName.GetHashCode();
         }
     }
 }

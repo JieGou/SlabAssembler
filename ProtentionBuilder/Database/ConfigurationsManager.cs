@@ -65,5 +65,18 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Database
             DataLoaded?.Invoke(Data);
         }
 
+        public bool DeletePart(int id)
+        {
+            foreach (Part p in Data.Parts)
+            {
+                if (p.GetHashCode() == id)
+                {
+                    if (Data.Parts.Remove(p)) SaveData();
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
