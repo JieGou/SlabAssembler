@@ -61,7 +61,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
             this.LpList = new ObservableCollection<Part>();
             this.Layers = new ObservableCollection<string>(acad.GetLayers());
             this.SelectCommand = new RelayCommand(ExecuteSelectCommand, () => !_selecting);
-            this.SelectCommand = new RelayCommand(ExecuteDrawCommand, () => SelectedOutline != null);
+            this.DrawCommand = new RelayCommand(ExecuteDrawCommand, () => SelectedOutline != null);
             this.SelectedModulation = 0;
             this.SelectionStatus = "Nenhum contorno selecionado.";
 
