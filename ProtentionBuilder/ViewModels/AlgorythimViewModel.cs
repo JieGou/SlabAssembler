@@ -14,67 +14,37 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
         public float OutlineDistance
         {
             get { return _outlineDistance; }
-            set
-            {
-                if (_outlineDistance == value) return;
-                _outlineDistance = value;
-                OnPropertyChanged();
-            }
+            set { _outlineDistance = value; OnPropertyChanged(); }
         }
 
         public float DistanceBetweenLp
         {
             get { return _distanceBetweenLp; }
-            set
-            {
-                if (_distanceBetweenLp == value) return;
-                _distanceBetweenLp = value;
-                OnPropertyChanged();
-            }
+            set { _distanceBetweenLp = value; OnPropertyChanged(); }
         }
 
         public float DistanceBetweenLpAndLd
         {
             get { return _distanceBetweenLpAndLd; }
-            set
-            {
-                if (value.Equals(_distanceBetweenLpAndLd)) return;
-                _distanceBetweenLpAndLd = value;
-                OnPropertyChanged();
-            }
+            set { _distanceBetweenLpAndLd = value; OnPropertyChanged(); }
         }
 
         public bool UseLds
         {
             get { return _useLds; }
-            set
-            {
-                if (_useLds == value) return;
-                _useLds = value;
-                OnPropertyChanged();
-            }
+            set { _useLds = value; OnPropertyChanged(); }
         }
 
         public bool UseEndLp
         {
             get { return _useEndLp; }
-            set
-            {
-                if (_useEndLp == value) return;
-                _useEndLp = value;
-                OnPropertyChanged();
-            }
+            set { _useEndLp = value; OnPropertyChanged(); }
         }
 
         public bool UseStartLp
         {
             get { return _useStartLp; }
-            set
-            {
-                if (_useStartLp == value) return;
-                _useStartLp = value;
-                OnPropertyChanged();
-            }
+            set { _useStartLp = value; OnPropertyChanged(); }
         }
 
         private readonly EspecificationsViewModel _especificationsViewModel;
@@ -86,7 +56,6 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
         private bool _useEndLp;
         private bool _useStartLp;
         private ConfigurationsManager _manager;
-        private AutoCadManager _acad;
 
         public AlgorythimViewModel(ref EspecificationsViewModel especifications, ConfigurationsManager configurationsManager)
         {
@@ -97,6 +66,15 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
 
             _especificationsViewModel.PropertyChanged += EspecificationsViewModel_PropertyChanged;
             _manager.DataLoaded += ConfigurationsManager_DataLoaded;
+            PropertyChanged += AlgorythimViewModel_PropertyChanged;
+        }
+
+        private void AlgorythimViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            _manager.Data.DistanceBetweenLp = DistanceBetweenLp;
+            _manager.Data.DistanceBetweenLpAndLd = DistanceBetweenLpAndLd;
+            _manager.Data.OutlineDistance = OutlineDistance;
+            _manager.SaveData();
         }
 
         private void ConfigurationsManager_DataLoaded(ConfigurationData data)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autodesk.AutoCAD.ApplicationServices;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Urbbox.AutoCAD.ProtentionBuilder.Building;
@@ -44,7 +45,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
         private void ExecuteAnalyzeCommand()
         {
             var logWindow = new LogWindow();
-            logWindow.Show();
+            Application.ShowModelessWindow(logWindow);
 
             string log = "";
             foreach (var part in Parts)
@@ -72,7 +73,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
         private void OpenPartWindow(Part p)
         {
             var window = new PartWindow(_manager, p);
-            window.Show();
+            Application.ShowModelessWindow(window);
         }
 
     }
