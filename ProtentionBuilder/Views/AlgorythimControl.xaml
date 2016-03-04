@@ -40,4 +40,10 @@
         </GroupBox>
 
     </StackPanel>
+
+    <UserControl.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="Resetar Padrões" Command="{Binding ResetCommand}"/>
+        </ContextMenu>
+    </UserControl.ContextMenu>
 </UserControl>

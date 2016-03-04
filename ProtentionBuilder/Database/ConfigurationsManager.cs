@@ -51,9 +51,15 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Database
         {
             if (!File.Exists(_file)) CreateConfigurationFile();
 
-            var deserializer = new XmlSerializer(typeof(ConfigurationData));
-            using (TextReader reader = new StreamReader(_file))
-                Data = (ConfigurationData)deserializer.Deserialize(reader);
+            try { 
+                var deserializer = new XmlSerializer(typeof(ConfigurationData));
+                using (TextReader reader = new StreamReader(_file))
+                    Data = (ConfigurationData) deserializer.Deserialize(reader);
+            }
+            catch (IOException) { }
+            catch (StackOverflowException) { }
+            catch (UnauthorizedAccessException) { }
+
             DataLoaded?.Invoke(Data);
         }
 
@@ -85,9 +91,14 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Database
 
         public void SaveData()
         {
-            var serializer = new XmlSerializer(typeof(ConfigurationData));
-            using (TextWriter writer = new StreamWriter(_file))
-                serializer.Serialize(writer, Data);
+            try { 
+                var serializer = new XmlSerializer(typeof(ConfigurationData));
+                using (TextWriter writer = new StreamWriter(_file))
+                    serializer.Serialize(writer, Data);
+            }
+            catch (IOException) { }
+            catch (StackOverflowException) { }
+            catch (UnauthorizedAccessException) { }
 
             DataLoaded?.Invoke(Data);
         }
