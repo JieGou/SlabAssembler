@@ -12,7 +12,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Views
     {
         public PartWindow(ConfigurationsManager configurationsManager, Part part)
         {
-            DataContext = new PartViewModel(configurationsManager, part);
+            DataContext = new PartViewModel(this, configurationsManager, part);
             InitializeComponent();
         }
     }

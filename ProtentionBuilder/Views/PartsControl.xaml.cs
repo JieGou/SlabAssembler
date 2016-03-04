@@ -16,12 +16,10 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Views
     /// </summary>
     public partial class PartsControl
     {
-
-        public PartsControl(ConfigurationsManager configurationsManager)
+        public PartsControl(ConfigurationsManager configurationsManager, AutoCadManager acad)
         {
-            DataContext = new PartsViewModel(configurationsManager);
+            DataContext = new PartsViewModel(configurationsManager, acad);
             InitializeComponent();
         }
-
     }
 }

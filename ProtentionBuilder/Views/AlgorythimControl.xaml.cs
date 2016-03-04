@@ -11,7 +11,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Views
     {
         public AlgorythimViewModel ViewModel { get; private set; }
 
-        public AlgorythimControl(EspecificationsViewModel especificationsViewModel,  ConfigurationsManager configurations)
+        public AlgorythimControl(EspecificationsViewModel especificationsViewModel, ConfigurationsManager configurations)
         {
             InitializeComponent();
             ViewModel = new AlgorythimViewModel(ref especificationsViewModel, configurations);

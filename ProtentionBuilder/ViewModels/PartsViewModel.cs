@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Urbbox.AutoCAD.ProtentionBuilder.Building;
 using Urbbox.AutoCAD.ProtentionBuilder.Database;
@@ -14,6 +15,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
         public ICommand EditSelectedPartCommand { get; set; }
         public ICommand DeleteSelectedPartCommand { get; set; }
         public ICommand ResetCommand { get; set; }
+        public ICommand AnalyzeCommand { get; set; }
 
         private Part _selectedPart;
         public Part SelectedPart {
@@ -21,19 +23,39 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
             set { _selectedPart = value; OnPropertyChanged(); }
         }
 
-        ConfigurationsManager _manager;
+        private ConfigurationsManager _manager;
+        private AutoCadManager _acad;
 
-        public PartsViewModel(ConfigurationsManager configurationsManager)
+        public PartsViewModel(ConfigurationsManager configurationsManager, AutoCadManager acad)
         {
             _manager = configurationsManager;
+            _acad = acad;
             Parts = new ObservableCollection<Part>();
             CreatePartCommand = new RelayCommand(() => OpenPartWindow(new Part()));
             EditSelectedPartCommand = new RelayCommand(() => OpenPartWindow(SelectedPart), HasSelectedPart);
             DeleteSelectedPartCommand = new RelayCommand(() => _manager.DeletePart(SelectedPart.GetHashCode()), HasSelectedPart);
             ResetCommand = new RelayCommand(() => _manager.ResetDefaults());
+            AnalyzeCommand = new RelayCommand(ExecuteAnalyzeCommand, () => Parts.Count > 0);
 
             _manager.DataLoaded += _manager_DataLoaded;
             PropertyChanged += (o, e) => CommandManager.InvalidateRequerySuggested();
+        }
+
+        private void ExecuteAnalyzeCommand()
+        {
+            var logWindow = new LogWindow();
+            logWindow.Show();
+
+            string log = "";
+            foreach (var part in Parts)
+            {
+                bool e = _acad.CheckBlockExists(part.ReferenceName);
+                bool l = _acad.CheckLayerExists(part.Layer);
+                log += String.Format("{0}\t-> {1}{2}\n", part.ReferenceName, (e)? "OK": "NAO ENCONTRADO", (l)? "":", SEM CAMADA");
+                logWindow.SetLogMessage(log);
+            }
+
+            logWindow.SetResultTitle(String.Format("{0} peças analizadas.", Parts.Count));
         }
 
         private bool HasSelectedPart()

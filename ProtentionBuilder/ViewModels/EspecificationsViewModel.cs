@@ -1,16 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using Autodesk.AutoCAD.DatabaseServices;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using Urbbox.AutoCAD.ProtentionBuilder.Building;
 using Urbbox.AutoCAD.ProtentionBuilder.Building.Variations;
 using Urbbox.AutoCAD.ProtentionBuilder.Database;
+using Urbbox.AutoCAD.ProtentionBuilder.ViewModels.Commands;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
 {
     public class EspecificationsViewModel : ModelBase
     {
-        private int _selectedModulation;
         public int SelectedModulation
         {
             get { return _selectedModulation; }
@@ -26,22 +28,46 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
         public ObservableCollection<Part> FormsAndBoxes { get; }
         public ObservableCollection<Part> LpList { get; }
         public ObservableCollection<Part> LdList { get; }
-        public ObservableCollection<string> Layers { get; } 
-
-        private List<Part> _parts;
-
-        public EspecificationsViewModel(ConfigurationsManager configurationsManager, AcManager ac)
+        public ObservableCollection<string> Layers { get; }
+        public ICommand SelectCommand { get; set; }
+        public ICommand DrawCommand { get; set; }
+        public ObjectId SelectedObject
         {
-            _parts = configurationsManager.Data.Parts;
-            Modulations = new ObservableCollection<int>() { 0 };
-            FormsAndBoxes = new ObservableCollection<Part>();
-            LdList = new ObservableCollection<Part>();
-            LpList = new ObservableCollection<Part>();
-            Layers = new ObservableCollection<string>(ac.GetLayers());
-            SelectedModulation = 0;
+            get { return _selectedObject; }
+            set { _selectedObject = value; OnPropertyChanged(); }
+        }
+
+        private AutoCadManager _acad;
+        private ObjectId _selectedObject;
+        private List<Part> _parts;
+        private int _selectedModulation;
+        private bool _selecting;
+
+        public EspecificationsViewModel(ConfigurationsManager configurationsManager, AutoCadManager acad)
+        {
+            this._acad = acad;
+            this._parts = configurationsManager.Data.Parts;
+            this._selecting = false;
+            this.Modulations = new ObservableCollection<int>() { 0 };
+            this.FormsAndBoxes = new ObservableCollection<Part>();
+            this.LdList = new ObservableCollection<Part>();
+            this.LpList = new ObservableCollection<Part>();
+            this.Layers = new ObservableCollection<string>(acad.GetLayers());
+            this.SelectCommand = new RelayCommand(ExecuteSelectCommand, () => !_selecting);
+            this.SelectedModulation = 0;
 
             configurationsManager.DataLoaded += ConfigurationsManager_DataLoaded;
             PropertyChanged += Especifications_PropertyChanged;
+        }
+
+        private void ExecuteSelectCommand()
+        {
+            _selecting = true;
+            var result = _acad.SelectSingle("Selecione o contorno da laje: \n");
+            if (result.Status == Autodesk.AutoCAD.EditorInput.PromptStatus.OK)
+                if (result.Value.Count > 0) 
+                    SelectedObject = result.Value.GetObjectIds().First();
+            _selecting = false;
         }
 
         private void Especifications_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

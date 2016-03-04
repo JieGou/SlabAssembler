@@ -18,3 +18,5 @@ C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\GeneratedInte
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\PartWindow.g.cs
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\PartWindow.baml
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\bin\Debug\Resources\Configurations.Defaults.xml
+C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\LogWindow.g.cs
+C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\LogWindow.baml

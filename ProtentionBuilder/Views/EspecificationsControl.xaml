@@ -49,7 +49,7 @@
             </StackPanel>
         </GroupBox>
         <Label x:Name="OutlineSelectStatusLabel" Content="Nenhum contorno selecionado." HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" Width="280" Padding="5" FontSize="10"/>
-        <Button x:Name="SelectButton" Content="Selecionar Contorno" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="280" Height="30" />
-        <Button x:Name="DrawButton" Content="Desenhar Laje" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="280" Height="30" />
+        <Button x:Name="SelectButton" Command="{Binding SelectCommand}"  Content="Selecionar Contorno" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="280" Height="30" />
+        <Button x:Name="DrawButton" Command="{Binding DrawCommand}" Content="Desenhar Laje" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="280" Height="30" />
     </StackPanel>
 </UserControl>

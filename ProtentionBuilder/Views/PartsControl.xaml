@@ -53,7 +53,7 @@
             <Button Content="Remover" Margin="0" Height="25" Command="{Binding DeleteSelectedPartCommand}" CommandParameter="{Binding SelectedItem, ElementName=PartsListView}" Width="70"/>
         </StackPanel>
 
-        <Button Content="Analisar Peças" Margin="10,0" Height="30" />
+        <Button Content="Analisar Peças" Command="{Binding AnalyzeCommand}" Margin="10,0" Height="30"/>
     </StackPanel>
 
     <UserControl.ContextMenu>

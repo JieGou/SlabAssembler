@@ -92,14 +92,18 @@
     <Compile Include="ViewModels\Commands\RelayCommand.cs" />
     <Compile Include="ViewModels\Converters\PivotPointConverter.cs" />
     <Compile Include="ViewModels\Converters\UsageTypeConverter.cs" />
+    <Compile Include="ViewModels\LogWindowViewModel.cs" />
     <Compile Include="ViewModels\PartsViewModel.cs" />
     <Compile Include="ViewModels\PartViewModel.cs" />
     <Compile Include="ViewModels\ModelBase.cs" />
     <Compile Include="Views\AlgorythimControl.xaml.cs">
       <DependentUpon>AlgorythimControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Database\AcManager.cs" />
+    <Compile Include="Database\AutoCadManager.cs" />
     <Compile Include="Database\ConfigurationsManager.cs" />
+    <Compile Include="Views\LogWindow.xaml.cs">
+      <DependentUpon>LogWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PartWindow.xaml.cs">
       <DependentUpon>PartWindow.xaml</DependentUpon>
     </Compile>
@@ -130,6 +134,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\AlgorythimControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

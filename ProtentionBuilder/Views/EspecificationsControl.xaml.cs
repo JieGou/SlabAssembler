@@ -11,7 +11,7 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Views
     {
         public EspecificationsViewModel ViewModel { get; set; }
 
-        public EspecificationsControl(ConfigurationsManager manager, AcManager ac)
+        public EspecificationsControl(ConfigurationsManager manager, AutoCadManager ac)
         {
             InitializeComponent();
             ViewModel = new EspecificationsViewModel(manager, ac);
