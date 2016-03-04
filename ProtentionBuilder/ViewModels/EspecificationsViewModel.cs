@@ -1,4 +1,5 @@
-﻿using Autodesk.AutoCAD.DatabaseServices;
+﻿using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.AutoCAD.DatabaseServices;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,6 +9,7 @@ using Urbbox.AutoCAD.ProtentionBuilder.Building;
 using Urbbox.AutoCAD.ProtentionBuilder.Building.Variations;
 using Urbbox.AutoCAD.ProtentionBuilder.Database;
 using Urbbox.AutoCAD.ProtentionBuilder.ViewModels.Commands;
+using System;
 
 namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
 {
@@ -31,10 +33,15 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
         public ObservableCollection<string> Layers { get; }
         public ICommand SelectCommand { get; set; }
         public ICommand DrawCommand { get; set; }
-        public ObjectId SelectedObject
+        public string SelectionStatus { get; set; }
+        public ObjectId SelectedOutline
         {
             get { return _selectedObject; }
-            set { _selectedObject = value; OnPropertyChanged(); }
+            set {
+                _selectedObject = value;
+                SelectionStatus = String.Format("Contorno selecionado. #{0}", _selectedObject.GetHashCode());
+                OnPropertyChanged();
+            }
         }
 
         private AutoCadManager _acad;
@@ -54,19 +61,30 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
             this.LpList = new ObservableCollection<Part>();
             this.Layers = new ObservableCollection<string>(acad.GetLayers());
             this.SelectCommand = new RelayCommand(ExecuteSelectCommand, () => !_selecting);
+            this.SelectCommand = new RelayCommand(ExecuteDrawCommand, () => SelectedOutline != null);
             this.SelectedModulation = 0;
+            this.SelectionStatus = "Nenhum contorno selecionado.";
 
             configurationsManager.DataLoaded += ConfigurationsManager_DataLoaded;
             PropertyChanged += Especifications_PropertyChanged;
         }
 
+        private void ExecuteDrawCommand()
+        {
+            //Do nothing
+        }
+
         private void ExecuteSelectCommand()
         {
             _selecting = true;
-            var result = _acad.SelectSingle("Selecione o contorno da laje: \n");
-            if (result.Status == Autodesk.AutoCAD.EditorInput.PromptStatus.OK)
-                if (result.Value.Count > 0) 
-                    SelectedObject = result.Value.GetObjectIds().First();
+            var result = _acad.SelectSingle("Selecione o contorno da laje");
+            if (result.Status == Autodesk.AutoCAD.EditorInput.PromptStatus.OK) {
+                ObjectId selected = result.Value.GetObjectIds().First();
+                if (_acad.ValidateOutline(selected)) { 
+                    SelectedOutline = selected;
+                } else
+                    Application.ShowAlertDialog("Selecione um contorno válido!");
+            }
             _selecting = false;
         }
 

@@ -8,8 +8,8 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Database
 {
     public class AutoCadManager
     {
-        private Document WorkingDocument { get; set; }
-        private Autodesk.AutoCAD.DatabaseServices.Database Database => WorkingDocument.Database;
+        public Document WorkingDocument { get; set; }
+        public Autodesk.AutoCAD.DatabaseServices.Database Database => WorkingDocument.Database;
 
         public AutoCadManager(Document workingDocument)
         {
@@ -58,12 +58,25 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.Database
 
         public PromptSelectionResult SelectSingle(string message)
         {
-            var options = new PromptSelectionOptions();
-            options.MessageForAdding = message;
-            options.RejectObjectsFromNonCurrentSpace = true;
-            options.RejectObjectsOnLockedLayers = true;
-            options.SingleOnly = true;
-            return WorkingDocument.Editor.GetSelection(options);
+            using (WorkingDocument.LockDocument())
+            {
+                Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
+                var options = new PromptSelectionOptions();
+                options.MessageForAdding = message;
+                options.RejectObjectsFromNonCurrentSpace = true;
+                options.RejectObjectsOnLockedLayers = true;
+                options.SingleOnly = true;
+                return WorkingDocument.Editor.GetSelection(options);
+            }
+        }
+
+        public bool ValidateOutline(ObjectId objectId)
+        {
+            using (var t = StartOpenCloseTransaction())
+            {
+                var outline = t.GetObject(objectId, OpenMode.ForRead) as Polyline;
+                return outline != null && outline.Closed;
+            }
         }
     }
 }
