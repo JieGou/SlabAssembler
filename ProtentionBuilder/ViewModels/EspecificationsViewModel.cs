@@ -15,8 +15,20 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
 {
     public class EspecificationsViewModel : ModelBase
     {
-        public int SelectedModulation
-        {
+        private AutoCadManager _acad;
+        private ObjectId _selectedOutline;
+        private List<Part> _parts;
+        private int _selectedModulation;
+        private bool _selecting;
+        private string _selectionStatus;
+        private Part _selectedCast;
+        private Part _selectedLd;
+        private Part _selectedLp;
+        private string _selectedPillarsLayer;
+        private string _selectedGirdersLayer;
+        private string _selectedEmptiesLayer;
+
+        public int SelectedModulation {
             get { return _selectedModulation; }
             set {
                 if (value != _selectedModulation) { 
@@ -31,42 +43,76 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
         public ObservableCollection<Part> LpList { get; }
         public ObservableCollection<Part> LdList { get; }
         public ObservableCollection<string> Layers { get; }
-        public ICommand SelectCommand { get; set; }
-        public ICommand DrawCommand { get; set; }
-        public string SelectionStatus { get; set; }
-        public ObjectId SelectedOutline
-        {
-            get { return _selectedObject; }
-            set {
-                _selectedObject = value;
-                SelectionStatus = String.Format("Contorno selecionado. #{0}", _selectedObject.GetHashCode());
-                OnPropertyChanged();
-            }
+        public ICommand SelectCommand { get; }
+        public ICommand DrawCommand { get; }
+
+        public Part SelectedCast {
+            get { return _selectedCast; }
+            set { _selectedCast = value; OnPropertyChanged(); }
         }
 
-        private AutoCadManager _acad;
-        private ObjectId _selectedObject;
-        private List<Part> _parts;
-        private int _selectedModulation;
-        private bool _selecting;
+        public Part SelectedLd {
+            get { return _selectedLd; }
+            set { _selectedLd = value; OnPropertyChanged(); }
+        }
+
+        public Part SelectedLp {
+            get { return _selectedLp; }
+            set { _selectedLp = value; OnPropertyChanged(); }
+        }
+
+        public string SelectedPillarsLayer {
+            get { return _selectedPillarsLayer; }
+            set { _selectedPillarsLayer = value; }
+        }
+
+        public string SelectedGirdersLayer {
+            get { return _selectedGirdersLayer; }
+            set { _selectedGirdersLayer = value; }
+        }
+
+        public string SelectedEmptiesLayer {
+            get { return _selectedEmptiesLayer; }
+            set { _selectedEmptiesLayer = value; }
+        }
+
+        public string SelectionStatus {
+            get { return _selectionStatus; }
+            set { _selectionStatus = value; OnPropertyChanged(); }
+        }
+
+        public ObjectId SelectedOutline {
+            get { return _selectedOutline; }
+            set { _selectedOutline = value; OnPropertyChanged(); }
+        }
 
         public EspecificationsViewModel(ConfigurationsManager configurationsManager, AutoCadManager acad)
         {
             this._acad = acad;
             this._parts = configurationsManager.Data.Parts;
             this._selecting = false;
+            this._selectedOutline = ObjectId.Null;
             this.Modulations = new ObservableCollection<int>() { 0 };
             this.FormsAndBoxes = new ObservableCollection<Part>();
             this.LdList = new ObservableCollection<Part>();
             this.LpList = new ObservableCollection<Part>();
             this.Layers = new ObservableCollection<string>(acad.GetLayers());
             this.SelectCommand = new RelayCommand(ExecuteSelectCommand, () => !_selecting);
-            this.DrawCommand = new RelayCommand(ExecuteDrawCommand, () => SelectedOutline != null);
+            this.DrawCommand = new RelayCommand(ExecuteDrawCommand, CanExecuteDrawCommand);
             this.SelectedModulation = 0;
             this.SelectionStatus = "Nenhum contorno selecionado.";
 
             configurationsManager.DataLoaded += ConfigurationsManager_DataLoaded;
             PropertyChanged += Especifications_PropertyChanged;
+        }
+
+        private bool CanExecuteDrawCommand()
+        {
+            return SelectedOutline != ObjectId.Null
+                && SelectedModulation > 0
+                && SelectedCast != null
+                && SelectedLp != null
+                && SelectedLd != null;
         }
 
         private void ExecuteDrawCommand()
@@ -92,6 +138,10 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
         {
             if (e.PropertyName == nameof(SelectedModulation))
                 SetParts();
+            else if (e.PropertyName == nameof(SelectedOutline))
+                SelectionStatus = String.Format("Contorno selecionado: #{0}", _selectedOutline.GetHashCode());
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void ConfigurationsManager_DataLoaded(ConfigurationData data)

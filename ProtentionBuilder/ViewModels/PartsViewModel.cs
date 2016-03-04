@@ -11,11 +11,11 @@ namespace Urbbox.AutoCAD.ProtentionBuilder.ViewModels
     public class PartsViewModel : ModelBase
     {
         public ObservableCollection<Part> Parts { get; set; }
-        public ICommand CreatePartCommand { get; set; }
-        public ICommand EditSelectedPartCommand { get; set; }
-        public ICommand DeleteSelectedPartCommand { get; set; }
-        public ICommand ResetCommand { get; set; }
-        public ICommand AnalyzeCommand { get; set; }
+        public ICommand CreatePartCommand { get; }
+        public ICommand EditSelectedPartCommand { get; }
+        public ICommand DeleteSelectedPartCommand { get; }
+        public ICommand ResetCommand { get; }
+        public ICommand AnalyzeCommand { get; }
 
         private Part _selectedPart;
         public Part SelectedPart {
