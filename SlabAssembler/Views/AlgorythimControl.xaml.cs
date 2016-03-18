@@ -1,7 +1,8 @@
-﻿using System.Windows.Controls;
-using Urbbox.SlabAssembler.Core;
-using Urbbox.SlabAssembler.Repositories;
+﻿using Urbbox.SlabAssembler.Repositories;
+using System;
+using System.Reactive.Linq;
 using Urbbox.SlabAssembler.ViewModels;
+using System.Windows.Controls;
 
 namespace Urbbox.SlabAssembler.Views
 {
@@ -12,11 +13,12 @@ namespace Urbbox.SlabAssembler.Views
     {
         public AlgorythimViewModel ViewModel { get; private set; }
 
-        public AlgorythimControl(EspecificationsViewModel especifications, ConfigurationsRepository configurations)
+        public AlgorythimControl(EspecificationsViewModel especifications, ConfigurationsRepository config)
         {
-            ViewModel = new AlgorythimViewModel(ref especifications, configurations);
+            ViewModel = new AlgorythimViewModel(ref especifications, config);
             DataContext = ViewModel;
             InitializeComponent();
         }
+      
     }
 }

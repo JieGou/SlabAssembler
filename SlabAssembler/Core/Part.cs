@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using System;
 using System.Collections;
+using System.Reactive.Linq;
 using System.Xml.Serialization;
 using Urbbox.SlabAssembler.Core.Variations;
 using Urbbox.SlabAssembler.ViewModels;
@@ -56,18 +57,18 @@ namespace Urbbox.SlabAssembler.Core
 
         [XmlIgnore]
         public int Id => ReferenceName.GetHashCode();
-
         [XmlIgnore]
         public float GreatestDimension => (Width >= Height)? Width : Height;
         [XmlIgnore]
         public float SmallestDimension => (Width <= Height) ? Width : Height;
+        [XmlIgnore]
+        public ReactiveCommand<object> Save { get; protected set; }
 
-        public Part() { }
-
-        public Part(string name, string referenceName)
+        public Part()
         {
-            Name = name;
-            ReferenceName = referenceName;
+            Save = this.WhenAnyValue(x => x.ReferenceName, x => x.Name, x => x.Layer, x => x.Width, x => x.Height, x => x.Modulation)
+                .Select(x => !String.IsNullOrEmpty(x.Item1) && !String.IsNullOrEmpty(x.Item2) && !String.IsNullOrEmpty(x.Item3) && x.Item4 > 0 && x.Item5 > 0 && x.Item6 > 0)
+                .ToCommand();
         }
 
     }

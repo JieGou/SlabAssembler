@@ -9,12 +9,15 @@ using System.Reactive.Linq;
 using Urbbox.SlabAssembler.ViewModels.Commands;
 using System.Windows.Input;
 using Autodesk.AutoCAD.Customization;
+using System.Threading.Tasks;
 
 namespace Urbbox.SlabAssembler.ViewModels
 {
     public class AlgorythimViewModel : ReactiveObject
     {
         public ReactiveList<Part> StartLpList { get; }
+        public ReactiveList<Part> Parts { get; set; }
+        public ReactiveCommand<object> Reset { get; private set; }
 
         private float _outlineDistance;
         public float OutlineDistance
@@ -65,67 +68,74 @@ namespace Urbbox.SlabAssembler.ViewModels
             set { this.RaiseAndSetIfChanged(ref _specifyStartPoint, value); }
         }
 
-        public ICommand ResetCommand { get; private set; }
-
         private Orientation _selectedOrientation = Orientation.Vertical;
         public Orientation SelectedOrientation {
             get { return _selectedOrientation; }
             set { this.RaiseAndSetIfChanged(ref _selectedOrientation, value); }
         }
 
-        public ReactiveList<Orientation> OrientationsList { get; private set; }
+        public ReactiveCommand<object> Update { get; private set; }
 
-        private List<Part> _parts;
-        private ConfigurationsRepository _manager;
+        private ConfigurationsRepository _config;
         private EspecificationsViewModel _especifications;
+        private bool _canUpdateConfig;
 
-        public AlgorythimViewModel(ref EspecificationsViewModel especifications, ConfigurationsRepository configurationsManager)
+        public AlgorythimViewModel(ref EspecificationsViewModel especifications, ConfigurationsRepository config)
         {
-            this._manager = configurationsManager;
-            this._especifications = especifications;
-            this._parts = _manager.Data.Parts;
-            this.StartLpList = new ReactiveList<Part>();
-            this.ResetCommand = new RelayCommand(() => _manager.ResetDefaults());
+            _config = config;
+            _especifications = especifications;
+
+            Parts = new ReactiveList<Part>();
+            StartLpList = new ReactiveList<Part>();
+            Reset = ReactiveCommand.Create();
+            Reset.Subscribe(x => _config.ResetDefaults());
+
+            Update = this.WhenAny(x => x._canUpdateConfig, u => u.Value).ToCommand();
+            Update.IsExecuting.ToProperty(this, x => x._canUpdateConfig, true);
+            Update.Subscribe(x => UpdateConfigurations());
 
             _especifications.ObservableForProperty(x => x.SelectedModulation)
                 .Subscribe(x => RefreshParts());
 
-            OrientationsList = new ReactiveList<Orientation>();
-            foreach (Orientation o in Enum.GetValues(typeof(Orientation)))
-                OrientationsList.Add(o);
-
-            _manager.DataLoaded += ConfigurationsManager_DataLoaded;
-            PropertyChanged += AlgorythimViewModel_PropertyChanged;
+            _config.DataLoaded += ConfigurationsManager_DataLoaded;
+            this.WhenAnyValue(x => x.UseStartLp, x => x.UseEndLp, x => x.UseLds, x => x.DistanceBetweenLp, x => x.DistanceBetweenLpAndLd)
+                .Throttle(TimeSpan.FromSeconds(1), RxApp.MainThreadScheduler)
+                .InvokeCommand(this, x => x.Update);
         }
 
 
-        private void AlgorythimViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void UpdateConfigurations()
         {
-            if (e.PropertyName == nameof(UseStartLp)) _manager.Data.UseStartLp = UseStartLp;
-            if (e.PropertyName == nameof(UseEndLp)) _manager.Data.UseEndLp = UseEndLp;
-            if (e.PropertyName == nameof(UseLds)) _manager.Data.UseLds = UseLds;
-            if (e.PropertyName == nameof(OutlineDistance)) _manager.Data.OutlineDistance = OutlineDistance;
-            if (e.PropertyName == nameof(DistanceBetweenLp)) _manager.Data.DistanceBetweenLp = DistanceBetweenLp;
-            if (e.PropertyName == nameof(DistanceBetweenLpAndLd)) _manager.Data.DistanceBetweenLpAndLd = DistanceBetweenLpAndLd;
-            _manager.SaveData();
+            _config.Data.UseStartLp = UseStartLp;
+            _config.Data.UseEndLp = UseEndLp;
+            _config.Data.UseLds = UseLds;
+            _config.Data.OutlineDistance = OutlineDistance;
+            _config.Data.DistanceBetweenLp = DistanceBetweenLp;
+            _config.Data.DistanceBetweenLpAndLd = DistanceBetweenLpAndLd;
+            _config.SaveData();
         }
 
-        private void ConfigurationsManager_DataLoaded(ConfigurationData data)
+        public void ConfigurationsManager_DataLoaded(ConfigurationData data)
         {
-            _outlineDistance = data.OutlineDistance;
-            _distanceBetweenLp = data.DistanceBetweenLp;
-            _distanceBetweenLpAndLd = data.DistanceBetweenLpAndLd;
-            _useLds = data.UseLds;
-            _useEndLp = data.UseEndLp;
-            _useStartLp = data.UseStartLp;
+            Parts.Clear();
+            foreach (var p in data.Parts)
+                Parts.Add(p);
+
+            _canUpdateConfig = false;
+            OutlineDistance = data.OutlineDistance;
+            DistanceBetweenLp = data.DistanceBetweenLp;
+            DistanceBetweenLpAndLd = data.DistanceBetweenLpAndLd;
+            UseLds = data.UseLds;
+            UseEndLp = data.UseEndLp;
+            UseStartLp = data.UseStartLp;
+            _canUpdateConfig = true;
             RefreshParts();
         }
 
         public void RefreshParts()
         {
-            _parts = _manager.Data.Parts;
             StartLpList.Clear();
-            foreach (var p in _parts.Where(p => p.UsageType == UsageType.StartLp && p.Modulation == _especifications.SelectedModulation))
+            foreach (var p in Parts.Where(p => p.UsageType == UsageType.StartLp && p.Modulation == _especifications.SelectedModulation))
                 StartLpList.Add(p);
         }
     }

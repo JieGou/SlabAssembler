@@ -1,7 +1,8 @@
-﻿using System.Windows;
-using Urbbox.SlabAssembler.Core;
+﻿using Urbbox.SlabAssembler.Core;
 using Urbbox.SlabAssembler.Repositories;
-using Urbbox.SlabAssembler.ViewModels;
+using System;
+using System.Reactive.Linq;
+using System.Windows;
 
 namespace Urbbox.SlabAssembler.Views
 {
@@ -10,9 +11,19 @@ namespace Urbbox.SlabAssembler.Views
     /// </summary>
     public partial class PartWindow : Window
     {
+        public Part ViewModel { get; protected set; }
+        private ConfigurationsRepository _manager;
+
         public PartWindow(ConfigurationsRepository configurationsManager, Part part)
         {
-            DataContext = new PartViewModel(this, configurationsManager, part);
+            _manager = configurationsManager;
+            ViewModel = part;
+            ViewModel.Save.Subscribe(x => {
+                configurationsManager.SavePart(ViewModel);
+                Close();
+            });
+
+            DataContext = ViewModel;
             InitializeComponent();
         }
     }

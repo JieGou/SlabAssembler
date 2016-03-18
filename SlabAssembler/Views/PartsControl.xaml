@@ -6,15 +6,36 @@
              xmlns:local="clr-namespace:Urbbox.SlabAssembler"
              xmlns:b="clr-namespace:Urbbox.SlabAssembler.Core"
              xmlns:v="clr-namespace:Urbbox.SlabAssembler.Core.Variations"       
-             xmlns:viewModels="clr-namespace:Urbbox.SlabAssembler.ViewModels"
-             xmlns:converters="clr-namespace:Urbbox.SlabAssembler.ViewModels.Converters"
+             xmlns:vm="clr-namespace:Urbbox.SlabAssembler.ViewModels"
+             xmlns:cv="clr-namespace:Urbbox.SlabAssembler.ViewModels.Converters"
              x:Class="Urbbox.SlabAssembler.Views.PartsControl"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance viewModels:PartsViewModel}"
+             d:DataContext="{d:DesignInstance vm:PartsViewModel}"
              d:DesignHeight="600" d:DesignWidth="300" Background="White">
     <UserControl.Resources>
-        <converters:UsageTypeConverter x:Key="UsageTypeConverter"/>
-        <ObjectDataProvider x:Key="UsageTypeList" MethodName="GetValues" ObjectType="{x:Type v:UsageType}"/>
+        <cv:UsageTypeConverter x:Key="UsageTypeConverter"/>
+        
+        <CollectionViewSource x:Key="PartsViewSource" Source="{Binding Parts}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="UsageType" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+        
+        <Style x:Key="UsageTypeContainerStyle" TargetType="{x:Type GroupItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Expander IsExpanded="True">
+                            <Expander.Header>
+                                <TextBlock Text="{Binding Name, Converter={StaticResource UsageTypeConverter}}" FontWeight="Bold"/>
+                            </Expander.Header>
+                            <ItemsPresenter Margin="10,0,0,0" Width="265" />
+                        </Expander>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
     </UserControl.Resources>
     
     <StackPanel>
@@ -22,29 +43,14 @@
             <Label x:Name="label" Content="Lista de Peças" VerticalAlignment="Top" FontSize="18" Padding="10,5" Margin="10,3,10,0" Width="160"/>
         </StackPanel>
         
-        <ListView x:Name="PartsListView" Margin="10,0,10,5" ItemsSource="{Binding Parts}" SelectedItem="{Binding SelectedPart, Mode=TwoWay}" Height="400">
+        <ListView x:Name="PartsListView" Margin="10,0,10,5" ItemsSource="{Binding Source={StaticResource PartsViewSource}}" SelectedItem="{Binding SelectedPart, Mode=TwoWay}" Height="400">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Nome de Referência" Width="280" DisplayMemberBinding="{Binding ReferenceName}" />
                 </GridView>
             </ListView.View>
-            
             <ListBox.GroupStyle>
-                <GroupStyle HidesIfEmpty="True">
-                    <GroupStyle.ContainerStyle>
-                        <Style TargetType="{x:Type GroupItem}">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <Expander Header="{Binding Path=UsageType, Converter={StaticResource UsageTypeConverter}}" IsExpanded="False">
-                                            <ItemsPresenter />
-                                        </Expander>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </GroupStyle.ContainerStyle>
-                </GroupStyle>
+                <GroupStyle HidesIfEmpty="True" ContainerStyle="{StaticResource ResourceKey=UsageTypeContainerStyle}"/>
             </ListBox.GroupStyle>
         </ListView>
 

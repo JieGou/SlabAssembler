@@ -124,7 +124,6 @@
     <Compile Include="ViewModels\Converters\UsageTypeConverter.cs" />
     <Compile Include="ViewModels\LogWindowViewModel.cs" />
     <Compile Include="ViewModels\PartsViewModel.cs" />
-    <Compile Include="ViewModels\PartViewModel.cs" />
     <Compile Include="ViewModels\ModelBase.cs" />
     <Compile Include="Views\AlgorythimControl.xaml.cs">
       <DependentUpon>AlgorythimControl.xaml</DependentUpon>

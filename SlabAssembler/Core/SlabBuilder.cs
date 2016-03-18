@@ -17,8 +17,12 @@ namespace Urbbox.SlabAssembler.Core
             set
             {
                 Especifications.PartsEspecifications = value;
-                Especifications.PartsEspecifications.SelectOutline.Subscribe(x => SelectOutline());
-                Especifications.PartsEspecifications.SelectOutline.ThrownExceptions.Subscribe(ex => Application.ShowAlertDialog(ex.Message));
+                Especifications.PartsEspecifications.SelectOutline.Subscribe(x => {
+                    try { Especifications.PartsEspecifications.SelectedOutline = SelectOutline(); }
+                    catch (ArgumentException ex) {
+                        Acad.WorkingDocument.Editor.WriteMessage(ex.Message);
+                    }
+                });
                 Especifications.PartsEspecifications.DrawSlab.Subscribe(x => Start());
             }
         }
@@ -74,7 +78,7 @@ namespace Urbbox.SlabAssembler.Core
                 if (ValidateOutline(selected))
                     return selected;
                 else
-                    throw new ArgumentException("Selecione um contorno válido");
+                    throw new ArgumentException("\nSelecione um contorno válido.");
             }
             else
                 return ObjectId.Null;
@@ -82,16 +86,20 @@ namespace Urbbox.SlabAssembler.Core
 
         public SlabBuildingResult Start()
         {
+            InitializeBuilding();
+            var result = new SlabBuildingResult();
+            Acad.WorkingDocument.Editor.WriteMessage("\nBuild Started!");
+            return result;
+        }
+
+        private void InitializeBuilding()
+        {
             if (Especifications.PartsEspecifications.SelectedOutline == ObjectId.Null) Especifications.PartsEspecifications.SelectedOutline = SelectOutline();
-            if (Especifications.AlgorythimEspecifications.SpecifyStartPoint && Especifications.StartPoint == null) {
+            if (Especifications.AlgorythimEspecifications.SpecifyStartPoint && Especifications.StartPoint == null)
+            {
                 var p = GetStartPoint();
                 Especifications.StartPoint = (new Point2d(p.X, p.Y)).Add(Especifications.StartPointDeslocation);
             }
-            var result = new SlabBuildingResult();
-
-            System.Diagnostics.Debug.Print("Build Started!");
-
-            return result;
         }
 
         public IEnumerable<string> GetLayers()
