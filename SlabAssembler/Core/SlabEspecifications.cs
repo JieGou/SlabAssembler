@@ -1,21 +1,16 @@
 ﻿using Autodesk.AutoCAD.Customization;
-using Autodesk.AutoCAD.DatabaseServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Autodesk.AutoCAD.Geometry;
 using Urbbox.SlabAssembler.ViewModels;
 
 namespace Urbbox.SlabAssembler.Core
 {
     public class SlabEspecifications
     {
-        //Caixas e Fôrmas
         public EspecificationsViewModel PartsEspecifications { get; set; }
         public AlgorythimViewModel AlgorythimEspecifications { get; set; }
 
-        public Orientation? Orientation { get; set; }
-        public ObjectId Outline { get; set; } = ObjectId.Null;
+        public Point2d StartPoint { get; set; }
+        public Vector2d StartPointDeslocation => new Vector2d(0, -(PartsEspecifications.SelectedCast.Height / 2.0f));
+        public int CastGroupSize => (int) (PartsEspecifications.SelectedLd.GreatestDimension / PartsEspecifications.SelectedCast.Width);
     }
 }

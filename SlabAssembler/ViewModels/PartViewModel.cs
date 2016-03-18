@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using Urbbox.SlabAssembler.Core;
-using Urbbox.SlabAssembler.Core.Variations;
 using Urbbox.SlabAssembler.Repositories;
 using Urbbox.SlabAssembler.ViewModels.Commands;
 using Urbbox.SlabAssembler.Views;
@@ -25,14 +24,6 @@ namespace Urbbox.SlabAssembler.ViewModels
             this.Part = part;
             this.Part.PropertyChanged += Part_PropertyChanged;
             this.SaveCommand = new RelayCommand(ExecuteSaveCommand, ValidatePart);
-
-            UsageTypesList = new List<string>();
-            foreach (UsageType u in Enum.GetValues(typeof(UsageType)))
-                UsageTypesList.Add(u.ToNameString());
-
-            PivotPointList = new List<string>();
-            foreach (PivotPoint p in Enum.GetValues(typeof(PivotPoint)))
-                PivotPointList.Add(p.ToNameString());
         }
 
         private void Part_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

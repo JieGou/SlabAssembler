@@ -1,28 +1,54 @@
-﻿using Autodesk.AutoCAD.Customization;
+﻿using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.AutoCAD.Customization;
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Geometry;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Urbbox.SlabAssembler.Repositories;
+using Urbbox.SlabAssembler.ViewModels;
 
 namespace Urbbox.SlabAssembler.Core
 {
     public class SlabBuilder
     {
         protected AutoCadManager Acad;
+        public EspecificationsViewModel EspecificationsViewModel {
+            set
+            {
+                Especifications.PartsEspecifications = value;
+                Especifications.PartsEspecifications.SelectOutline.Subscribe(x => SelectOutline());
+                Especifications.PartsEspecifications.SelectOutline.ThrownExceptions.Subscribe(ex => Application.ShowAlertDialog(ex.Message));
+                Especifications.PartsEspecifications.DrawSlab.Subscribe(x => Start());
+            }
+        }
+
+        public AlgorythimViewModel AlgorythimViewModel {
+            set { Especifications.AlgorythimEspecifications = value; }
+        }
 
         public SlabEspecifications Especifications { get; protected set; }
 
         public SlabBuilder(AutoCadManager acad)
         {
+            this.Especifications = new SlabEspecifications();
             this.Acad = acad;
         }
 
-        public Orientation AskForOrientation()
+        public Point3d GetStartPoint()
         {
-            var result = Acad.GetKeywords("\n Selecione uma orientação", new[] { "Vertical", "Horizontal" });
+            Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
+            var result = Acad.GetPoint("Informe o ponto de partida");
+            if (result.Status == Autodesk.AutoCAD.EditorInput.PromptStatus.OK)
+                return result.Value;
+            else
+                throw new OperationCanceledException();
+        }
+
+        public Orientation GetOrientation()
+        {
+            Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
+            var result = Acad.GetKeywords("\nSelecione uma orientação", new[] { "Vertical", "Horizontal" });
             if (result.Status == Autodesk.AutoCAD.EditorInput.PromptStatus.OK)
                 return (result.StringResult == "Vertical") ? Orientation.Vertical : Orientation.Horizontal;
             else
@@ -33,17 +59,18 @@ namespace Urbbox.SlabAssembler.Core
         {
             using (var t = Acad.StartOpenCloseTransaction())
             {
-                var outline = t.GetObject(objectId, OpenMode.ForRead) as Polyline2d;
+                var outline = t.GetObject(objectId, OpenMode.ForRead) as Polyline;
                 return outline != null && outline.Closed;
             }
         }
 
         public ObjectId SelectOutline()
         {
-            var result = Acad.SelectSingle("\nSelecione o contorno da laje");
+            Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
+            var result = Acad.GetEntity("\nSelecione o contorno da laje");
             if (result.Status == Autodesk.AutoCAD.EditorInput.PromptStatus.OK)
             {
-                var selected = result.Value.GetObjectIds().First();
+                var selected = result.ObjectId;
                 if (ValidateOutline(selected))
                     return selected;
                 else
@@ -55,8 +82,11 @@ namespace Urbbox.SlabAssembler.Core
 
         public SlabBuildingResult Start()
         {
-            if (Especifications.Orientation == null) Especifications.Orientation = AskForOrientation();
-            if (Especifications.Outline == ObjectId.Null) Especifications.Outline = SelectOutline();
+            if (Especifications.PartsEspecifications.SelectedOutline == ObjectId.Null) Especifications.PartsEspecifications.SelectedOutline = SelectOutline();
+            if (Especifications.AlgorythimEspecifications.SpecifyStartPoint && Especifications.StartPoint == null) {
+                var p = GetStartPoint();
+                Especifications.StartPoint = (new Point2d(p.X, p.Y)).Add(Especifications.StartPointDeslocation);
+            }
             var result = new SlabBuildingResult();
 
             System.Diagnostics.Debug.Print("Build Started!");

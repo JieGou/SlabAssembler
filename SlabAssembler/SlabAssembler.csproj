@@ -121,7 +121,6 @@
     <Compile Include="Core\Variations\UsageType.cs" />
     <Compile Include="ViewModels\Commands\BaseCommand.cs" />
     <Compile Include="ViewModels\Commands\RelayCommand.cs" />
-    <Compile Include="ViewModels\Converters\PivotPointConverter.cs" />
     <Compile Include="ViewModels\Converters\UsageTypeConverter.cs" />
     <Compile Include="ViewModels\LogWindowViewModel.cs" />
     <Compile Include="ViewModels\PartsViewModel.cs" />
@@ -142,7 +141,6 @@
       <DependentUpon>EspecificationsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\Part.cs" />
-    <Compile Include="Core\Variations\PivotPoint.cs" />
     <Compile Include="Views\PartsControl.xaml.cs">
       <DependentUpon>PartsControl.xaml</DependentUpon>
     </Compile>

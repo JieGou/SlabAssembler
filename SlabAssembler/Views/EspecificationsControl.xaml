@@ -8,6 +8,7 @@
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="300" Background="White"
              d:DataContext="{d:DesignInstance vm:EspecificationsViewModel}">
+    
     <StackPanel CanHorizontallyScroll="True" Width="300">
         <Grid Margin="5,10,5,5" Height="30">
             <Grid.ColumnDefinitions>
@@ -20,7 +21,7 @@
         <GroupBox x:Name="groupBox" Header="Selecione as Peças" Margin="10,10,10,0" VerticalAlignment="Top" Padding="5">
             <StackPanel HorizontalAlignment="Left" Margin="0,10,-3,0" Width="261">
                 <Label x:Name="label" Content="Forma/Caixa" Width="260"/>
-                <ComboBox x:Name="FormComboBox" Margin="2,0,0,0" ItemsSource="{Binding FormsAndBoxes}" SelectedItem="{Binding SelectedCast, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" Width="257"/>
+                <ComboBox x:Name="FormComboBox" Margin="2,0,0,0" ItemsSource="{Binding FormsAndBoxes}" SelectedItem="{Binding SelectedCast, Mode=TwoWay}" DisplayMemberPath="Name" Width="257"/>
                 <Grid HorizontalAlignment="Left" Width="258" Margin="3,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="45*"/>
@@ -33,22 +34,22 @@
                     </StackPanel>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="49" Width="122">
                         <Label x:Name="label1_Copy" Content="LD"/>
-                        <ComboBox x:Name="LdComboBox" Height="23" VerticalAlignment="Top" ItemsSource="{Binding LdList}" SelectedItem="{Binding SelectedLd, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name"/>
+                        <ComboBox x:Name="LdComboBox" Height="23" VerticalAlignment="Top" ItemsSource="{Binding LdList}" SelectedItem="{Binding SelectedLd, Mode=TwoWay}" DisplayMemberPath="Name"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>
         </GroupBox>
         <GroupBox x:Name="groupBox_Copy" Header="Obstáculos (Camadas)" Margin="10,15,10,0" VerticalAlignment="Top" Height="192">
-            <StackPanel HorizontalAlignment="Left" Margin="0,10,-2,-2" Width="270">
+            <StackPanel HorizontalAlignment="Left" Margin="0,10,0,-2" Width="270">
                 <Label x:Name="label2" Content="Pilares"/>
-                <ComboBox x:Name="PillarsComboBox" Margin="0,0,5,0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedPillarsLayer, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True"/>
+                <ComboBox x:Name="PillarsComboBox" Margin="0,0,5,0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedColumnsLayer, Mode=TwoWay}"/>
                 <Label x:Name="label2_Copy" Content="Vigas"/>
-                <ComboBox x:Name="GirdersComboBox" Margin="0,0,5,0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedGirdersLayer, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True"/>
+                <ComboBox x:Name="GirdersComboBox" Margin="0,0,5,0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedGirdersLayer, Mode=TwoWay}"/>
                 <Label x:Name="label2_Copy1" Content="Vazios"/>
-                <ComboBox x:Name="EmptiesComboBox" Margin="0,0,5,0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedEmptiesLayer, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True"/>
+                <ComboBox x:Name="EmptiesComboBox" Margin="0,0,5,0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedEmptiesLayer, Mode=TwoWay}"/>
             </StackPanel>
         </GroupBox>
-        <Label x:Name="OutlineSelectStatusLabel" Content="{Binding SelectionStatus, Mode=OneWay}" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" Width="280" Padding="5" FontSize="10"/>
+        <Label x:Name="OutlineSelectStatusLabel" Content="{Binding SelectionStatus, Mode=OneWay}" HorizontalAlignment="Left" Height="25" Margin="10,5,0,0" Width="280" Padding="5" FontSize="10"/>
         <Button x:Name="SelectButton" Command="{Binding SelectOutline}"  Content="Selecionar Contorno" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="280" Height="30" />
         <Button x:Name="DrawButton" Command="{Binding DrawSlab}" Content="Desenhar Laje" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="280" Height="30" />
     </StackPanel>

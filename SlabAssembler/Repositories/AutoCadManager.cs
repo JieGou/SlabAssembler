@@ -21,6 +21,11 @@ namespace Urbbox.SlabAssembler.Repositories
             return Database.TransactionManager.StartOpenCloseTransaction();
         }
 
+        public Transaction StartTransaction()
+        {
+            return Database.TransactionManager.StartTransaction();
+        }
+
         public List<string> GetLayers()
         {
             var list = new List<string>();
@@ -36,6 +41,14 @@ namespace Urbbox.SlabAssembler.Repositories
             }
 
             return list;
+        }
+
+        public PromptPointResult GetPoint(string message)
+        {
+            using (WorkingDocument.LockDocument())
+            {
+                return WorkingDocument.Editor.GetPoint(message);
+            }
         }
 
         public bool CheckBlockExists(string blockName)
@@ -56,17 +69,11 @@ namespace Urbbox.SlabAssembler.Repositories
             }
         }
 
-        public PromptSelectionResult SelectSingle(string message)
+        public PromptEntityResult GetEntity(string message)
         {
             using (WorkingDocument.LockDocument())
             {
-                Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
-                var options = new PromptSelectionOptions();
-                options.MessageForAdding = message;
-                options.RejectObjectsFromNonCurrentSpace = true;
-                options.RejectObjectsOnLockedLayers = true;
-                options.SingleOnly = true;
-                return WorkingDocument.Editor.GetSelection(options);
+                return WorkingDocument.Editor.GetEntity(message);
             }
         }
 

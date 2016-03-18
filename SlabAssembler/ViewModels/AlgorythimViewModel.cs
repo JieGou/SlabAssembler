@@ -1,80 +1,103 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
 using Urbbox.SlabAssembler.Core;
 using Urbbox.SlabAssembler.Core.Variations;
 using Urbbox.SlabAssembler.Repositories;
+using System;
+using ReactiveUI;
+using System.Reactive.Linq;
 using Urbbox.SlabAssembler.ViewModels.Commands;
+using System.Windows.Input;
+using Autodesk.AutoCAD.Customization;
 
 namespace Urbbox.SlabAssembler.ViewModels
 {
-    public class AlgorythimViewModel : ModelBase
+    public class AlgorythimViewModel : ReactiveObject
     {
-        public ObservableCollection<Part> StartLpList { get; }
+        public ReactiveList<Part> StartLpList { get; }
 
+        private float _outlineDistance;
         public float OutlineDistance
         {
             get { return _outlineDistance; }
-            set { _outlineDistance = value; OnPropertyChanged(); }
+            set { this.RaiseAndSetIfChanged(ref _outlineDistance, value); }
         }
 
+        private float _distanceBetweenLp;
         public float DistanceBetweenLp
         {
             get { return _distanceBetweenLp; }
-            set { _distanceBetweenLp = value; OnPropertyChanged(); }
+            set { this.RaiseAndSetIfChanged(ref _distanceBetweenLp, value); }
         }
 
+        private float _distanceBetweenLpAndLd;
         public float DistanceBetweenLpAndLd
         {
             get { return _distanceBetweenLpAndLd; }
-            set { _distanceBetweenLpAndLd = value; OnPropertyChanged(); }
+            set { this.RaiseAndSetIfChanged(ref _distanceBetweenLpAndLd, value); }
         }
 
+        private bool _useLds;
         public bool UseLds
         {
             get { return _useLds; }
-            set { _useLds = value; OnPropertyChanged(); }
+            set { this.RaiseAndSetIfChanged(ref _useLds, value); }
         }
 
+        private bool _useEndLp;
         public bool UseEndLp
         {
             get { return _useEndLp; }
-            set { _useEndLp = value; OnPropertyChanged(); }
+            set { this.RaiseAndSetIfChanged(ref _useEndLp, value); }
         }
 
+        private bool _useStartLp;
         public bool UseStartLp
         {
             get { return _useStartLp; }
-            set { _useStartLp = value; OnPropertyChanged(); }
+            set { this.RaiseAndSetIfChanged(ref _useStartLp, value); }
         }
 
-        public ICommand ResetCommand { get; }
+        private bool _specifyStartPoint;
+        public bool SpecifyStartPoint
+        {
+            get { return _specifyStartPoint; }
+            set { this.RaiseAndSetIfChanged(ref _specifyStartPoint, value); }
+        }
 
-        private readonly EspecificationsViewModel _especificationsViewModel;
+        public ICommand ResetCommand { get; private set; }
+
+        private Orientation _selectedOrientation = Orientation.Vertical;
+        public Orientation SelectedOrientation {
+            get { return _selectedOrientation; }
+            set { this.RaiseAndSetIfChanged(ref _selectedOrientation, value); }
+        }
+
+        public ReactiveList<Orientation> OrientationsList { get; private set; }
+
         private List<Part> _parts;
-        private float _outlineDistance;
-        private float _distanceBetweenLp;
-        private float _distanceBetweenLpAndLd;
-        private bool _useLds;
-        private bool _useEndLp;
-        private bool _useStartLp;
         private ConfigurationsRepository _manager;
-        private bool _canSave;
+        private EspecificationsViewModel _especifications;
 
         public AlgorythimViewModel(ref EspecificationsViewModel especifications, ConfigurationsRepository configurationsManager)
         {
-            this._especificationsViewModel = especifications;
             this._manager = configurationsManager;
+            this._especifications = especifications;
             this._parts = _manager.Data.Parts;
-            this.StartLpList = new ObservableCollection<Part>();
+            this.StartLpList = new ReactiveList<Part>();
             this.ResetCommand = new RelayCommand(() => _manager.ResetDefaults());
-            this._canSave = false;
 
-            _especificationsViewModel.PropertyChanged += EspecificationsViewModel_PropertyChanged;
+            _especifications.ObservableForProperty(x => x.SelectedModulation)
+                .Subscribe(x => RefreshParts());
+
+            OrientationsList = new ReactiveList<Orientation>();
+            foreach (Orientation o in Enum.GetValues(typeof(Orientation)))
+                OrientationsList.Add(o);
+
             _manager.DataLoaded += ConfigurationsManager_DataLoaded;
             PropertyChanged += AlgorythimViewModel_PropertyChanged;
         }
+
 
         private void AlgorythimViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -84,34 +107,26 @@ namespace Urbbox.SlabAssembler.ViewModels
             if (e.PropertyName == nameof(OutlineDistance)) _manager.Data.OutlineDistance = OutlineDistance;
             if (e.PropertyName == nameof(DistanceBetweenLp)) _manager.Data.DistanceBetweenLp = DistanceBetweenLp;
             if (e.PropertyName == nameof(DistanceBetweenLpAndLd)) _manager.Data.DistanceBetweenLpAndLd = DistanceBetweenLpAndLd;
-            if (_canSave) _manager.SaveData();
+            _manager.SaveData();
         }
 
         private void ConfigurationsManager_DataLoaded(ConfigurationData data)
         {
-            _canSave = false;
-            OutlineDistance = data.OutlineDistance;
-            DistanceBetweenLp = data.DistanceBetweenLp;
-            DistanceBetweenLpAndLd = data.DistanceBetweenLpAndLd;
-            UseLds = data.UseLds;
-            UseEndLp = data.UseEndLp;
-            UseStartLp = data.UseStartLp;
-            SetParts();
-            _canSave = true;
+            _outlineDistance = data.OutlineDistance;
+            _distanceBetweenLp = data.DistanceBetweenLp;
+            _distanceBetweenLpAndLd = data.DistanceBetweenLpAndLd;
+            _useLds = data.UseLds;
+            _useEndLp = data.UseEndLp;
+            _useStartLp = data.UseStartLp;
+            RefreshParts();
         }
 
-        private void SetParts()
+        public void RefreshParts()
         {
             _parts = _manager.Data.Parts;
             StartLpList.Clear();
-            foreach (var part in _parts.Where(p => p.UsageType == UsageType.StartLp && p.Modulation == _especificationsViewModel.SelectedModulation))
-                StartLpList.Add(part);
-        }
-
-        private void EspecificationsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(_especificationsViewModel.SelectedModulation))
-                SetParts();
+            foreach (var p in _parts.Where(p => p.UsageType == UsageType.StartLp && p.Modulation == _especifications.SelectedModulation))
+                StartLpList.Add(p);
         }
     }
 }

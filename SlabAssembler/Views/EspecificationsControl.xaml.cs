@@ -12,10 +12,9 @@ namespace Urbbox.SlabAssembler.Views
     {
         public EspecificationsViewModel ViewModel { get; protected set; }
 
-        public EspecificationsControl(ConfigurationsRepository manager, SlabBuilder builder)
+        public EspecificationsControl(ConfigurationsRepository manager)
         {
-            ViewModel = new EspecificationsViewModel(manager, builder);
-            //builder.Especifications.PartsEspecifications = ViewModel;
+            ViewModel = new EspecificationsViewModel(manager);
             DataContext = ViewModel;
             InitializeComponent();
         }

@@ -12,10 +12,9 @@ namespace Urbbox.SlabAssembler.Views
     {
         public AlgorythimViewModel ViewModel { get; private set; }
 
-        public AlgorythimControl(EspecificationsViewModel viewModel, ConfigurationsRepository configurations, SlabBuilder builder)
+        public AlgorythimControl(EspecificationsViewModel especifications, ConfigurationsRepository configurations)
         {
-            ViewModel = new AlgorythimViewModel(ref viewModel, configurations);
-            //builder.Especifications.AlgorythimEspecifications = ViewModel;
+            ViewModel = new AlgorythimViewModel(ref especifications, configurations);
             DataContext = ViewModel;
             InitializeComponent();
         }

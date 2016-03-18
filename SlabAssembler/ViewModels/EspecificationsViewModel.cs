@@ -8,13 +8,11 @@ using Urbbox.SlabAssembler.Repositories;
 using System;
 using ReactiveUI;
 using System.Reactive.Linq;
-using Autodesk.AutoCAD.Customization;
 
 namespace Urbbox.SlabAssembler.ViewModels
 {
     public class EspecificationsViewModel : ReactiveObject
     {
-        private AutoCadManager _acad;
         private List<Part> _parts;
 
         private bool _selecting;
@@ -24,8 +22,8 @@ namespace Urbbox.SlabAssembler.ViewModels
         public ReactiveList<Part> LdList { get; }
         public ReactiveList<string> Layers { get; }
 
-        public ReactiveCommand<object> SelectOutline { get; set; }
-        public ReactiveCommand<object> DrawSlab { get; set; }
+        public ReactiveCommand<object> SelectOutline { get; private set; }
+        public ReactiveCommand<object> DrawSlab { get; private set; }
 
         private int _selectedModulation;
         public int SelectedModulation {
@@ -81,52 +79,33 @@ namespace Urbbox.SlabAssembler.ViewModels
             set { this.RaiseAndSetIfChanged(ref _selectedOutline, value); }
         }
 
-        protected SlabBuilder Builder;
-
-        public EspecificationsViewModel(ConfigurationsRepository configurationsManager, SlabBuilder builder)
+        public EspecificationsViewModel(ConfigurationsRepository configurationsManager)
         {
             _parts = configurationsManager.Data.Parts;
             _selecting = false;
-            Builder = builder;
-
+           
             Modulations = new ReactiveList<int>() { 0 };
             FormsAndBoxes = new ReactiveList<Part>();
             LdList = new ReactiveList<Part>();
             LpList = new ReactiveList<Part>();
-            Layers = new ReactiveList<string>(builder.GetLayers());
+            Layers = new ReactiveList<string>();
+            SelectionStatus = "Nenhum contorno selecionado.";
             SelectedModulation = 0;
 
-            SelectOutline = ReactiveCommand.Create(this.WhenAny(x => x._selecting, s => !s.Value));
+            SelectOutline = this.WhenAny(x => x._selecting, s => !s.Value).ToCommand();
             SelectOutline.IsExecuting.ToProperty(this, x => x._selecting, false);
-            SelectOutline.Subscribe(x => SelectOutlineImpl());
-            SelectOutline.ThrownExceptions.Subscribe(ex => Application.ShowAlertDialog(ex.Message));
 
             DrawSlab = this.WhenAnyValue(x => x.SelectedOutline, x => x.SelectedModulation, x => x.SelectedCast, x => x.SelectedLp, x => x.SelectedLd)
                 .Select(x => x.Item1 != ObjectId.Null && x.Item2 > 0 && x.Item3 != null && x.Item4 != null && x.Item5 != null)
                 .ToCommand();
-            DrawSlab.Subscribe(x => DrawSlabImpl());
 
             configurationsManager.DataLoaded += ConfigurationsManager_DataLoaded;
             this.ObservableForProperty(x => x.SelectedModulation)
                 .Subscribe(x => RefreshParts());
             this.ObservableForProperty(x => x.SelectedOutline)
-                .Select(o => o.Value != ObjectId.Null)
-                .Subscribe(n => {
-                    SelectionStatus = (n)? $"Contorno selecionado: #{SelectOutline.GetHashCode()}" : "Nenhum contorno selecionado.";
-                    Builder.Especifications.Outline = SelectedOutline;
+                .Subscribe(s => {
+                    SelectionStatus = (s.Value != ObjectId.Null)? $"Contorno selecionado: #{s.Value.GetHashCode()}" : "Nenhum contorno selecionado.";
                 });
-
-            SelectedOutline = ObjectId.Null;
-        }
-
-        private void DrawSlabImpl()
-        {
-            var result = Builder.Start();
-        }
-
-        private void SelectOutlineImpl()
-        {
-            SelectedOutline = Builder.SelectOutline();
         }
 
         private void ConfigurationsManager_DataLoaded(ConfigurationData data)
