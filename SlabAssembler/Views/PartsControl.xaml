@@ -55,12 +55,12 @@
         </ListView>
 
         <StackPanel Orientation="Horizontal" Margin="10,0,10,5">
-            <Button Content="Adicionar" Margin="0,0,5,0" Height="25" Command="{Binding CreatePartCommand}" Width="130" />
-            <Button Content="Editar" Margin="0,0,5,0" Height="25" Command="{Binding EditSelectedPartCommand}" CommandParameter="{Binding SelectedItem, ElementName=PartsListView}" Width="70"/>
-            <Button Content="Remover" Margin="0" Height="25" Command="{Binding DeleteSelectedPartCommand}" CommandParameter="{Binding SelectedItem, ElementName=PartsListView}" Width="70"/>
+            <Button Content="Adicionar" Margin="0,0,5,0" Height="25" Command="{Binding CreatePart}" Width="130" />
+            <Button Content="Editar" Margin="0,0,5,0" Height="25" Command="{Binding EditSelectedPart}" CommandParameter="{Binding SelectedItem, ElementName=PartsListView}" Width="70"/>
+            <Button Content="Remover" Margin="0" Height="25" Command="{Binding DeleteSelectedPart}" CommandParameter="{Binding SelectedItem, ElementName=PartsListView}" Width="70"/>
         </StackPanel>
 
-        <Button Content="Analisar Peças" Command="{Binding AnalyzeCommand}" Margin="10,0" Height="30"/>
+        <Button Content="Analisar Peças" Command="{Binding Analyze}" Margin="10,0" Height="30"/>
     </StackPanel>
 
     <UserControl.ContextMenu>

@@ -115,6 +115,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\SlabAlgorythim.cs" />
     <Compile Include="Core\SlabBuilder.cs" />
     <Compile Include="Core\SlabBuildingResult.cs" />
     <Compile Include="Core\SlabEspecifications.cs" />
@@ -191,6 +192,7 @@
   <ItemGroup>
     <Content Include="Resources\Configurations.Defaults.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

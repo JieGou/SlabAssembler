@@ -1,79 +1,43 @@
-﻿using Autodesk.AutoCAD.ApplicationServices;
-using System;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using Urbbox.SlabAssembler.Core;
+﻿using Urbbox.SlabAssembler.Core;
 using Urbbox.SlabAssembler.Repositories;
-using Urbbox.SlabAssembler.ViewModels.Commands;
-using Urbbox.SlabAssembler.Views;
+using ReactiveUI;
 
 namespace Urbbox.SlabAssembler.ViewModels
 {
-    public class PartsViewModel : ModelBase
+    public class PartsViewModel : ReactiveObject
     {
-        public ObservableCollection<Part> Parts { get; set; }
-        public ICommand CreatePartCommand { get; }
-        public ICommand EditSelectedPartCommand { get; }
-        public ICommand DeleteSelectedPartCommand { get; }
-        public ICommand ResetCommand { get; }
-        public ICommand AnalyzeCommand { get; }
+        public ReactiveList<Part> Parts { get; set; }
+        public ReactiveCommand<object> CreatePart { get; }
+        public ReactiveCommand<object> EditSelectedPart { get; }
+        public ReactiveCommand<object> DeleteSelectedPart { get; }
+        public ReactiveCommand<object> Reset { get; }
+        public ReactiveCommand<object> Analyze { get; }
 
         private Part _selectedPart;
         public Part SelectedPart {
             get { return _selectedPart; }
-            set { _selectedPart = value; OnPropertyChanged(); }
+            set { this.RaiseAndSetIfChanged(ref _selectedPart, value); }
         }
-
-        private ConfigurationsRepository _manager;
-        private AutoCadManager _acad;
-
-        public PartsViewModel(ConfigurationsRepository configurationsManager, AutoCadManager acad)
+   
+        public PartsViewModel(ConfigurationsRepository config)
         {
-            _manager = configurationsManager;
-            _acad = acad;
-            Parts = new ObservableCollection<Part>();
-            CreatePartCommand = new RelayCommand(() => OpenPartWindow(new Part()));
-            EditSelectedPartCommand = new RelayCommand(() => OpenPartWindow(SelectedPart), HasSelectedPart);
-            DeleteSelectedPartCommand = new RelayCommand(() => _manager.DeletePart(SelectedPart.GetHashCode()), HasSelectedPart);
-            ResetCommand = new RelayCommand(() => _manager.ResetDefaults());
-            AnalyzeCommand = new RelayCommand(ExecuteAnalyzeCommand, () => Parts.Count > 0);
+            Parts = new ReactiveList<Part>();
+            CreatePart = ReactiveCommand.Create();
 
-            _manager.DataLoaded += _manager_DataLoaded;
-            PropertyChanged += (o, e) => CommandManager.InvalidateRequerySuggested();
+            var canSelectPart = this.WhenAny(x => x.SelectedPart, s => s.Value != null);
+            EditSelectedPart = canSelectPart.ToCommand();
+            DeleteSelectedPart = canSelectPart.ToCommand();
+            Reset = ReactiveCommand.Create();
+            Analyze = this.WhenAny(x => x.Parts.Count, x => x.Value > 0).ToCommand();
+
+            config.PartsChanged += Config_PartsChanged;
         }
 
-        private void ExecuteAnalyzeCommand()
-        {
-            var logWindow = new LogWindow();
-            Application.ShowModelessWindow(logWindow);
-
-            string log = "";
-            foreach (var part in Parts)
-            {
-                bool e = _acad.CheckBlockExists(part.ReferenceName);
-                bool l = _acad.CheckLayerExists(part.Layer);
-                log += String.Format("{0}\t-> {1}{2}\n", part.ReferenceName, (e)? "OK": "NAO ENCONTRADO", (l)? "":", SEM CAMADA");
-                logWindow.SetLogMessage(log);
-            }
-
-            logWindow.SetResultTitle(String.Format("{0} peças analizadas.", Parts.Count));
-        }
-
-        private bool HasSelectedPart()
-        {
-            return SelectedPart != null;
-        }
-
-        private void _manager_DataLoaded(ConfigurationData data)
+        private void Config_PartsChanged(System.Collections.Generic.List<Part> parts)
         {
             Parts.Clear();
-            foreach (var part in data.Parts) Parts.Add(part);
-        }
-
-        private void OpenPartWindow(Part p)
-        {
-            var window = new PartWindow(_manager, p);
-            Application.ShowModelessWindow(window);
+            foreach (Part p in parts)
+                Parts.Add(p);
         }
 
     }

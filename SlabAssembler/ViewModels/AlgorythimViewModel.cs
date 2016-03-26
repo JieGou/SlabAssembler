@@ -101,8 +101,17 @@ namespace Urbbox.SlabAssembler.ViewModels
             this.WhenAnyValue(x => x.UseStartLp, x => x.UseEndLp, x => x.UseLds, x => x.DistanceBetweenLp, x => x.DistanceBetweenLpAndLd)
                 .Throttle(TimeSpan.FromSeconds(1), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, x => x.Update);
+
+            config.PartsChanged += Config_PartsChanged;
         }
 
+        private void Config_PartsChanged(List<Part> parts)
+        {
+            Parts.Clear();
+            foreach (var p in parts)
+                Parts.Add(p);
+            RefreshParts();
+        }
 
         private void UpdateConfigurations()
         {
@@ -117,10 +126,6 @@ namespace Urbbox.SlabAssembler.ViewModels
 
         public void ConfigurationsManager_DataLoaded(ConfigurationData data)
         {
-            Parts.Clear();
-            foreach (var p in data.Parts)
-                Parts.Add(p);
-
             _canUpdateConfig = false;
             OutlineDistance = data.OutlineDistance;
             DistanceBetweenLp = data.DistanceBetweenLp;

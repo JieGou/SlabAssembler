@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using Autodesk.AutoCAD.Runtime;

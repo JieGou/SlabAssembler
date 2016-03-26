@@ -246,13 +246,6 @@
       <UsageType>Head</UsageType>
       <Layer>CABEÇA</Layer>
     </Part>
-    <Part Name="Caixa 40x40" Modulation="40">
-      <ReferenceName>CAIXA 40X40</ReferenceName>
-      <Width>40</Width>
-      <Height>40</Height>
-      <UsageType>Box</UsageType>
-      <Layer>CAIXAS IMPACTO</Layer>
-    </Part>
   </Parts>
   <OutlineDistance>10</OutlineDistance>
   <DistanceBetweenLp>0.2</DistanceBetweenLp>

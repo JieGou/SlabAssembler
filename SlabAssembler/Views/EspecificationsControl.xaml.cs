@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using Urbbox.SlabAssembler.Core;
 using Urbbox.SlabAssembler.Repositories;
 using Urbbox.SlabAssembler.ViewModels;
 

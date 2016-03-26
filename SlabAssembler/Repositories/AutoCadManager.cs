@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
+using Urbbox.SlabAssembler.Core;
 
 namespace Urbbox.SlabAssembler.Repositories
 {
@@ -86,6 +87,20 @@ namespace Urbbox.SlabAssembler.Repositories
                     options.Keywords.Add(k);
                 return WorkingDocument.Editor.GetKeywords(options);
             }
+        }
+
+        public ObjectIdCollection GetLayerObjects(string layerName)
+        {
+            TypedValue[] tvs = new TypedValue[1] {
+                new TypedValue((int) DxfCode.LayerName, layerName)
+            };
+            SelectionFilter sf = new SelectionFilter(tvs);
+            PromptSelectionResult psr = WorkingDocument.Editor.SelectAll(sf);
+
+            if (psr.Status == PromptStatus.OK)
+                return new ObjectIdCollection(psr.Value.GetObjectIds());
+            else
+                return new ObjectIdCollection();
         }
 
     }
