@@ -3,7 +3,6 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using System;
-using System.Threading.Tasks;
 using Urbbox.SlabAssembler.Repositories;
 using Urbbox.SlabAssembler.ViewModels;
 
@@ -20,6 +19,7 @@ namespace Urbbox.SlabAssembler.Core
                     try {
                         Especifications.Parts.SelectedOutline = SelectOutline();
                         Especifications.MaxPoint = GetMaxPoint();
+                        Especifications.StartPoint = GetStartPoint();
                     } catch (ArgumentException ex) {
                         _acad.WorkingDocument.Editor.WriteMessage(ex.Message);
                     }
@@ -50,20 +50,20 @@ namespace Urbbox.SlabAssembler.Core
 
         public Point3d GetStartPoint()
         {
-            if (Especifications.Algorythim.SpecifyStartPoint)
-            { 
+            if (Especifications.Parts.SpecifyStartPoint)
+            {
                 Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
-                var result = _acad.GetPoint("Informe o ponto de partida");
+                var result = _acad.GetPoint("\nInforme o ponto de partida");
                 if (result.Status == Autodesk.AutoCAD.EditorInput.PromptStatus.OK)
-                    return result.Value;
+                    return result.Value.Add(Especifications.StartPointDeslocation);
                 else
                     throw new OperationCanceledException();
             } else
-            {
+            { 
                 using (var t = _acad.StartOpenCloseTransaction())
                 {
                     var outline = t.GetObject(Especifications.Parts.SelectedOutline, OpenMode.ForRead) as Polyline;
-                    return outline.Bounds.Value.MinPoint;
+                    return outline.Bounds.Value.MinPoint.Add(Especifications.StartPointDeslocation);
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace Urbbox.SlabAssembler.Core
         {
             Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
             var result = _acad.GetEntity("\nSelecione o contorno da laje");
-            if (result.Status == Autodesk.AutoCAD.EditorInput.PromptStatus.OK)
+            if (result.Status == PromptStatus.OK)
             {
                 var selected = result.ObjectId;
                 if (ValidateOutline(selected))
@@ -117,7 +117,7 @@ namespace Urbbox.SlabAssembler.Core
             if (Especifications.Parts.SelectedOutline == ObjectId.Null)
                 Especifications.Parts.SelectedOutline = SelectOutline();
             if (Especifications.StartPoint == null)
-                Especifications.StartPoint = GetStartPoint().Add(Especifications.StartPointDeslocation);
+                Especifications.StartPoint = GetStartPoint();
         }
 
         public SlabBuildingResult Start()
@@ -125,20 +125,28 @@ namespace Urbbox.SlabAssembler.Core
             InitializeBuilding();
             var algorythim = new SlabAlgorythim(Especifications);
             var result = new SlabBuildingResult();
+            var castPointList = algorythim.GetCastPointList();
+            var lpPointList = algorythim.GetLpPointList();
+            var ldPointList = algorythim.GetLdPointList();
 
             using (_acad.WorkingDocument.LockDocument())
             {
-                GetSelectedObjects();
-
-                var castList = algorythim.GetCastPointList();
-                _acad.WorkingDocument.Editor.WriteMessage($"\n CAST COUNT: {castList.Count}");
-                PlaceMultipleParts(result, castList, Especifications.Parts.SelectedCast);
+                SelectedCollisionObjects();
+                try { 
+                    if (!Especifications.Algorythim.OnlyCimbrament)
+                        PlaceMultipleParts(result, castPointList, Especifications.Parts.SelectedCast, 0, 0);
+                    PlaceMultipleParts(result, lpPointList, Especifications.Parts.SelectedLp, -90, 0);
+                    PlaceMultipleParts(result, ldPointList, Especifications.Parts.SelectedLd, 0, -90);
+                }
+                catch (OperationCanceledException) {
+                    _acad.WorkingDocument.Editor.WriteMessage("\nLaje cancelada.");
+                }
             }
 
             return result;
         }
 
-        private void GetSelectedObjects()
+        private void SelectedCollisionObjects()
         {
             using (var t = _acad.StartOpenCloseTransaction())
             {
@@ -148,7 +156,7 @@ namespace Urbbox.SlabAssembler.Core
                 foreach (ObjectId o in _acad.GetLayerObjects(Especifications.Parts.SelectedGirdersLayer))
                 {
                     var girder = t.GetObject(o, OpenMode.ForRead) as Entity;
-                    if (girder != null)
+                    if (girder != null && girder.Bounds.HasValue)
                         _girders.Add(girder);
                 }
 
@@ -156,7 +164,7 @@ namespace Urbbox.SlabAssembler.Core
                 foreach (ObjectId o in _acad.GetLayerObjects(Especifications.Parts.SelectedColumnsLayer))
                 {
                     var collumn = t.GetObject(o, OpenMode.ForRead) as Entity;
-                    if (collumn != null)
+                    if (collumn != null && collumn.Bounds.HasValue)
                         _collumns.Add(collumn);
                 }
 
@@ -164,13 +172,13 @@ namespace Urbbox.SlabAssembler.Core
                 foreach (ObjectId o in _acad.GetLayerObjects(Especifications.Parts.SelectedEmptiesLayer))
                 {
                     var emptyOutline = t.GetObject(o, OpenMode.ForRead) as Polyline;
-                    if (emptyOutline != null)
+                    if (emptyOutline != null && emptyOutline.Bounds.HasValue)
                         _empties.Add(emptyOutline);
                 }
             }
         }
 
-        protected void PlaceMultipleParts(SlabBuildingResult result, Point3dCollection locations, Part part)
+        public void PlaceMultipleParts(SlabBuildingResult result, Point3dCollection locations, Part part, double vertRot, double horizRot)
         {
             Point3dCollection collisions = new Point3dCollection();
 
@@ -178,7 +186,9 @@ namespace Urbbox.SlabAssembler.Core
             {
                 if (CanPlacePart(loc, part))
                 {
-                    PlaceRepresentationOrReference(part, loc);
+                    var blockId = GetOrCreatePart(part);
+                    var referenceId = PlacePart(part, vertRot, horizRot, loc, blockId);
+
                     result.CountNewPart(part);
                 }
                 else collisions.Add(loc);
@@ -187,41 +197,84 @@ namespace Urbbox.SlabAssembler.Core
             _acad.WorkingDocument.Editor.UpdateScreen();
         }
 
-        private void PlaceRepresentationOrReference(Part part, Point3d loc)
+        private ObjectId PlacePart(Part part, double vertRot, double horizRot, Point3d loc, ObjectId blockId)
         {
+            var referenceId = ObjectId.Null;
+
+            using (var t = _acad.StartTransaction())
+            {
+                BlockTable blkTbl = t.GetObject(_acad.Database.BlockTableId, OpenMode.ForRead) as BlockTable;
+                BlockTableRecord modelspace = t.GetObject(blkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
+
+                using (var blkRef = new BlockReference(loc, blockId))
+                {
+                    var record = t.GetObject(
+                        blkRef.IsDynamicBlock ? blkRef.DynamicBlockTableRecord : blkRef.BlockTableRecord,
+                        OpenMode.ForRead) as BlockTableRecord;
+                    var angle = GetFixedRotationAngle(blkRef, vertRot, horizRot);
+                    if (angle != 0) { 
+                        blkRef.TransformBy(Matrix3d.Rotation(angle, Vector3d.ZAxis, loc));
+                        blkRef.Position = blkRef.Position.Add(new Vector3d(part.Height - part.PivotPointY, -part.PivotPointY, 0));
+                    }
+
+                    referenceId = modelspace.AppendEntity(blkRef);
+                    t.AddNewlyCreatedDBObject(blkRef, true);
+                }
+                
+                t.Commit();
+            }
+
+            _acad.WorkingDocument.Editor.UpdateScreen();
+            return referenceId;
+        }
+
+        private double GetFixedRotationAngle(BlockReference entity, double vertRot, double horizRot)
+        {
+            var entityWidth = entity.Bounds.Value.MaxPoint.X - entity.Bounds.Value.MinPoint.X;
+            var entityHeight = entity.Bounds.Value.MaxPoint.Y - entity.Bounds.Value.MinPoint.Y;
+            var currentAngle = entityWidth >= entityHeight ? 0 : 90;
+            var orientationAngle = (Especifications.Algorythim.SelectedOrientation == Orientation.Vertical) ? vertRot : horizRot;
+
+            return ((currentAngle - orientationAngle) * Math.PI) / 180D;
+        }
+
+        public ObjectId GetOrCreatePart(Part part)
+        {
+            ObjectId partObjectId = ObjectId.Null;
+            const string genericSuffix = "_GEN";
+
             using (var t = _acad.StartTransaction())
             {
                 BlockTable blkTbl = t.GetObject(_acad.Database.BlockTableId, OpenMode.ForWrite) as BlockTable;
-                LayerTable layerTbl = t.GetObject(_acad.Database.LayerTableId, OpenMode.ForRead) as LayerTable;
-                ObjectId layerId = layerTbl.Has(part.Layer) ? layerTbl[part.Layer] : ObjectId.Null;
                 BlockTableRecord modelspace = t.GetObject(blkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
 
-                if (blkTbl.Has(part.ReferenceName))
+                if (!blkTbl.Has(part.ReferenceName) && !blkTbl.Has(part.ReferenceName + genericSuffix))
                 {
-                    using (var blkRef = new BlockReference(loc, blkTbl[part.ReferenceName]))
+                    using (var genSpline = SlabAlgorythim.CreateSquare(Point3d.Origin, part, 0))
                     {
-                        blkRef.LayerId = layerId;
-                        modelspace.AppendEntity(blkRef);
-                        t.AddNewlyCreatedDBObject(blkRef, true);
-                    }
-                }
-                else
-                {
-                    using (var genSpline = MakeSplineFromPart(loc, part, 0))
-                    {
-                        genSpline.LineWeight = LineWeight.LineWeight005;
-                        modelspace.AppendEntity(genSpline);
+                        genSpline.SetDatabaseDefaults();
+
+                        var record = new BlockTableRecord();
+                        record.Name = part.ReferenceName + genericSuffix;
+                        record.Origin = part.PivotPoint;
+                        partObjectId = _acad.Database.AddDBObject(record);
+                        t.AddNewlyCreatedDBObject(record, true);
+
+                        record.AppendEntity(genSpline);
                         t.AddNewlyCreatedDBObject(genSpline, true);
                     }
                 }
+                else partObjectId = blkTbl[part.ReferenceName];
 
                 t.Commit();
             }
+
+            return partObjectId;
         }
 
         private bool CanPlacePart(Point3d loc, Part part)
         {
-            using (var outerSpline = MakeSplineFromPart(loc, part, Especifications.Algorythim.OutlineDistance))
+            using (var outerSpline = SlabAlgorythim.CreateSquare(loc, part, Especifications.Algorythim.OutlineDistance - 0.001))
             {
                 var isInside = SlabAlgorythim.IsInsidePolygon(_outline, loc);
                 if (!isInside) return false;
@@ -256,15 +309,5 @@ namespace Urbbox.SlabAssembler.Core
             return true;
         }
 
-        private Polyline3d MakeSplineFromPart(Point3d location, Part part, double border)
-        {
-            var pts = new Point3dCollection();
-            pts.Add(new Point3d(location.X - border, location.Y - border, 0));
-            pts.Add(new Point3d(location.X - border, location.Y + part.Height + border, 0));
-            pts.Add(new Point3d(location.X + part.Width + border, location.Y + part.Height + border, 0));
-            pts.Add(new Point3d(location.X + part.Width + border, location.Y - border, 0));
-
-            return new Polyline3d(Poly3dType.SimplePoly, pts, true);
-        }
     }
 }

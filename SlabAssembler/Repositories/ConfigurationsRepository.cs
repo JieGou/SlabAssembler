@@ -3,6 +3,7 @@ using System.IO;
 using System.Xml.Serialization;
 using Urbbox.SlabAssembler.Core;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace Urbbox.SlabAssembler.Repositories
 {
@@ -69,10 +70,9 @@ namespace Urbbox.SlabAssembler.Repositories
 
         public void SavePart(Part part)
         {
-            int id = part.Id;
             for (int i = 0; i < Data.Parts.Count; i++)
             {
-                if (Data.Parts[i].Id == id)
+                if (Data.Parts[i].Id == part.Id)
                 {
                     Data.Parts[i] = part;
                     SaveData();
@@ -122,6 +122,13 @@ namespace Urbbox.SlabAssembler.Repositories
 
         public void ResetDefaults()
         {
+            var result = MessageBox.Show(
+                "Deseja realmente resetar as configurações?",
+                "RESETAR PERMANENTEMENTE",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+            if (result == MessageBoxResult.No) return;
+
             try
             {
                 File.Delete(_file);

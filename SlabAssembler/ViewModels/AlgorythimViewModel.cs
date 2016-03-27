@@ -6,10 +6,7 @@ using Urbbox.SlabAssembler.Repositories;
 using System;
 using ReactiveUI;
 using System.Reactive.Linq;
-using Urbbox.SlabAssembler.ViewModels.Commands;
-using System.Windows.Input;
 using Autodesk.AutoCAD.Customization;
-using System.Threading.Tasks;
 
 namespace Urbbox.SlabAssembler.ViewModels
 {
@@ -61,17 +58,17 @@ namespace Urbbox.SlabAssembler.ViewModels
             set { this.RaiseAndSetIfChanged(ref _useStartLp, value); }
         }
 
-        private bool _specifyStartPoint;
-        public bool SpecifyStartPoint
-        {
-            get { return _specifyStartPoint; }
-            set { this.RaiseAndSetIfChanged(ref _specifyStartPoint, value); }
-        }
-
         private Orientation _selectedOrientation = Orientation.Vertical;
         public Orientation SelectedOrientation {
             get { return _selectedOrientation; }
             set { this.RaiseAndSetIfChanged(ref _selectedOrientation, value); }
+        }
+
+        private bool _onlyCimbrament;
+        public bool OnlyCimbrament
+        {
+            get { return _onlyCimbrament; }
+            set { this.RaiseAndSetIfChanged(ref _onlyCimbrament, value); }
         }
 
         public ReactiveCommand<object> Update { get; private set; }
@@ -91,7 +88,7 @@ namespace Urbbox.SlabAssembler.ViewModels
             Reset.Subscribe(x => _config.ResetDefaults());
 
             Update = this.WhenAny(x => x._canUpdateConfig, u => u.Value).ToCommand();
-            Update.IsExecuting.ToProperty(this, x => x._canUpdateConfig, true);
+            Update.IsExecuting.ToProperty(this, x => x._canUpdateConfig, false);
             Update.Subscribe(x => UpdateConfigurations());
 
             _especifications.ObservableForProperty(x => x.SelectedModulation)

@@ -18,7 +18,7 @@
             <Label x:Name="label3" Content="Modulação" Grid.ColumnSpan="2" Margin="5,0,0,0"/>
             <ComboBox x:Name="ModulationComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="203" Height="22" ItemsSource="{Binding Modulations}" SelectedItem="{Binding SelectedModulation, Mode=TwoWay}"/>
         </Grid>
-        <GroupBox x:Name="groupBox" Header="Selecione as Peças" Margin="10,10,10,0" VerticalAlignment="Top" Padding="5">
+        <GroupBox x:Name="groupBox" Header="Selecione as Peças" Margin="10,5,10,0" VerticalAlignment="Top" Padding="5">
             <StackPanel HorizontalAlignment="Left" Margin="0,10,-3,0" Width="261">
                 <Label x:Name="label" Content="Forma/Caixa" Width="260"/>
                 <ComboBox x:Name="FormComboBox" Margin="2,0,0,0" ItemsSource="{Binding FormsAndBoxes}" SelectedItem="{Binding SelectedCast, Mode=TwoWay}" DisplayMemberPath="Name" Width="257"/>
@@ -39,7 +39,7 @@
                 </Grid>
             </StackPanel>
         </GroupBox>
-        <GroupBox x:Name="groupBox_Copy" Header="Obstáculos (Camadas)" Margin="10,15,10,0" VerticalAlignment="Top" Height="192">
+        <GroupBox x:Name="groupBox_Copy" Header="Obstáculos (Camadas)" Margin="10,5,10,0" VerticalAlignment="Top" Height="192">
             <StackPanel HorizontalAlignment="Left" Margin="0,10,0,-2" Width="270">
                 <Label x:Name="label2" Content="Pilares"/>
                 <ComboBox x:Name="PillarsComboBox" Margin="0,0,5,0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedColumnsLayer, Mode=TwoWay}"/>
@@ -49,6 +49,7 @@
                 <ComboBox x:Name="EmptiesComboBox" Margin="0,0,5,0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedEmptiesLayer, Mode=TwoWay}"/>
             </StackPanel>
         </GroupBox>
+        <CheckBox Content="Selecionar ponto de partida" Margin="10,5,10,0" IsChecked="{Binding SpecifyStartPoint, Mode=TwoWay}"/>
         <Label x:Name="OutlineSelectStatusLabel" Content="{Binding SelectionStatus, Mode=OneWay}" HorizontalAlignment="Left" Height="25" Margin="10,5,0,0" Width="280" Padding="5" FontSize="10"/>
         <Button x:Name="SelectButton" Command="{Binding SelectOutline}"  Content="Selecionar Contorno" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="280" Height="30" />
         <Button x:Name="DrawButton" Command="{Binding DrawSlab}" Content="Desenhar Laje" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="280" Height="30" />

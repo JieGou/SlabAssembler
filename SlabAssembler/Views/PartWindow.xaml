@@ -9,7 +9,7 @@
              xmlns:b="clr-namespace:Urbbox.SlabAssembler.Core"     
              xmlns:v="clr-namespace:Urbbox.SlabAssembler.Core.Variations"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance b:Part}" Width="500" Height="350" ResizeMode="NoResize" Title="Definição de Peça">
+             d:DataContext="{d:DesignInstance b:Part}" Background="#FFEBEBEB" Width="500" Height="367" ResizeMode="NoResize" Title="Definição de Peça">
     <Window.Resources>
         <cv:UsageTypeConverter x:Key="UsageTypeConverter"/>
         <ObjectDataProvider x:Key="UsageTypeList" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
@@ -18,51 +18,79 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>
-    <StackPanel Margin="0,0,0,1" Background="#FFEBEBEB">
-        <Label Padding="10,5" Content="Peça" FontSize="21.333" BorderThickness="0" Background="White" Margin="0" Foreground="#FF6C46AE"/>
-        <Grid d:DataContext="{d:DesignInstance {x:Type b:Part}}" Margin="0,20,10,0" Height="206">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+    <StackPanel>
+        <Label Padding="10,5" Content="Peça" FontSize="21.333" BorderThickness="0" Background="White" Margin="0" Foreground="#FF6C46FF"/>
+
+        <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="102"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="279*"/>
+                <ColumnDefinition Width="215*"/>
             </Grid.ColumnDefinitions>
-            <Label x:Name="label" Grid.Column="0" Grid.Row="0" Content="Nome" HorizontalAlignment="Right" Width="43" VerticalAlignment="Top" Margin="0,-5,0,0"/>
-            <TextBox x:Name="textBox" Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" Text="{Binding Name, Mode=TwoWay}" Margin="10,0,10,10" />
 
-            <Label x:Name="label_Copy1" Grid.Column="0" Grid.Row="1" Content="Referência" HorizontalAlignment="Right" Width="65" VerticalAlignment="Top" Margin="0,-5,0,0"/>
-            <TextBox x:Name="textBox_Copy" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Text="{Binding ReferenceName, Mode=TwoWay}" Margin="10,0,10,10"/>
+            <GroupBox Header="Definições" Grid.Column="0" Padding="5" Margin="10,10" BorderBrush="#FF6C46FF" Foreground="#FF6C46FF">
+                <StackPanel>
+                    <Label Content="Nome de Exibição:"/>
+                    <TextBox Text="{Binding Name, Mode=TwoWay}"/>
+                    <Label Content="Nome de Referência (AutoCAD):"/>
+                    <TextBox Text="{Binding ReferenceName, Mode=TwoWay}"/>
+                    <Label Content="Nome da Camada (AutoCAD):"/>
+                    <TextBox Text="{Binding Layer, Mode=TwoWay}"/>
+                    <Label Content="Tipo de Uso:"/>
+                    <ComboBox x:Name="comboBox" Grid.Column="1" Grid.Row="2" SelectedItem="{Binding UsageType, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource UsageTypeList}}" Margin="0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource UsageTypeConverter}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+            </GroupBox>
 
-            <Label x:Name="label_Copy" Grid.Column="0" Grid.Row="2" Content="Tipo" HorizontalAlignment="Right" Width="33" VerticalAlignment="Top" Margin="0,-5,0,0"/>
-            <ComboBox x:Name="comboBox" Grid.Column="1" Grid.Row="2" SelectedItem="{Binding UsageType, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource UsageTypeList}}" Margin="10,0,10,10">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Converter={StaticResource UsageTypeConverter}}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+            <GroupBox Header="Métricas" Grid.Column="1" Padding="5" Margin="10,10" BorderBrush="#FF6C46FF" Foreground="#FF6C46FF">
+                <StackPanel>
+                    <Label Content="Comprimento:" />
+                    <TextBox Text="{Binding Width, Mode=TwoWay}"/>
 
-            <Label x:Name="label_Copy3" Grid.Column="0" Grid.Row="3" Content="Comprimento" HorizontalAlignment="Right" Width="83" VerticalAlignment="Top" Margin="0,-5,0,0"/>
-            <TextBox x:Name="textBox_Copy1" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Text="{Binding Width, Mode=TwoWay}" Margin="10,0,10,10" />
+                    <Label Content="Largura:"/>
+                    <TextBox Text="{Binding Height, Mode=TwoWay}" />
 
-            <Label x:Name="label_Copy4" Grid.Column="0" Grid.Row="4" Content="Largura" HorizontalAlignment="Right" Width="50" VerticalAlignment="Top" Margin="0,-5,0,0"/>
-            <TextBox x:Name="textBox_Copy2" Grid.Column="1" Grid.Row="4" TextWrapping="Wrap" Text="{Binding Height, Mode=TwoWay}" Margin="10,0,10,10"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="67*"/>
+                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition Width="0*"/>
+                            <ColumnDefinition Width="99*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
 
-            <Label x:Name="label_Copy5" Grid.Column="0" Grid.Row="5" Content="Camada" HorizontalAlignment="Right" Width="53" VerticalAlignment="Top" Margin="0,-5,0,0"/>
-            <TextBox x:Name="textBox_Copy3" Grid.Column="1" Grid.Row="5" TextWrapping="Wrap" Text="{Binding Layer, Mode=TwoWay}" Margin="10,0,10,10"/>
+                        <Label Content="Modulação:" Grid.Column="0" Grid.Row="0" Margin="-4,0,4,0" Grid.ColumnSpan="2"/>
+                        <TextBox Text="{Binding Modulation, Mode=TwoWay}"  Grid.Row="1" Margin="0,0,1,0"/>
 
-            <Label x:Name="label_Copy6" Grid.Column="0" Grid.Row="6" Content=" Modulação" HorizontalAlignment="Right" Width="73" VerticalAlignment="Top" Margin="0,-5,0,0"/>
-            <TextBox x:Name="textBox_Copy4" Grid.Column="1" Grid.Row="6" TextWrapping="Wrap" Text="{Binding Modulation, Mode=TwoWay}" Margin="10,0,10,10"/>
+                        <Label Content="Desvio de Partida:" Grid.Column="1" Grid.Row="0" Margin="3,1,8,17" Grid.ColumnSpan="3" FontSize="10.667" Grid.RowSpan="2"/>
+                        <TextBox Text="{Binding StartOffset, Mode=TwoWay}" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2"/>
+                    </Grid>
+
+                    <Label Content="Ponto Pivot:"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="0.1*"/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="X:" Grid.Column="0"/>
+                        <TextBox Text="{Binding PivotPointX, Mode=TwoWay}" Height="20" Grid.Column="1"/>
+                        <Label Content="Y:" Grid.Column="3"/>
+                        <TextBox Text="{Binding PivotPointY, Mode=TwoWay}" Height="20" Grid.Column="4"/>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
         </Grid>
-        <StackPanel Height="33" Margin="5,0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Salvar" Command="{Binding Save}" Width="100" Margin="0,0,15,0" />
-        </StackPanel>
+        <Button Content="Salvar" Command="{Binding Save}" Margin="10" Height="30"/>
     </StackPanel>
 </Window>

@@ -1,5 +1,4 @@
-﻿using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.DatabaseServices;
+﻿using Autodesk.AutoCAD.DatabaseServices;
 using System.Collections.Generic;
 using System.Linq;
 using Urbbox.SlabAssembler.Core;
@@ -22,9 +21,16 @@ namespace Urbbox.SlabAssembler.ViewModels
         public ReactiveList<Part> LpList { get; }
         public ReactiveList<Part> LdList { get; }
         public ReactiveList<string> Layers { get; }
-
+        
         public ReactiveCommand<object> SelectOutline { get; private set; }
         public ReactiveCommand<object> DrawSlab { get; private set; }
+
+        private bool _specifyStartPoint;
+        public bool SpecifyStartPoint
+        {
+            get { return _specifyStartPoint; }
+            set { this.RaiseAndSetIfChanged(ref _specifyStartPoint, value); }
+        }
 
         private int _selectedModulation;
         public int SelectedModulation {
@@ -84,6 +90,7 @@ namespace Urbbox.SlabAssembler.ViewModels
         {
             _parts = new List<Part>();
             _selecting = false;
+            _drawing = false;
            
             Modulations = new ReactiveList<int>() { 0 };
             FormsAndBoxes = new ReactiveList<Part>();

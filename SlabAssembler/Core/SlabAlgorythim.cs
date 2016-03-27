@@ -14,6 +14,22 @@ namespace Urbbox.SlabAssembler.Core
             Especifications = especifications;
         }
 
+        protected Point3d CorrectOrientation(double x, double y, double z)
+        {
+            if (Especifications.Algorythim.SelectedOrientation == Orientation.Vertical)
+                return new Point3d(x, y, z);
+            else
+                return new Point3d(y, x, z);
+        }
+
+        protected Point3d CorrectOrientation(Point3d point)
+        {
+            if (Especifications.Algorythim.SelectedOrientation == Orientation.Vertical)
+                return point;
+            else
+                return new Point3d(point.Y, point.X, point.Z);
+        }
+
         protected Point3dCollection GetPointMatrix(Vector3d startDesloc, double yIncr, double xIncr)
         {
             Point3dCollection list = new Point3dCollection();
@@ -21,11 +37,7 @@ namespace Urbbox.SlabAssembler.Core
 
             for (double y = startPt.Y; y < Especifications.MaxPoint.Y; y += yIncr)
                 for (double x = startPt.X; x < Especifications.MaxPoint.X; x += xIncr)
-                    if (Especifications.Algorythim.SelectedOrientation == Orientation.Vertical)
-                        list.Add(new Point3d(x, y, 0));
-                    else
-                        list.Add(new Point3d(y, x, 0));
-
+                    list.Add(CorrectOrientation(x, y, 0));
 
             return list;
         }
@@ -36,19 +48,17 @@ namespace Urbbox.SlabAssembler.Core
             var selectedLp = Especifications.Parts.SelectedLp;
             var selectedLd = Especifications.Parts.SelectedLd;
             var selectedCast = Especifications.Parts.SelectedCast;
-            var spacing = (2 * Especifications.Algorythim.DistanceBetweenLpAndLd);
+            var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
 
-            var startDesloc = new Vector3d(0, 0, 0);
-            var xIncr = selectedLd.Width + spacing + selectedLp.Height;
+            var startDesloc = new Vector3d(selectedLp.Height + spacing, selectedLd.Height / 2.0D, 0);
+            var xIncr = selectedLd.Width + 2 * spacing + selectedLp.Height;
             var yIncr = selectedCast.Width;
-            var auxPts = GetPointMatrix(startDesloc, yIncr, xIncr);
+            var pivotVector = CorrectOrientation(selectedCast.PivotPoint) - Point3d.Origin;
+            var auxPts = GetPointMatrix(startDesloc + pivotVector, yIncr, xIncr);
 
             foreach (Point3d p in auxPts)
                 for (int i = 0; i < Especifications.CastGroupSize; i++)
-                    if (Especifications.Algorythim.SelectedOrientation == Orientation.Vertical)
-                        result.Add(p.Add(new Vector3d(i * Especifications.Parts.SelectedCast.Width, 0, 0)));
-                    else
-                        result.Add(p.Add(new Vector3d(0, i * Especifications.Parts.SelectedCast.Width, 0)));
+                    result.Add(CorrectOrientation(p.X + (i * selectedCast.Width), p.Y, 0));
 
             return result;
         }
@@ -58,13 +68,14 @@ namespace Urbbox.SlabAssembler.Core
             var selectedLd = Especifications.Parts.SelectedLd;
             var selectedLp = Especifications.Parts.SelectedLp;
             var selectedCast = Especifications.Parts.SelectedCast;
-            var spacing = (2 * Especifications.Algorythim.DistanceBetweenLpAndLd);
+            var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
 
-            var startDesloc = new Vector3d(0, -selectedLd.Height / 2.0D, 0);
-            var xIncr = selectedLd.Width + spacing + selectedLp.Height;
+            var startDesloc = new Vector3d(selectedLp.Height + spacing, 0, 0);
+            var xIncr = selectedLd.Width + 2 * spacing + selectedLp.Height;
             var yIncr = selectedCast.Height;
+            var pivotVector = selectedLd.PivotPoint - Point3d.Origin;
 
-            return GetPointMatrix(startDesloc, yIncr, xIncr);
+            return GetPointMatrix(startDesloc + pivotVector, yIncr, xIncr);
         }
 
         public Point3dCollection GetLpPointList()
@@ -74,11 +85,23 @@ namespace Urbbox.SlabAssembler.Core
             var selectedCast = Especifications.Parts.SelectedCast;
             var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
 
-            var startDesloc = new Vector3d(-selectedLp.Height - spacing, -selectedLd.Height / 2.0D, 0);
-            var xIncr = selectedLd.Width + spacing * 2;
+            var startDesloc = new Vector3d(0, 0, 0);
+            var xIncr = selectedLp.Height + selectedLd.Width + spacing * 2;
             var yIncr = selectedLp.Width + Especifications.Algorythim.DistanceBetweenLp;
+            var pivotVector = selectedLp.PivotPoint - Point3d.Origin;
 
-            return GetPointMatrix(startDesloc, yIncr, xIncr);
+            return GetPointMatrix(startDesloc + pivotVector, yIncr, xIncr);
+        }
+
+        public static Polyline3d CreateSquare(Point3d location, Part part, double border)
+        {
+            var pts = new Point3dCollection();
+            pts.Add(new Point3d(location.X - border, location.Y - border, 0));
+            pts.Add(new Point3d(location.X - border, location.Y + part.Height + border, 0));
+            pts.Add(new Point3d(location.X + part.Width + border, location.Y + part.Height + border, 0));
+            pts.Add(new Point3d(location.X + part.Width + border, location.Y - border, 0));
+
+            return new Polyline3d(Poly3dType.SimplePoly, pts, true);
         }
 
         public static bool IsInsidePolygon(Polyline polygon, Point3d pt)

@@ -1,10 +1,12 @@
-﻿using ReactiveUI;
+﻿using Autodesk.AutoCAD.DatabaseServices;
+using ReactiveUI;
 using System;
 using System.Collections;
 using System.Reactive.Linq;
 using System.Xml.Serialization;
 using Urbbox.SlabAssembler.Core.Variations;
 using Urbbox.SlabAssembler.ViewModels;
+using Autodesk.AutoCAD.Geometry;
 
 namespace Urbbox.SlabAssembler.Core
 {
@@ -41,6 +43,30 @@ namespace Urbbox.SlabAssembler.Core
             set { this.RaiseAndSetIfChanged(ref _layer, value); }
         }
 
+        private double _pivotFixX;
+        public double PivotPointX
+        {
+            get { return _pivotFixX; }
+            set { this.RaiseAndSetIfChanged(ref _pivotFixX, value); }
+        }
+
+        private double _pivotFixY;
+        public double PivotPointY
+        {
+            get { return _pivotFixY; }
+            set { this.RaiseAndSetIfChanged(ref _pivotFixY, value); }
+        }
+
+        [XmlIgnore]
+        public Point3d PivotPoint => new Point3d(PivotPointX, PivotPointY, 0);
+
+        private double _startOffset;
+        public double StartOffset
+        {
+            get { return _startOffset; }
+            set { this.RaiseAndSetIfChanged(ref _startOffset, value); }
+        }
+
         private string _name;
         [XmlAttribute]
         public string Name {
@@ -63,6 +89,7 @@ namespace Urbbox.SlabAssembler.Core
         public float SmallestDimension => (Width <= Height) ? Width : Height;
         [XmlIgnore]
         public ReactiveCommand<object> Save { get; protected set; }
+
 
         public Part()
         {
