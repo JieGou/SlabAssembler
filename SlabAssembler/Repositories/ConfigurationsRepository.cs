@@ -4,6 +4,8 @@ using System.Xml.Serialization;
 using Urbbox.SlabAssembler.Core;
 using System.Collections.Generic;
 using System.Windows;
+using Urbbox.SlabAssembler.Core.Variations;
+using System.Linq;
 
 namespace Urbbox.SlabAssembler.Repositories
 {
@@ -137,6 +139,17 @@ namespace Urbbox.SlabAssembler.Repositories
             }
             catch (IOException) { }
             catch (UnauthorizedAccessException) { }
+        }
+
+        public Part GetNextSmallerPart(Part part)
+        {
+            foreach (var p in Data.Parts.Where(p => p.UsageType == part.UsageType).OrderByDescending(p => p.Width))
+            {
+                if (p.Width < part.Width)
+                    return p;
+            }
+
+            return null;
         }
     }
 }

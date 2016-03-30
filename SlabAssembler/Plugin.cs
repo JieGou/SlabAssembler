@@ -5,7 +5,6 @@ using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
 using Urbbox.SlabAssembler.Repositories;
 using Urbbox.SlabAssembler.Properties;
-using AcApplication = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 using Urbbox.SlabAssembler.Core;
 
 namespace Urbbox.SlabAssembler
@@ -23,9 +22,9 @@ namespace Urbbox.SlabAssembler
             _mainPallet = InitializeMainPallet();
             _mainPallet.StateChanged += _mainPallet_StateChanged;
             _configRepository = new ConfigurationsRepository(Resources.ConfigurationsFile, Resources.DefaultsConfigurationFile);
-            _acManager = new AutoCadManager(AcApplication.DocumentManager.MdiActiveDocument);
+            _acManager = new AutoCadManager();
 
-            var builder = new SlabBuilder(_acManager);
+            var builder = new SlabBuilder(_acManager, _configRepository);
             var especificationsView = new Views.EspecificationsControl(_configRepository);
             var algorythimView = new Views.AlgorythimControl(especificationsView.ViewModel, _configRepository);
             var partsView = new Views.PartsControl(_configRepository, _acManager);

@@ -59,6 +59,10 @@ namespace Urbbox.SlabAssembler.Core
 
         [XmlIgnore]
         public Point3d PivotPoint => new Point3d(PivotPointX, PivotPointY, 0);
+        [XmlIgnore]
+        public string OutlineReferenceName => $"{ReferenceName}_OUT";
+        [XmlIgnore]
+        public string GenericReferenceName => $"{ReferenceName}_GEN";
 
         private double _startOffset;
         public double StartOffset
@@ -83,10 +87,6 @@ namespace Urbbox.SlabAssembler.Core
 
         [XmlIgnore]
         public int Id => ReferenceName.GetHashCode();
-        [XmlIgnore]
-        public float GreatestDimension => (Width >= Height)? Width : Height;
-        [XmlIgnore]
-        public float SmallestDimension => (Width <= Height) ? Width : Height;
         [XmlIgnore]
         public ReactiveCommand<object> Save { get; protected set; }
 

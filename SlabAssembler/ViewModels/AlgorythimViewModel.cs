@@ -64,6 +64,8 @@ namespace Urbbox.SlabAssembler.ViewModels
             set { this.RaiseAndSetIfChanged(ref _selectedOrientation, value); }
         }
 
+        public double OrientationAngle => (SelectedOrientation == Orientation.Vertical) ? 90 : 0;
+
         private bool _onlyCimbrament;
         public bool OnlyCimbrament
         {

@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
-using Urbbox.SlabAssembler.Core;
+using Autodesk.AutoCAD.Geometry;
+using AcApplication = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 namespace Urbbox.SlabAssembler.Repositories
 {
     public class AutoCadManager
     {
-        public Document WorkingDocument { get; set; }
+        public Document WorkingDocument => AcApplication.DocumentManager.MdiActiveDocument;
         public Autodesk.AutoCAD.DatabaseServices.Database Database => WorkingDocument.Database;
-
-        public AutoCadManager(Document workingDocument)
-        {
-            WorkingDocument = workingDocument;
-        }
+        public CoordinateSystem3d UCS => WorkingDocument.Editor.CurrentUserCoordinateSystem.CoordinateSystem3d;
 
         public Transaction StartOpenCloseTransaction()
         {

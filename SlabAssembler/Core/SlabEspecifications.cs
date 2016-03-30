@@ -14,6 +14,6 @@ namespace Urbbox.SlabAssembler.Core
             (Parts.SpecifyStartPoint)?
             new Vector3d(-Parts.SelectedLp.Height - Algorythim.DistanceBetweenLpAndLd, -(Parts.SelectedCast.Height / 2.0f) - (Parts.SelectedLd.Height / 2.0f), 0) :
             new Vector3d(Algorythim.OutlineDistance, Algorythim.OutlineDistance, 0);
-        public int CastGroupSize => (int) (Parts.SelectedLd.GreatestDimension / Parts.SelectedCast.Width);
+        public int CastGroupSize => (int) (Parts.SelectedLd.Width / Parts.SelectedCast.Width);
     }
 }
