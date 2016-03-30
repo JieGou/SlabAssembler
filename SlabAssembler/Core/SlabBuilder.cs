@@ -268,8 +268,16 @@ namespace Urbbox.SlabAssembler.Core
             using (var t = _acad.StartTransaction())
             {
                 var angle = GetFixedRotationAngle(blkRef, orientationAngle);
-                blkRef.TransformBy(Matrix3d.Rotation(angle, _acad.UCS.Zaxis, loc));
-                blkRef.Position = blkRef.Position.Add(SlabAlgorythim.RotatePoint(part.PivotPoint, orientationAngle) - Point3d.Origin);
+                if (angle != 0) { 
+                    blkRef.TransformBy(Matrix3d.Rotation(angle, _acad.UCS.Zaxis, loc));
+                    var vectorPivot = (part.PivotPoint - Point3d.Origin)
+                        .Add(new Vector3d(part.Height - part.PivotPointY, -part.PivotPointY, 0));
+                    //.Add(new Vector3d(0, Especifications.Algorythim.DistanceBetweenLpAndLd, 0))
+                    //.TransformBy(Matrix3d.Rotation(-orientationAngle, _acad.UCS.Zaxis, loc));
+                    blkRef.Position = blkRef.Position.Add(vectorPivot);
+                } else 
+                    blkRef.Position = blkRef.Position.Add(part.PivotPoint - Point3d.Origin);
+
                 t.Commit();
             }
         }
@@ -280,7 +288,7 @@ namespace Urbbox.SlabAssembler.Core
             var entityHeight = entity.Bounds.Value.MaxPoint.Y - entity.Bounds.Value.MinPoint.Y;
             var currentAngle = entityWidth >= entityHeight ? 0 : 90;
 
-            return -((currentAngle - orientationAngle) * Math.PI) / 180D;
+            return ((orientationAngle - currentAngle) * Math.PI) / 180D;
         }
 
         public ObjectId GetOrCreatePart(Part part)
@@ -353,7 +361,7 @@ namespace Urbbox.SlabAssembler.Core
 
             do
                 points = PlaceMultipleParts(result, points, part, orientationAngle);
-            while (points.Count > 0 && (part = _config.GetNextSmallerPart(part, part.UsageType)) != null);
+            while (points.Count > 0 && (part = _config.GetNextSmallerPart(part)) != null);
 
             while (dangerZoneList.Count > 0)
                 dangerZoneList = BuildDangerZoneLp(result, dangerZoneList, orientationAngle);
@@ -479,7 +487,8 @@ namespace Urbbox.SlabAssembler.Core
                     if (SlabAlgorythim.IsInsidePolygon(o as Polyline, loc)) return false;
                 }
 
-                //partOutlineRef.Erase();
+                partOutlineRef.Erase();
+                t.Commit();
             }
 
             return true;

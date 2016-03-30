@@ -186,6 +186,13 @@ namespace Urbbox.SlabAssembler.Core
             );
         }
 
+        public static double GetAngleBeetween(Point3d p1, Point3d p2)
+        {
+            double xDiff = p2.X - p1.X;
+            double yDiff = p2.Y - p1.Y;
+            return Math.Atan2(yDiff, xDiff) * (180 / Math.PI);
+        }
+
         public static Vector3d VectorFrom(Point3d p, double angle)
         {
             return new Point3d(Math.Cos(angle), Math.Sin(angle), 0) - p;
