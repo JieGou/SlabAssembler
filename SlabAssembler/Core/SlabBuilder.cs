@@ -5,6 +5,8 @@ using Autodesk.AutoCAD.Geometry;
 using System;
 using Urbbox.SlabAssembler.Repositories;
 using Urbbox.SlabAssembler.ViewModels;
+using System.Linq;
+using Urbbox.SlabAssembler.Core.Variations;
 
 namespace Urbbox.SlabAssembler.Core
 {
@@ -188,16 +190,11 @@ namespace Urbbox.SlabAssembler.Core
             foreach (Point3d loc in locations)
             {
                 if (CanPlacePart(loc, part, orientationAngle, partOutline))
-                {
-                    var blockId = GetOrCreatePart(part);
-                    PlacePart(part, loc, orientationAngle, blockId);
-
-                    result.CountNewPart(part);
-                }
-                else collisions.Add(loc);
+                    PlacePart(part, loc, orientationAngle, GetOrCreatePart(part), result);
+                else
+                    collisions.Add(loc);
             }
 
-            _acad.WorkingDocument.Editor.UpdateScreen();
             return collisions;
         }
 
@@ -239,7 +236,7 @@ namespace Urbbox.SlabAssembler.Core
             return outlinePartId;
         }
 
-        private ObjectId PlacePart(Part part, Point3d loc, double orientationAngle, ObjectId blockId)
+        private ObjectId PlacePart(Part part, Point3d loc, double orientationAngle, ObjectId blockId, SlabBuildingResult result = null)
         {
             var referenceId = ObjectId.Null;
 
@@ -252,6 +249,7 @@ namespace Urbbox.SlabAssembler.Core
                 {
                     FixPartOrientation(part, orientationAngle, loc, blkRef);
 
+                    if (result != null) result.CountNewPart(part);
                     referenceId = modelspace.AppendEntity(blkRef);
                     t.AddNewlyCreatedDBObject(blkRef, true);
                 }
@@ -272,8 +270,6 @@ namespace Urbbox.SlabAssembler.Core
                     blkRef.TransformBy(Matrix3d.Rotation(angle, _acad.UCS.Zaxis, loc));
                     var vectorPivot = (part.PivotPoint - Point3d.Origin)
                         .Add(new Vector3d(part.Height - part.PivotPointY, -part.PivotPointY, 0));
-                    //.Add(new Vector3d(0, Especifications.Algorythim.DistanceBetweenLpAndLd, 0))
-                    //.TransformBy(Matrix3d.Rotation(-orientationAngle, _acad.UCS.Zaxis, loc));
                     blkRef.Position = blkRef.Position.Add(vectorPivot);
                 } else 
                     blkRef.Position = blkRef.Position.Add(part.PivotPoint - Point3d.Origin);
@@ -314,6 +310,8 @@ namespace Urbbox.SlabAssembler.Core
 
                         using (var poly = SlabAlgorythim.CreateSquare(part, 0))
                         {
+                            poly.Color = part.UsageType.ToColor();
+
                             record.AppendEntity(poly);
                             t.AddNewlyCreatedDBObject(poly, true);
                         }
@@ -329,14 +327,14 @@ namespace Urbbox.SlabAssembler.Core
 
         public void BuildCast(SlabBuildingResult result, SlabAlgorythim algorythim)
         {
-            PlaceMultipleParts(result, algorythim.GetCastPointList(), Especifications.Parts.SelectedCast, Especifications.Algorythim.OrientationAngle - 90);
+            PlaceMultipleParts(result, algorythim.GetCastPointList(), Especifications.Parts.SelectedCast, 90 - Especifications.Algorythim.OrientationAngle);
         }
 
         public void BuildLp(SlabBuildingResult result, SlabAlgorythim algorythim)
         {
             var dangerZoneList = new Point3dCollection();
             var points = algorythim.GetLpPointList();
-            var lastPt = points[points.Count];
+            var lastPt = points[points.Count - 1];
             var firstPt = points[0];
             var part = Especifications.Parts.SelectedLp;
             var orientationAngle = Especifications.Algorythim.OrientationAngle;
@@ -348,7 +346,7 @@ namespace Urbbox.SlabAssembler.Core
                 {
                     if (algorythim.isAtTheEnd(lastPt, p))
                     {
-                        var b = GetBelowLPIndex(points[0], points[points.Count], i);
+                        var b = algorythim.GetBelowLPIndex(firstPt, lastPt, i);
                         if (b > 0 && b < points.Count && SlabAlgorythim.IsInsidePolygon(_outline, points[b]))
                         {
                             dangerZoneList.Add(points[b]);
@@ -363,36 +361,73 @@ namespace Urbbox.SlabAssembler.Core
                 points = PlaceMultipleParts(result, points, part, orientationAngle);
             while (points.Count > 0 && (part = _config.GetNextSmallerPart(part)) != null);
 
-            while (dangerZoneList.Count > 0)
-                dangerZoneList = BuildDangerZoneLp(result, dangerZoneList, orientationAngle);
+            if (dangerZoneList.Count > 0)
+                BuildDangerZoneLp(result, algorythim, dangerZoneList, orientationAngle);
         }
 
-        private Point3dCollection BuildDangerZoneLp(SlabBuildingResult result, Point3dCollection points, double orientationAngle)
+        private void BuildDangerZoneLp(SlabBuildingResult result, SlabAlgorythim algorythim, Point3dCollection points, double orientationAngle)
         {
             foreach (Point3d p in points)
             {
                 var direction = SlabAlgorythim.VectorFrom(p, orientationAngle);
-                var collision = LineCast(p, direction, Especifications.Parts.SelectedLp.Width * 2);
-                if (collision.HasValue)
+                var collisionPt = LineCast(p, direction, Especifications.Parts.SelectedLp.Width * 2);
+                if (collisionPt.HasValue)
                 {
-                    //TODO
+                    var dist = collisionPt.Value.DistanceTo(p);
+                    Part firstLp, secondLp;
+                    FindBetterLpCombination(algorythim, dist, out firstLp, out secondLp);
+
+                    if (firstLp != null)
+                    {
+                        PlacePart(firstLp, p, orientationAngle, GetOrCreatePart(firstLp), result);
+
+                        var lpDirection = SlabAlgorythim.VectorFrom(p, orientationAngle);
+                        var nextPoint = p.Add(lpDirection * (firstLp.Width + Especifications.Algorythim.DistanceBetweenLp));
+                        if (secondLp != null)
+                            PlacePart(firstLp, nextPoint, orientationAngle, GetOrCreatePart(secondLp), result);
+                    }
                 }
             }
+        }
 
-            return new Point3dCollection();
+        private void FindBetterLpCombination(SlabAlgorythim algorythim, double dist, out Part firstLp, out Part secondLp)
+        {
+            var secondUsageType = (Especifications.Algorythim.UseEndLp) ? Variations.UsageType.EndLp : Variations.UsageType.Lp;
+            var firstList = _config.Data.Parts.Where(p => p.UsageType == Variations.UsageType.Lp);
+            var secondList = _config.Data.Parts.Where(p => p.UsageType == secondUsageType);
+            algorythim.FindBetterPartCombination(firstList, secondList, dist, out firstLp, out secondLp);
         }
 
         public void BuildLd(SlabBuildingResult result, SlabAlgorythim algorythim)
         {
             var points = algorythim.GetLdPointList();
+            var ldsPoints = new Point3dCollection();
             var part = Especifications.Parts.SelectedLd;
+            var firstPoint = points[0];
+            var lastPoint = points[points.Count - 1];
+            var ldsPart = _config.GetRespectiveOfUsageType(part, Variations.UsageType.Lds);
+            var orientationAngle = Especifications.Algorythim.OrientationAngle - 90;
+
+            if (Especifications.Algorythim.UseLds) { 
+                for (int i = 0; i < points.Count; i++)
+                    if (algorythim.checkIfIsLDS(points[i], firstPoint, lastPoint))
+                        ldsPoints.Add(points[i]);
+
+                foreach (Point3d ldsPt in ldsPoints)
+                    if (points.Contains(ldsPt))
+                        points.Remove(ldsPt);
+
+                do
+                    ldsPoints = PlaceMultipleParts(result, ldsPoints, ldsPart, orientationAngle);
+                while (ldsPoints.Count > 0 && (ldsPart = _config.GetNextSmallerPart(ldsPart)) != null);
+            }
 
             do
-                points = PlaceMultipleParts(result, points, part, Especifications.Algorythim.OrientationAngle - 90);
+                points = PlaceMultipleParts(result, points, part, orientationAngle);
             while (points.Count > 0 && (part = _config.GetNextSmallerPart(part)) != null);
         }
 
-        public Point3d? LineCast(Point3d startPoint, Vector3d direction, float distance)
+        protected Point3d? LineCast(Point3d startPoint, Vector3d direction, float distance)
         {
             var intersections = new Point3dCollection();
 
@@ -424,36 +459,7 @@ namespace Urbbox.SlabAssembler.Core
             return nearestPoint;
         }
 
-        private int GetBelowLDIndex(Point3d startPoint, Point3d lastPoint, int currentIndex)
-        {
-            var orientation = Especifications.Algorythim.SelectedOrientation;
-            var distanceBetweenLd = Especifications.Algorythim.DistanceBetweenLpAndLd * 2 + Especifications.Parts.SelectedLp.Height;
-
-            double sizeWidth = (orientation == Orientation.Vertical) ? lastPoint.Y - startPoint.Y : lastPoint.X - startPoint.X;
-            int width = ((int)Math.Floor(sizeWidth / distanceBetweenLd)) + 1;
-            int x = SlabAlgorythim.getXCoordOfElementAt(currentIndex, width);
-            int y = SlabAlgorythim.getYCoordOfElementAt(currentIndex, width);
-            if (orientation == Orientation.Vertical)
-                return SlabAlgorythim.getElementNumberAt(x - 1, y, width);
-            else
-                return SlabAlgorythim.getElementNumberAt(x, y - 1, width);
-        }
-
-        private int GetBelowLPIndex(Point3d startPoint, Point3d lastPoint, int currentIndex)
-        {
-            var orientation = Especifications.Algorythim.SelectedOrientation;
-
-            double sizeWidth = (orientation == Orientation.Vertical) ? lastPoint.X - startPoint.X : lastPoint.Y - startPoint.Y;
-            int width = ((int) Math.Floor(sizeWidth / Especifications.Algorythim.DistanceBetweenLp)) + 1;
-            int x = SlabAlgorythim.getXCoordOfElementAt(currentIndex, width);
-            int y = SlabAlgorythim.getYCoordOfElementAt(currentIndex, width);
-            if (orientation == Orientation.Vertical)
-                return SlabAlgorythim.getElementNumberAt(x, y - 1, width);
-            else
-                return SlabAlgorythim.getElementNumberAt(x - 1, y, width);
-        }
-
-        private bool CanPlacePart(Point3d loc, Part part, double orientationAngle, ObjectId outlinePartId)
+        protected bool CanPlacePart(Point3d loc, Part part, double orientationAngle, ObjectId outlinePartId)
         {
             var isInside = SlabAlgorythim.IsInsidePolygon(_outline, loc);
             if (!isInside) return false;

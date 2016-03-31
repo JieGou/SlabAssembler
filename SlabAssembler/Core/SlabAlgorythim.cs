@@ -4,6 +4,7 @@ using Autodesk.AutoCAD.Colors;
 using System;
 using Autodesk.AutoCAD.Customization;
 using System.Collections.Generic;
+using Urbbox.SlabAssembler.Repositories;
 
 namespace Urbbox.SlabAssembler.Core
 {
@@ -159,6 +160,35 @@ namespace Urbbox.SlabAssembler.Core
                 || (point.X >= lastPoint.X && orientation == Orientation.Horizontal));
         }
 
+        private int GetBelowLDIndex(Point3d startPoint, Point3d lastPoint, int currentIndex)
+        {
+            var orientation = Especifications.Algorythim.SelectedOrientation;
+            var distanceBetweenLd = Especifications.Algorythim.DistanceBetweenLpAndLd * 2 + Especifications.Parts.SelectedLp.Height;
+
+            double sizeWidth = (orientation == Orientation.Vertical) ? lastPoint.Y - startPoint.Y : lastPoint.X - startPoint.X;
+            int width = ((int)Math.Floor(sizeWidth / distanceBetweenLd)) + 1;
+            int x = SlabAlgorythim.getXCoordOfElementAt(currentIndex, width);
+            int y = SlabAlgorythim.getYCoordOfElementAt(currentIndex, width);
+            if (orientation == Orientation.Vertical)
+                return SlabAlgorythim.getElementNumberAt(x - 1, y, width);
+            else
+                return SlabAlgorythim.getElementNumberAt(x, y - 1, width);
+        }
+
+        public int GetBelowLPIndex(Point3d startPoint, Point3d lastPoint, int currentIndex)
+        {
+            var orientation = Especifications.Algorythim.SelectedOrientation;
+
+            double sizeWidth = (orientation == Orientation.Vertical) ? lastPoint.X - startPoint.X : lastPoint.Y - startPoint.Y;
+            int width = ((int)Math.Floor(sizeWidth / Especifications.Algorythim.DistanceBetweenLp)) + 1;
+            int x = SlabAlgorythim.getXCoordOfElementAt(currentIndex, width);
+            int y = SlabAlgorythim.getYCoordOfElementAt(currentIndex, width);
+            if (orientation == Orientation.Vertical)
+                return SlabAlgorythim.getElementNumberAt(x, y - 1, width);
+            else
+                return SlabAlgorythim.getElementNumberAt(x - 1, y, width);
+        }
+
         public static int getElementNumberAt(int x, int y, int width)
         {
             return width * y + x;
@@ -196,6 +226,37 @@ namespace Urbbox.SlabAssembler.Core
         public static Vector3d VectorFrom(Point3d p, double angle)
         {
             return new Point3d(Math.Cos(angle), Math.Sin(angle), 0) - p;
+        }
+
+        public void FindBetterPartCombination(IEnumerable<Part> firstList, IEnumerable<Part> secondList, double distance, out Part firstPart, out Part secondPart)
+        {
+            firstPart = null;
+            secondPart = null;
+            double distanceToInterference = (distance - Especifications.Algorythim.OutlineDistance), 
+                delta = double.MaxValue, 
+                tmpDelta = 0;
+
+            foreach (var part1 in firstList)
+            {
+                tmpDelta = part1.Width - distanceToInterference;
+                if (tmpDelta <= 0 && Math.Abs(tmpDelta) < delta)
+                {
+                    delta = Math.Abs(tmpDelta);
+                    firstPart = part1;
+                }
+
+                foreach (var part2 in secondList)
+                {
+                    tmpDelta = (part1.Width + part2.Width) - distanceToInterference;
+                    if (tmpDelta <= 0 && Math.Abs(tmpDelta) < delta)
+                    {
+                        delta = Math.Abs(tmpDelta);
+                        firstPart = part1;
+                        secondPart = part2;
+                    }
+                }
+            }
+
         }
     }
 }

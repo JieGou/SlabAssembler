@@ -151,5 +151,15 @@ namespace Urbbox.SlabAssembler.Repositories
 
             return null;
         }
+
+        public Part GetRespectiveOfUsageType(Part part, UsageType usage)
+        {
+            if (part == null) return null;
+
+            foreach (var p in Data.Parts.Where(p => p.UsageType == usage))
+                if (p.Width == part.Width) return p;
+
+            return GetRespectiveOfUsageType(GetNextSmallerPart(part), usage);
+        }
     }
 }

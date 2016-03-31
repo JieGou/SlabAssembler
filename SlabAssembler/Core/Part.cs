@@ -1,11 +1,8 @@
-﻿using Autodesk.AutoCAD.DatabaseServices;
-using ReactiveUI;
+﻿using ReactiveUI;
 using System;
-using System.Collections;
 using System.Reactive.Linq;
 using System.Xml.Serialization;
 using Urbbox.SlabAssembler.Core.Variations;
-using Urbbox.SlabAssembler.ViewModels;
 using Autodesk.AutoCAD.Geometry;
 
 namespace Urbbox.SlabAssembler.Core
@@ -90,9 +87,13 @@ namespace Urbbox.SlabAssembler.Core
         [XmlIgnore]
         public ReactiveCommand<object> Save { get; protected set; }
 
-
         public Part()
         {
+            Width = 0;
+            Height = 0;
+            StartOffset = 0;
+            PivotPointX = 0;
+            PivotPointY = 0;
             Save = this.WhenAnyValue(x => x.ReferenceName, x => x.Name, x => x.Layer, x => x.Width, x => x.Height, x => x.Modulation)
                 .Select(x => !String.IsNullOrEmpty(x.Item1) && !String.IsNullOrEmpty(x.Item2) && !String.IsNullOrEmpty(x.Item3) && x.Item4 > 0 && x.Item5 > 0 && x.Item6 > 0)
                 .ToCommand();
