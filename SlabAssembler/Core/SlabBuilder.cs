@@ -266,7 +266,7 @@ namespace Urbbox.SlabAssembler.Core
             using (var t = _acad.StartTransaction())
             {
                 var angle = GetFixedRotationAngle(blkRef, orientationAngle);
-                if (angle != 0) { 
+                if (angle > 0) { 
                     blkRef.TransformBy(Matrix3d.Rotation(angle, _acad.UCS.Zaxis, loc));
                     var vectorPivot = (part.PivotPoint - Point3d.Origin)
                         .Add(new Vector3d(part.Height - part.PivotPointY, -part.PivotPointY, 0));
@@ -473,24 +473,24 @@ namespace Urbbox.SlabAssembler.Core
                 _outline.IntersectWith(partOutlineRef, Intersect.OnBothOperands, intersections, IntPtr.Zero, IntPtr.Zero);
                 if (intersections.Count > 0) return false;
 
-                foreach (DBObject o in _girders)
+                foreach (Entity e in _girders)
                 {
-                    partOutlineRef.IntersectWith(o as Entity, Intersect.OnBothOperands, intersections, IntPtr.Zero, IntPtr.Zero);
+                    e.BoundingBoxIntersectWith(partOutlineRef, Intersect.OnBothOperands, intersections, IntPtr.Zero, IntPtr.Zero);
                     if (intersections.Count > 0) return false;
                 }
 
-                foreach (DBObject o in _collumns)
+                foreach (Entity e in _collumns)
                 {
-                    partOutlineRef.IntersectWith(o as Entity, Intersect.OnBothOperands, intersections, IntPtr.Zero, IntPtr.Zero);
+                    e.IntersectWith(partOutlineRef, Intersect.OnBothOperands, intersections, IntPtr.Zero, IntPtr.Zero);
                     if (intersections.Count > 0) return false;
                 }
 
-                foreach (DBObject o in _empties)
+                foreach (Entity e in _empties)
                 {
-                    partOutlineRef.IntersectWith(o as Entity, Intersect.OnBothOperands, intersections, IntPtr.Zero, IntPtr.Zero);
+                    e.IntersectWith(partOutlineRef, Intersect.OnBothOperands, intersections, IntPtr.Zero, IntPtr.Zero);
                     if (intersections.Count > 0) return false;
 
-                    if (SlabAlgorythim.IsInsidePolygon(o as Polyline, loc)) return false;
+                    if (SlabAlgorythim.IsInsidePolygon(e as Polyline, loc)) return false;
                 }
 
                 partOutlineRef.Erase();

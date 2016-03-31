@@ -356,6 +356,6 @@
   <DistanceBetweenLp>0.2</DistanceBetweenLp>
   <DistanceBetweenLpAndLd>0.25</DistanceBetweenLpAndLd>
   <UseLds>true</UseLds>
-  <UseEndLp>false</UseEndLp>
+  <UseEndLp>true</UseEndLp>
   <UseStartLp>false</UseStartLp>
 </ConfigurationData>

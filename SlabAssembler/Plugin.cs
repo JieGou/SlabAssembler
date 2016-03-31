@@ -25,12 +25,11 @@ namespace Urbbox.SlabAssembler
             _acManager = new AutoCadManager();
 
             var builder = new SlabBuilder(_acManager, _configRepository);
-            var especificationsView = new Views.EspecificationsControl(_configRepository);
+            var especificationsView = new Views.EspecificationsControl(_configRepository, _acManager);
             var algorythimView = new Views.AlgorythimControl(especificationsView.ViewModel, _configRepository);
             var partsView = new Views.PartsControl(_configRepository, _acManager);
 
-            foreach (var l in _acManager.GetLayers())
-                especificationsView.ViewModel.Layers.Add(l);
+            
 
             builder.EspecificationsViewModel = especificationsView.ViewModel;
             builder.AlgorythimViewModel = algorythimView.ViewModel;
