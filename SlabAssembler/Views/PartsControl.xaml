@@ -65,7 +65,7 @@
 
     <UserControl.ContextMenu>
         <ContextMenu>
-            <MenuItem Header="Resetar Padrões" Command="{Binding ResetCommand}"/>
+            <MenuItem Header="Resetar Padrões" Command="{Binding Reset}"/>
         </ContextMenu>
     </UserControl.ContextMenu>
     

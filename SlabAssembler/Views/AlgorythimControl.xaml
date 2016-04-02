@@ -68,8 +68,6 @@
     <UserControl.ContextMenu>
         <ContextMenu>
             <MenuItem Header="Resetar Padrões" Command="{Binding Reset}"/>
-            <MenuItem Header="Exportar Configurações" Command=""/>
-            <MenuItem Header="Importar Configurações" Command=""/>
         </ContextMenu>
     </UserControl.ContextMenu>
 </UserControl>

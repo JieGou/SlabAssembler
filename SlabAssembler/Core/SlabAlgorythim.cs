@@ -4,7 +4,6 @@ using Autodesk.AutoCAD.Colors;
 using System;
 using Autodesk.AutoCAD.Customization;
 using System.Collections.Generic;
-using Urbbox.SlabAssembler.Repositories;
 
 namespace Urbbox.SlabAssembler.Core
 {
@@ -19,22 +18,24 @@ namespace Urbbox.SlabAssembler.Core
 
         public static Point3d RotatePoint(double x, double y, double z, double angle)
         {
-            return new Point3d(x * Math.Cos(angle) + y * Math.Sin(angle), y * Math.Cos(angle) + x * Math.Sin(angle), z);
+            var pt = new Point3d(x, y, z);
+            return RotatePoint(pt, angle);
         }
 
         public static Point3d RotatePoint(Point3d point, double angle)
         {
-            return new Point3d(point.X * Math.Cos(angle) + point.Y * Math.Sin(angle) , point.Y * Math.Cos(angle) + point.X * Math.Sin(angle), point.Z);
+            return point.RotateBy((angle * Math.PI) / 180D, Vector3d.ZAxis, Point3d.Origin);
         }
 
         protected Point3dCollection GetPointMatrix(Vector3d startDesloc, double yIncr, double xIncr)
         {
             Point3dCollection list = new Point3dCollection();
             var startPt = Especifications.StartPoint.Add(startDesloc);
+            var angle = (90 - Especifications.Algorythim.OrientationAngle) * Math.PI / 180D;
 
-            for (double y = startPt.Y; y < Especifications.MaxPoint.Y; y += yIncr)
-                for (double x = startPt.X; x < Especifications.MaxPoint.X; x += xIncr)
-                    list.Add(RotatePoint(x, y, 0, 90 - Especifications.Algorythim.OrientationAngle));
+            for (double y = startPt.Y; y < Especifications.MaxPoint.Y; y += yIncr * Math.Cos(angle) + xIncr * Math.Sin(angle))
+                for (double x = startPt.X; x < Especifications.MaxPoint.X; x += xIncr * Math.Cos(angle) + yIncr * Math.Sin(angle))
+                        list.Add(new Point3d(x, y, 0));
 
             return list;
         }
@@ -46,7 +47,7 @@ namespace Urbbox.SlabAssembler.Core
             var selectedLd = Especifications.Parts.SelectedLd;
             var selectedCast = Especifications.Parts.SelectedCast;
             var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
-            var orientationAngle = Especifications.Algorythim.OrientationAngle;
+            var orientationAngle = 90 - Especifications.Algorythim.OrientationAngle;
 
             var startDesloc = new Vector3d(selectedLp.Height + spacing, selectedLd.Height / 2.0D, 0);
             var xIncr = selectedLd.Width + 2 * spacing + selectedLp.Height;
@@ -55,7 +56,7 @@ namespace Urbbox.SlabAssembler.Core
 
             foreach (Point3d p in auxPts)
                 for (int i = 0; i < Especifications.CastGroupSize; i++)
-                    result.Add(RotatePoint(p.X + (i * selectedCast.Width), p.Y, 0, 90 - orientationAngle));
+                    result.Add(RotatePoint(p.X + (i * selectedCast.Width), p.Y, 0, orientationAngle));
 
             return result;
         }
@@ -66,13 +67,25 @@ namespace Urbbox.SlabAssembler.Core
             var selectedLp = Especifications.Parts.SelectedLp;
             var selectedCast = Especifications.Parts.SelectedCast;
             var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
-            var orientationAngle = Especifications.Algorythim.OrientationAngle;
 
             var startDesloc = new Vector3d(selectedLp.Height + spacing, 0, 0);
             var xIncr = selectedLd.Width + 2 * spacing + selectedLp.Height;
             var yIncr = selectedCast.Height;
+            var points = GetPointMatrix(startDesloc, yIncr, xIncr);
+            
+            if (Especifications.Algorythim.UseLds)
+            {
+                var firstPoint = points[0];
+                var lastPoint = points[points.Count - 1];
+                var result = new Point3dCollection();
 
-            return GetPointMatrix(startDesloc, yIncr, xIncr);
+                foreach (Point3d point in points)
+                    if (!checkIfIsLDS(point, firstPoint, lastPoint))
+                        result.Add(point);
+
+                return result;
+            } else
+                return points;
         }
 
         public Point3dCollection GetLpPointList()
@@ -81,13 +94,49 @@ namespace Urbbox.SlabAssembler.Core
             var selectedLp = Especifications.Parts.SelectedLp;
             var selectedCast = Especifications.Parts.SelectedCast;
             var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
-            var orientationAngle = Especifications.Algorythim.OrientationAngle;
 
             var startDesloc = new Vector3d(0, 0, 0);
             var xIncr = selectedLp.Height + selectedLd.Width + spacing * 2;
             var yIncr = selectedLp.Width + Especifications.Algorythim.DistanceBetweenLp;
 
             return GetPointMatrix(startDesloc, yIncr, xIncr);
+        }
+
+        public Point3dCollection GetHeadPointList()
+        {
+            var selectedLd = Especifications.Parts.SelectedLd;
+            var selectedLp = Especifications.Parts.SelectedLp;
+            var selectedCast = Especifications.Parts.SelectedCast;
+            var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
+
+            var startDesloc = new Vector3d(selectedLp.Height / 2.0f, selectedLd.Height / 2.0F, 0);
+            var xIncr = selectedLp.Height + selectedLd.Width + spacing * 2;
+            var yIncr = selectedCast.Height;
+
+            return GetPointMatrix(startDesloc, yIncr, xIncr);
+        }
+
+        public Point3dCollection GetLdsPointList()
+        {
+            var selectedLd = Especifications.Parts.SelectedLd;
+            var selectedLp = Especifications.Parts.SelectedLp;
+            var selectedCast = Especifications.Parts.SelectedCast;
+            var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
+
+            var startDesloc = new Vector3d(selectedLp.Height + spacing, 0, 0);
+            var xIncr = selectedLd.Width + 2 * spacing + selectedLp.Height;
+            var yIncr = selectedCast.Height;
+            var points = GetPointMatrix(startDesloc, yIncr, xIncr);
+
+            var firstPoint = points[0];
+            var lastPoint = points[points.Count - 1];
+            var result = new Point3dCollection();
+
+            foreach (Point3d point in points)
+                if (checkIfIsLDS(point, firstPoint, lastPoint))
+                    result.Add(point);
+
+            return result;
         }
 
         public static Polyline3d CreateSquare(Part part, double border)
@@ -160,48 +209,24 @@ namespace Urbbox.SlabAssembler.Core
                 || (point.X >= lastPoint.X && orientation == Orientation.Horizontal));
         }
 
-        private int GetBelowLDIndex(Point3d startPoint, Point3d lastPoint, int currentIndex)
+        public Point3d? GetBelowLpPoint(Point3dCollection points, Point3d current)
         {
-            var orientation = Especifications.Algorythim.SelectedOrientation;
-            var distanceBetweenLd = Especifications.Algorythim.DistanceBetweenLpAndLd * 2 + Especifications.Parts.SelectedLp.Height;
-
-            double sizeWidth = (orientation == Orientation.Vertical) ? lastPoint.Y - startPoint.Y : lastPoint.X - startPoint.X;
-            int width = ((int)Math.Floor(sizeWidth / distanceBetweenLd)) + 1;
-            int x = SlabAlgorythim.getXCoordOfElementAt(currentIndex, width);
-            int y = SlabAlgorythim.getYCoordOfElementAt(currentIndex, width);
-            if (orientation == Orientation.Vertical)
-                return SlabAlgorythim.getElementNumberAt(x - 1, y, width);
-            else
-                return SlabAlgorythim.getElementNumberAt(x, y - 1, width);
-        }
-
-        public int GetBelowLPIndex(Point3d startPoint, Point3d lastPoint, int currentIndex)
-        {
+            var dist = Especifications.Parts.SelectedLp.Width + Especifications.Algorythim.DistanceBetweenLp;
             var orientation = Especifications.Algorythim.SelectedOrientation;
 
-            double sizeWidth = (orientation == Orientation.Vertical) ? lastPoint.X - startPoint.X : lastPoint.Y - startPoint.Y;
-            int width = ((int)Math.Floor(sizeWidth / Especifications.Algorythim.DistanceBetweenLp)) + 1;
-            int x = SlabAlgorythim.getXCoordOfElementAt(currentIndex, width);
-            int y = SlabAlgorythim.getYCoordOfElementAt(currentIndex, width);
-            if (orientation == Orientation.Vertical)
-                return SlabAlgorythim.getElementNumberAt(x, y - 1, width);
-            else
-                return SlabAlgorythim.getElementNumberAt(x - 1, y, width);
-        }
+            foreach (Point3d point in points)
+            {
+                if (point != current)
+                {
+                    var isBellow = (orientation == Orientation.Vertical && point.Y < current.Y)
+                        || (orientation == Orientation.Horizontal && point.X > current.X);
 
-        public static int getElementNumberAt(int x, int y, int width)
-        {
-            return width * y + x;
-        }
+                    if (isBellow && current.DistanceTo(point) == dist)
+                        return point;
+                }
+            }
 
-        public static int getXCoordOfElementAt(int i, int width)
-        {
-            return i % width;
-        }
-
-        public static int getYCoordOfElementAt(int i, int width)
-        {
-            return i / width;
+            return null;
         }
 
         public static IEnumerable<Line> CreateCrossLines(Part part, double border)
@@ -216,25 +241,18 @@ namespace Urbbox.SlabAssembler.Core
             );
         }
 
-        public static double GetAngleBeetween(Point3d p1, Point3d p2)
+        public static Vector3d VectorFrom(double angle)
         {
-            double xDiff = p2.X - p1.X;
-            double yDiff = p2.Y - p1.Y;
-            return Math.Atan2(yDiff, xDiff) * (180 / Math.PI);
-        }
-
-        public static Vector3d VectorFrom(Point3d p, double angle)
-        {
-            return new Point3d(Math.Cos(angle), Math.Sin(angle), 0) - p;
+            return RotatePoint(new Point3d(1, 0, 0), angle) - Point3d.Origin;
         }
 
         public void FindBetterPartCombination(IEnumerable<Part> firstList, IEnumerable<Part> secondList, double distance, out Part firstPart, out Part secondPart)
         {
             firstPart = null;
             secondPart = null;
-            double distanceToInterference = (distance - Especifications.Algorythim.OutlineDistance), 
-                delta = double.MaxValue, 
-                tmpDelta = 0;
+            double distanceToInterference = distance - Especifications.Algorythim.OutlineDistance;
+            double delta = double.MaxValue;
+            double tmpDelta = 0;
 
             foreach (var part1 in firstList)
             {
@@ -258,5 +276,6 @@ namespace Urbbox.SlabAssembler.Core
             }
 
         }
+
     }
 }

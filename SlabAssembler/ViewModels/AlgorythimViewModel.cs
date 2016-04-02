@@ -90,14 +90,19 @@ namespace Urbbox.SlabAssembler.ViewModels
             Reset.Subscribe(x => _config.ResetDefaults());
 
             Update = this.WhenAny(x => x._canUpdateConfig, u => u.Value).ToCommand();
-            Update.IsExecuting.ToProperty(this, x => x._canUpdateConfig, false);
             Update.Subscribe(x => UpdateConfigurations());
 
             _especifications.ObservableForProperty(x => x.SelectedModulation)
                 .Subscribe(x => RefreshParts());
 
             _config.DataLoaded += ConfigurationsManager_DataLoaded;
-            this.WhenAnyValue(x => x.UseStartLp, x => x.UseEndLp, x => x.UseLds, x => x.DistanceBetweenLp, x => x.DistanceBetweenLpAndLd)
+            this.WhenAnyValue(
+                x => x.UseStartLp,
+                x => x.UseEndLp,
+                x => x.UseLds,
+                x => x.DistanceBetweenLp,
+                x => x.DistanceBetweenLpAndLd,
+                x => x.OutlineDistance)
                 .Throttle(TimeSpan.FromSeconds(1), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, x => x.Update);
 

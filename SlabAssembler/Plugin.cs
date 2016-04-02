@@ -29,8 +29,6 @@ namespace Urbbox.SlabAssembler
             var algorythimView = new Views.AlgorythimControl(especificationsView.ViewModel, _configRepository);
             var partsView = new Views.PartsControl(_configRepository, _acManager);
 
-            
-
             builder.EspecificationsViewModel = especificationsView.ViewModel;
             builder.AlgorythimViewModel = algorythimView.ViewModel;
             _mainPallet.Add("Especificações", GetElementHost(especificationsView));
