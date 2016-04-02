@@ -316,10 +316,10 @@
     <Part Name="Cabeça" Modulation="61">
       <ReferenceName>CABEÇA COM PINO</ReferenceName>
       <Layer>CABEÇA</Layer>
-      <Width>5</Width>
-      <Height>8</Height>
-      <PivotPointX>0</PivotPointX>
-      <PivotPointY>3.5</PivotPointY>
+      <Width>20</Width>
+      <Height>9</Height>
+      <PivotPointX>10</PivotPointX>
+      <PivotPointY>4.5</PivotPointY>
       <UsageType>Head</UsageType>
     </Part>
   </Parts>

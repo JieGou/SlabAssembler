@@ -343,19 +343,19 @@
     </Part>
     <Part Name="Cabeça" Modulation="61">
       <ReferenceName>CABEÇA COM PINO</ReferenceName>
-      <Width>5</Width>
-      <Height>8</Height>
+      <Width>20</Width>
+      <Height>9</Height>
       <UsageType>Head</UsageType>
       <Layer>CABEÇA</Layer>
-      <PivotPointX>0</PivotPointX>
-      <PivotPointY>3.5</PivotPointY>
+      <PivotPointX>10</PivotPointX>
+      <PivotPointY>4.5</PivotPointY>
       <StartOffset>0</StartOffset>
     </Part>
   </Parts>
   <OutlineDistance>10</OutlineDistance>
   <DistanceBetweenLp>0.2</DistanceBetweenLp>
   <DistanceBetweenLpAndLd>0.25</DistanceBetweenLpAndLd>
-  <UseLds>true</UseLds>
-  <UseEndLp>true</UseEndLp>
+  <UseLds>false</UseLds>
+  <UseEndLp>false</UseEndLp>
   <UseStartLp>false</UseStartLp>
 </ConfigurationData>

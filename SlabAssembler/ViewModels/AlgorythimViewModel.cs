@@ -73,6 +73,13 @@ namespace Urbbox.SlabAssembler.ViewModels
             set { this.RaiseAndSetIfChanged(ref _onlyCimbrament, value); }
         }
 
+        private Part _selectedStartLp;
+        public Part SelectedStartLp
+        {
+            get { return _selectedStartLp; }
+            set { this.RaiseAndSetIfChanged(ref _selectedStartLp, value); }
+        }
+
         public ReactiveCommand<object> Update { get; private set; }
 
         private ConfigurationsRepository _config;

@@ -80,12 +80,33 @@ namespace Urbbox.SlabAssembler.Core
                 var result = new Point3dCollection();
 
                 foreach (Point3d point in points)
-                    if (!checkIfIsLDS(point, firstPoint, lastPoint))
+                    if (!CheckIfIsLDS(point, firstPoint, lastPoint))
                         result.Add(point);
 
                 return result;
             } else
                 return points;
+        }
+
+        public Point3dCollection GetStartLpPointList()
+        {
+            var selectedLd = Especifications.Parts.SelectedLd;
+            var selectedLp = Especifications.Parts.SelectedLp;
+            var selectedCast = Especifications.Parts.SelectedCast;
+            var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
+
+            var startDesloc = new Vector3d(0, 0, 0);
+            var xIncr = selectedLp.Height + selectedLd.Width + spacing * 2;
+            var yIncr = selectedLp.Width + Especifications.Algorythim.DistanceBetweenLp;
+            var points = GetPointMatrix(startDesloc, yIncr, xIncr);
+            var startPoint = points[0];
+            var result = new Point3dCollection();
+
+            foreach (Point3d p in points)
+                if (CheckIfIsStartLP(startPoint, p))
+                    result.Add(p);
+
+            return result;
         }
 
         public Point3dCollection GetLpPointList()
@@ -98,18 +119,30 @@ namespace Urbbox.SlabAssembler.Core
             var startDesloc = new Vector3d(0, 0, 0);
             var xIncr = selectedLp.Height + selectedLd.Width + spacing * 2;
             var yIncr = selectedLp.Width + Especifications.Algorythim.DistanceBetweenLp;
+            var points = GetPointMatrix(startDesloc, yIncr, xIncr);
+            var startPoint = points[0];
+            var result = new Point3dCollection();
 
-            return GetPointMatrix(startDesloc, yIncr, xIncr);
+            if (!Especifications.Algorythim.UseStartLp)
+                return points;
+            else
+            {
+                foreach (Point3d p in points)
+                    if (!CheckIfIsStartLP(startPoint, p))
+                        result.Add(p);
+            }
+
+            return result;
         }
 
-        public Point3dCollection GetHeadPointList()
+        public Point3dCollection GetHeadPointList(Part selectedHead)
         {
             var selectedLd = Especifications.Parts.SelectedLd;
             var selectedLp = Especifications.Parts.SelectedLp;
             var selectedCast = Especifications.Parts.SelectedCast;
             var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
 
-            var startDesloc = new Vector3d(selectedLp.Height / 2.0f, selectedLd.Height / 2.0F, 0);
+            var startDesloc = new Vector3d(-3.0, -selectedLd.Height / 2.0F, 0);
             var xIncr = selectedLp.Height + selectedLd.Width + spacing * 2;
             var yIncr = selectedCast.Height;
 
@@ -133,7 +166,7 @@ namespace Urbbox.SlabAssembler.Core
             var result = new Point3dCollection();
 
             foreach (Point3d point in points)
-                if (checkIfIsLDS(point, firstPoint, lastPoint))
+                if (CheckIfIsLDS(point, firstPoint, lastPoint))
                     result.Add(point);
 
             return result;
@@ -185,15 +218,14 @@ namespace Urbbox.SlabAssembler.Core
             return (dtheta);
         }
 
-        public bool checkIfIsStartLP(string startBlockName, Point3d startPoint, Point3d point)
+        public bool CheckIfIsStartLP(Point3d startPoint, Point3d point)
         {
             var orientation = Especifications.Algorythim.SelectedOrientation;
-            return startBlockName != null 
-                && ((point.Y <= startPoint.Y && orientation == Orientation.Vertical) 
+            return ((point.Y <= startPoint.Y && orientation == Orientation.Vertical) 
                 || (point.X <= startPoint.X && orientation == Orientation.Horizontal));
         }
 
-        public bool checkIfIsLDS(Point3d point, Point3d firstPoint, Point3d lastPoint)
+        public bool CheckIfIsLDS(Point3d point, Point3d firstPoint, Point3d lastPoint)
         {
             var orientation = Especifications.Algorythim.SelectedOrientation;
             var isAtTheBeginningOrEndingOnVertical = (point.Y <= firstPoint.Y || point.Y >= lastPoint.Y) && (orientation == Orientation.Vertical);
@@ -202,7 +234,7 @@ namespace Urbbox.SlabAssembler.Core
             return (isAtTheBeginningOrEndingOnVertical || isAtTheBeginningEndingOnHorizontal);
         }
 
-        public bool isAtTheEnd(Point3d lastPoint, Point3d point)
+        public bool IsAtTheEnd(Point3d lastPoint, Point3d point)
         {
             var orientation = Especifications.Algorythim.SelectedOrientation;
             return ((point.Y >= lastPoint.Y && orientation == Orientation.Vertical) 

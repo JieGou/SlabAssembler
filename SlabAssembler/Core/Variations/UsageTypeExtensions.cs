@@ -68,7 +68,7 @@ namespace Urbbox.SlabAssembler.Core.Variations
                 case UsageType.StartLp:
                     return Color.FromRgb(116, 88, 173);
                 case UsageType.EndLp:
-                    return Color.FromRgb(200, 25, 25);
+                    return Color.FromRgb(200, 191, 231);
                 case UsageType.Ld:
                     return Color.FromRgb(38, 240, 120);
                 case UsageType.Lds:

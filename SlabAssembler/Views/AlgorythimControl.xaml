@@ -26,7 +26,7 @@
                 <CheckBox x:Name="checkBox" Content="Utilizar LDS" Margin="10,10,0,0" IsChecked="{Binding Path=UseLds, Mode=TwoWay}"/>
                 <CheckBox x:Name="checkBox_Copy" Content="Utilizar LP Final" Margin="10,10,0,0" IsChecked="{Binding Path=UseEndLp, Mode=TwoWay}"/>
                 <CheckBox x:Name="checkBox_Copy1" Content="Utilizar LP de Partida" Margin="10,10,0,0" IsChecked="{Binding Path=UseStartLp, Mode=TwoWay}"/>
-                <ComboBox x:Name="comboBox" Margin="10,5,10,10" ItemsSource="{Binding Path=StartLpList}" DisplayMemberPath="Name"/>
+                <ComboBox x:Name="comboBox" Margin="10,5,10,10" ItemsSource="{Binding Path=StartLpList}" SelectedItem="{Binding SelectedStartLp, Mode=TwoWay}"  DisplayMemberPath="Name"/>
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Distancias Constantes" Margin="5,10,5,0">

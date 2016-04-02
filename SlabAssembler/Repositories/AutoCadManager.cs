@@ -25,6 +25,8 @@ namespace Urbbox.SlabAssembler.Repositories
 
         public List<string> GetLayers()
         {
+            if (WorkingDocument == null) return new List<string>();
+
             var list = new List<string>();
             using (var t = StartOpenCloseTransaction())
             {

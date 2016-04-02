@@ -134,6 +134,9 @@ namespace Urbbox.SlabAssembler.Core
             {
                 SelectedCollisionObjects();
                 try {
+                    if (Especifications.Algorythim.UseStartLp)
+                        BuildStartLp(result, algorythim);
+
                     BuildLp(result, algorythim);
 
                     BuildLd(result, algorythim);
@@ -141,11 +144,15 @@ namespace Urbbox.SlabAssembler.Core
                     if (Especifications.Algorythim.UseLds)
                         BuildLds(result, algorythim);
 
+                    BuildHead(result, algorythim);
+
                     if (!Especifications.Algorythim.OnlyCimbrament)
                         BuildCast(result, algorythim);
                 }
                 catch (OperationCanceledException) { _acad.WorkingDocument.Editor.WriteMessage("\nLaje cancelada."); }
                 catch (Exception e) { _acad.WorkingDocument.Editor.WriteMessage($"\n{e.Message}\n {e.StackTrace}"); }
+
+                _acad.WorkingDocument.Editor.WriteMessage("\nLaje finalizada.");
 
                 ClearOutlineParts();
             }
@@ -297,12 +304,9 @@ namespace Urbbox.SlabAssembler.Core
             using (var t = _acad.StartTransaction())
             {
                 var angle = GetFixedRotationAngle(blkRef, orientationAngle);
-                if (angle > 0) { 
-                    blkRef.TransformBy(Matrix3d.Rotation(angle, _acad.UCS.Zaxis, loc));
-                    var vectorPivot = SlabAlgorythim.RotatePoint(part.PivotPoint, -orientationAngle) - Point3d.Origin;
-                    blkRef.Position = blkRef.Position.Add(vectorPivot);
-                } else 
-                    blkRef.Position = blkRef.Position.Add(part.PivotPoint - Point3d.Origin);
+                blkRef.TransformBy(Matrix3d.Rotation(angle, _acad.UCS.Zaxis, loc));
+                var vectorPivot = SlabAlgorythim.RotatePoint(part.PivotPoint, -orientationAngle) - Point3d.Origin;
+                blkRef.Position = blkRef.Position.Add(vectorPivot);
 
                 t.Commit();
             }
@@ -377,7 +381,7 @@ namespace Urbbox.SlabAssembler.Core
                 var p = points[i];
                 normalZoneList.Add(p);
               
-                if (algorythim.isAtTheEnd(lastPt, p) || !SlabAlgorythim.IsInsidePolygon(_outline, p))
+                if (algorythim.IsAtTheEnd(lastPt, p) || !SlabAlgorythim.IsInsidePolygon(_outline, p))
                 {
                     var b = algorythim.GetBelowLpPoint(points, p);
                     if (b.HasValue && SlabAlgorythim.IsInsidePolygon(_outline, b.Value))
@@ -396,37 +400,7 @@ namespace Urbbox.SlabAssembler.Core
             if (dangerZoneList.Count > 0)
                 BuildDangerZoneLp(result, algorythim, dangerZoneList, orientationAngle);
         }
-
-        private void DebugPoints(Point3dCollection list, Color color, int size)
-        {
-            foreach (Point3d point in list)
-            {
-                DebugPoint(point, color, size);
-            }
-        }
-
-        private void DebugPoint(Point3d point, Color color, int size)
-        {
-            Matrix3d curUCSMatrix = _acad.WorkingDocument.Editor.CurrentUserCoordinateSystem;
-            CoordinateSystem3d curUCS = curUCSMatrix.CoordinateSystem3d;
-
-            using (var t = _acad.StartTransaction())
-            {
-                BlockTable blockTable = t.GetObject(_acad.Database.BlockTableId, OpenMode.ForRead) as BlockTable;
-                BlockTableRecord modelspace = t.GetObject(blockTable[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
-
-                using (Circle circle = new Circle(point, curUCS.Zaxis, size))
-                {
-                    circle.Layer = "0";
-                    circle.Color = color;
-                    modelspace.AppendEntity(circle);
-                    t.AddNewlyCreatedDBObject(circle, true);
-                }
-
-                t.Commit();
-            }
-        }
-
+       
         private void BuildDangerZoneLp(SlabBuildingResult result, SlabAlgorythim algorythim, Point3dCollection points, double orientationAngle)
         {
             foreach (Point3d p in points)
@@ -451,6 +425,17 @@ namespace Urbbox.SlabAssembler.Core
             }
         }
 
+        public void BuildStartLp(SlabBuildingResult result, SlabAlgorythim algorythim)
+        {
+            var points = algorythim.GetStartLpPointList();
+            var part = Especifications.Algorythim.SelectedStartLp;
+            var orientationAngle = Especifications.Algorythim.OrientationAngle;
+
+            do
+                points = PlaceMultipleParts(result, points, part, orientationAngle);
+            while (points.Count > 0 && (part = _config.GetNextSmallerPart(part)) != null);
+        }
+
         public void BuildLd(SlabBuildingResult result, SlabAlgorythim algorythim)
         {
             var points = algorythim.GetLdPointList();
@@ -471,28 +456,6 @@ namespace Urbbox.SlabAssembler.Core
 
             foreach (ObjectId altId in altPlacedObjects)
                 EraseIfColliding(altId, placedObjects);
-        }
-
-        private void EraseIfColliding(ObjectId objId, ObjectIdCollection colliders)
-        {
-            using (var t = _acad.StartTransaction())
-            {
-                var intersections = new Point3dCollection();
-                var reference = t.GetObject(objId, OpenMode.ForWrite) as BlockReference;
-                foreach (ObjectId colliderId in colliders)
-                {
-                    var collider = t.GetObject(colliderId, OpenMode.ForRead) as BlockReference;
-                    reference.IntersectWith(collider, Intersect.OnBothOperands, intersections, IntPtr.Zero, IntPtr.Zero);
-
-                    if (intersections.Count > 0)
-                    {
-                        reference.Erase();
-                        t.Commit();
-                        t.Dispose();
-                        return;
-                    }
-                }
-            }
         }
 
         private void BuildAlternativeZoneLd(SlabBuildingResult result, Point3dCollection points, double orientationAngle, bool isLds, ObjectIdCollection placedObjects)
@@ -536,7 +499,65 @@ namespace Urbbox.SlabAssembler.Core
             foreach (ObjectId altId in altPlacedObjects)
                 EraseIfColliding(altId, placedObjects);
         }
+
+        public void BuildHead(SlabBuildingResult result, SlabAlgorythim algorythim)
+        {
+            var part = _config.Data.Parts.Where(p => p.UsageType == UsageType.Head).First();
+            PlaceMultipleParts(result, algorythim.GetHeadPointList(part), part, 90 - Especifications.Algorythim.OrientationAngle);
+        }
         #endregion
+
+        private void DebugPoints(Point3dCollection list, Color color, int size)
+        {
+            foreach (Point3d point in list)
+            {
+                DebugPoint(point, color, size);
+            }
+        }
+
+        private void DebugPoint(Point3d point, Color color, int size)
+        {
+            Matrix3d curUCSMatrix = _acad.WorkingDocument.Editor.CurrentUserCoordinateSystem;
+            CoordinateSystem3d curUCS = curUCSMatrix.CoordinateSystem3d;
+
+            using (var t = _acad.StartTransaction())
+            {
+                BlockTable blockTable = t.GetObject(_acad.Database.BlockTableId, OpenMode.ForRead) as BlockTable;
+                BlockTableRecord modelspace = t.GetObject(blockTable[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
+
+                using (Circle circle = new Circle(point, curUCS.Zaxis, size))
+                {
+                    circle.Layer = "0";
+                    circle.Color = color;
+                    modelspace.AppendEntity(circle);
+                    t.AddNewlyCreatedDBObject(circle, true);
+                }
+
+                t.Commit();
+            }
+        }
+
+        private void EraseIfColliding(ObjectId objId, ObjectIdCollection colliders)
+        {
+            using (var t = _acad.StartTransaction())
+            {
+                var intersections = new Point3dCollection();
+                var reference = t.GetObject(objId, OpenMode.ForWrite) as BlockReference;
+                foreach (ObjectId colliderId in colliders)
+                {
+                    var collider = t.GetObject(colliderId, OpenMode.ForRead) as BlockReference;
+                    reference.IntersectWith(collider, Intersect.OnBothOperands, intersections, IntPtr.Zero, IntPtr.Zero);
+
+                    if (intersections.Count > 0)
+                    {
+                        reference.Erase();
+                        t.Commit();
+                        t.Dispose();
+                        return;
+                    }
+                }
+            }
+        }
 
         private void FindBetterLpCombination(SlabAlgorythim algorythim, double dist, out Part firstLp, out Part secondLp)
         {
