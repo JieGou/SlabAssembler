@@ -55,7 +55,11 @@ namespace Urbbox.SlabAssembler.ViewModels
         public bool UseStartLp
         {
             get { return _useStartLp; }
-            set { this.RaiseAndSetIfChanged(ref _useStartLp, value); }
+            set {
+                this.RaiseAndSetIfChanged(ref _useStartLp, value);
+                if (UseStartLp && StartLpList.Count > 0 && StartLpList == null)
+                    SelectedStartLp = StartLpList.First();
+            }
         }
 
         private Orientation _selectedOrientation = Orientation.Vertical;

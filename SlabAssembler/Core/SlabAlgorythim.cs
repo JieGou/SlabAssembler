@@ -27,14 +27,16 @@ namespace Urbbox.SlabAssembler.Core
             return point.RotateBy((angle * Math.PI) / 180D, Vector3d.ZAxis, Point3d.Origin);
         }
 
-        protected Point3dCollection GetPointMatrix(Vector3d startDesloc, double yIncr, double xIncr)
+        protected Point3dCollection GetPointMatrix(Vector3d startDesloc, double yIncr, double xIncr, double xOffset = 0, double yOffset = 0)
         {
             Point3dCollection list = new Point3dCollection();
             var startPt = Especifications.StartPoint.Add(startDesloc);
             var angle = (90 - Especifications.Algorythim.OrientationAngle) * Math.PI / 180D;
+            var xStartOffset = xOffset * Math.Cos(angle) + yOffset * Math.Sin(angle);
+            var yStartOffset = yOffset * Math.Cos(angle) + xOffset * Math.Sin(angle);
 
-            for (double y = startPt.Y; y < Especifications.MaxPoint.Y; y += yIncr * Math.Cos(angle) + xIncr * Math.Sin(angle))
-                for (double x = startPt.X; x < Especifications.MaxPoint.X; x += xIncr * Math.Cos(angle) + yIncr * Math.Sin(angle))
+            for (double y = startPt.Y + yStartOffset; y < Especifications.MaxPoint.Y; y += yIncr * Math.Cos(angle) + xIncr * Math.Sin(angle))
+                for (double x = startPt.X + xStartOffset; x < Especifications.MaxPoint.X; x += xIncr * Math.Cos(angle) + yIncr * Math.Sin(angle))
                         list.Add(new Point3d(x, y, 0));
 
             return list;
@@ -92,13 +94,15 @@ namespace Urbbox.SlabAssembler.Core
         {
             var selectedLd = Especifications.Parts.SelectedLd;
             var selectedLp = Especifications.Parts.SelectedLp;
+            var selectedStartLp = Especifications.Algorythim.SelectedStartLp;
             var selectedCast = Especifications.Parts.SelectedCast;
             var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
+            var useStartLp = Especifications.Algorythim.UseStartLp;
 
             var startDesloc = new Vector3d(0, 0, 0);
             var xIncr = selectedLp.Height + selectedLd.Width + spacing * 2;
             var yIncr = selectedLp.Width + Especifications.Algorythim.DistanceBetweenLp;
-            var points = GetPointMatrix(startDesloc, yIncr, xIncr);
+            var points = GetPointMatrix(startDesloc, yIncr, xIncr, 0, (useStartLp) ? selectedStartLp.StartOffset : selectedLp.StartOffset);
             var startPoint = points[0];
             var result = new Point3dCollection();
 
@@ -113,13 +117,15 @@ namespace Urbbox.SlabAssembler.Core
         {
             var selectedLd = Especifications.Parts.SelectedLd;
             var selectedLp = Especifications.Parts.SelectedLp;
+            var selectedStartLp = Especifications.Algorythim.SelectedStartLp;
             var selectedCast = Especifications.Parts.SelectedCast;
             var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
+            var useStartLp = Especifications.Algorythim.UseStartLp;
 
             var startDesloc = new Vector3d(0, 0, 0);
             var xIncr = selectedLp.Height + selectedLd.Width + spacing * 2;
             var yIncr = selectedLp.Width + Especifications.Algorythim.DistanceBetweenLp;
-            var points = GetPointMatrix(startDesloc, yIncr, xIncr);
+            var points = GetPointMatrix(startDesloc, yIncr, xIncr, 0, (useStartLp) ? selectedStartLp.StartOffset : selectedLp.StartOffset);
             var startPoint = points[0];
             var result = new Point3dCollection();
 

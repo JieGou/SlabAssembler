@@ -7,9 +7,7 @@ C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Views\PartsCo
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.SlabAssembler_MarkupCompile.cache
 C:\Users\Luiz\Urbbox\ProtentionBuilder\ProtentionBuilder\obj\Debug\Urbbox.SlabAssembler_MarkupCompile.lref
-C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\Resources\Configurations.Defaults.xml
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\Urbbox.SlabAssembler.dll
-C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\Urbbox.SlabAssembler.pdb
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\ReactiveUI.dll
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\Splat.dll
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\System.Reactive.Core.dll
@@ -17,6 +15,8 @@ C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\System.Reactive.Inter
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\System.Reactive.Linq.dll
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\System.Reactive.PlatformServices.dll
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\System.Reactive.Windows.Threading.dll
+C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\Resources\Configurations.Defaults.xml
+C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\Urbbox.SlabAssembler.pdb
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\ReactiveUI.xml
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\Splat.pdb
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\System.Reactive.Core.xml
@@ -24,6 +24,7 @@ C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\System.Reactive.Inter
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\System.Reactive.Linq.xml
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\System.Reactive.PlatformServices.xml
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\System.Reactive.Windows.Threading.xml
+C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\SlabAssembler.csprojResolveAssemblyReference.cache
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\Views\AlgorythimControl.g.cs
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\Views\LogWindow.g.cs
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\Views\PartWindow.g.cs

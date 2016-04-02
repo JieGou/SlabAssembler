@@ -121,7 +121,8 @@ namespace Urbbox.SlabAssembler.Core
             if (Especifications.Parts.SelectedOutline == ObjectId.Null)
                 Especifications.Parts.SelectedOutline = SelectOutline();
 
-            Especifications.StartPoint = GetStartPoint();
+            if (Especifications.StartPoint == null)
+                Especifications.StartPoint = GetStartPoint();
         }
 
         public SlabBuildingResult Start()
@@ -430,10 +431,39 @@ namespace Urbbox.SlabAssembler.Core
             var points = algorythim.GetStartLpPointList();
             var part = Especifications.Algorythim.SelectedStartLp;
             var orientationAngle = Especifications.Algorythim.OrientationAngle;
+            var placedObjects = new ObjectIdCollection();
+            var altPlacedObjects = new ObjectIdCollection();
+            var lastPoints = new Point3dCollection();
+
+            do { 
+                points = PlaceMultipleParts(result, points, part, orientationAngle, placedObjects);
+                if (points.Count > 0) lastPoints = points;
+            } while (points.Count > 0 && (part = _config.GetNextSmallerPart(part)) != null);
+
+            BuildAlternativeZoneStartLp(result, lastPoints, orientationAngle, altPlacedObjects);
+
+            foreach (ObjectId altId in altPlacedObjects)
+                EraseIfColliding(altId, placedObjects);
+        }
+
+        private void BuildAlternativeZoneStartLp(SlabBuildingResult result, Point3dCollection points, double orientationAngle, ObjectIdCollection placedObjects)
+        {
+            var alternativePoints = new Point3dCollection();
+            var direction = SlabAlgorythim.VectorFrom(orientationAngle);
+            var lastPart = Especifications.Algorythim.SelectedStartLp;
+            var part = _config.GetNextSmallerPart(lastPart);
 
             do
-                points = PlaceMultipleParts(result, points, part, orientationAngle);
-            while (points.Count > 0 && (part = _config.GetNextSmallerPart(part)) != null);
+            {
+                foreach (Point3d point in points)
+                {
+                    var desloc = direction * (lastPart.Width - part.Width);
+                    alternativePoints.Add(point.Add(desloc));
+                }
+
+                points = PlaceMultipleParts(result, points, part, orientationAngle, placedObjects);
+                lastPart = part;
+            } while (points.Count > 0 && (part = _config.GetNextSmallerPart(part)) != null);
         }
 
         public void BuildLd(SlabBuildingResult result, SlabAlgorythim algorythim)
