@@ -12,7 +12,8 @@
       <Layer>PLASTERIT</Layer>
       <Width>61</Width>
       <Height>61</Height>
-      <PivotPoint>BottomLeft</PivotPoint>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>0</PivotPointY>
       <UsageType>Form</UsageType>
     </Part>
     <Part Name="Caixa 61x61" Modulation="61">
@@ -20,7 +21,8 @@
       <Layer>CAIXAS IMPACTO</Layer>
       <Width>61</Width>
       <Height>61</Height>
-      <PivotPoint>MiddleCenter</PivotPoint>
+      <PivotPointX>30.5</PivotPointX>
+      <PivotPointY>30.5</PivotPointY>
       <UsageType>Box</UsageType>
     </Part>
     <Part Name="Caixa 80x80" Modulation="80">
@@ -28,7 +30,8 @@
       <Layer>CAIXAS IMPACTO</Layer>
       <Width>80</Width>
       <Height>80</Height>
-      <PivotPoint>MiddleCenter</PivotPoint>
+      <PivotPointX>30.5</PivotPointX>
+      <PivotPointY>30.5</PivotPointY>
       <UsageType>Box</UsageType>
     </Part>
     <Part Name="305" Modulation="61">
@@ -36,7 +39,8 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>305</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>Lp</UsageType>
     </Part>
     <Part Name="244" Modulation="61">
@@ -44,7 +48,8 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>244</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>Lp</UsageType>
     </Part>
     <Part Name="183" Modulation="61">
@@ -52,7 +57,8 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>183</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>Lp</UsageType>
     </Part>
     <Part Name="122" Modulation="61">
@@ -60,7 +66,8 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>122</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>Lp</UsageType>
     </Part>
     <Part Name="240" Modulation="80">
@@ -68,7 +75,8 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>240</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>Lp</UsageType>
     </Part>
     <Part Name="160" Modulation="80">
@@ -76,7 +84,8 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>160</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>Lp</UsageType>
     </Part>
     <Part Name="103" Modulation="61">
@@ -84,7 +93,8 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>103</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>EndLp</UsageType>
     </Part>
     <Part Name="87" Modulation="61">
@@ -92,7 +102,8 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>87</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>EndLp</UsageType>
     </Part>
     <Part Name="190" Modulation="80">
@@ -100,7 +111,8 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>190</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>EndLp</UsageType>
     </Part>
     <Part Name="150" Modulation="80">
@@ -108,7 +120,8 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>150</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>UsageType>StartLp
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>EndLp</UsageType>
     </Part>
     <Part Name="150" Modulation="80">
@@ -116,7 +129,8 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>150</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>EndLp</UsageType>
     </Part>
     <Part Name="213" Modulation="61">
@@ -124,7 +138,8 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>213</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleRight</PivotPoint>
+      <PivotPointX>213</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>StartLp</UsageType>
     </Part>
     <Part Name="138" Modulation="61">
@@ -132,7 +147,8 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>138</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleRight</PivotPoint>
+      <PivotPointX>138</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>StartLp</UsageType>
     </Part>
     <Part Name="140" Modulation="80">
@@ -140,7 +156,8 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>140</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleRight</PivotPoint>
+      <PivotPointX>140</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>StartLp</UsageType>
     </Part>
     <Part Name="100" Modulation="80">
@@ -148,143 +165,161 @@
       <Layer>LONGPRINCIPAL</Layer>
       <Width>100</Width>
       <Height>4</Height>
-      <PivotPoint>MiddleRight</PivotPoint>
+      <PivotPointX>100</PivotPointX>
+      <PivotPointY>2</PivotPointY>
       <UsageType>StartLp</UsageType>
     </Part>
     <Part Name="183" Modulation="61">
       <ReferenceName>LD 183</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>183</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Ld</UsageType>
     </Part>
     <Part Name="150" Modulation="61">
       <ReferenceName>LD 150</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>150</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Ld</UsageType>
     </Part>
     <Part Name="122" Modulation="61">
       <ReferenceName>LD 122</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>122</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Ld</UsageType>
     </Part>
     <Part Name="100" Modulation="61">
       <ReferenceName>LD 100</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>100</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Ld</UsageType>
     </Part>
     <Part Name="80" Modulation="61">
       <ReferenceName>LD 80</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>80</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Ld</UsageType>
     </Part>
     <Part Name="61" Modulation="61">
       <ReferenceName>LD 61</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>61</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Ld</UsageType>
     </Part>
     <Part Name="50" Modulation="61">
       <ReferenceName>LD 50</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>50</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Ld</UsageType>
     </Part>
     <Part Name="160" Modulation="80">
       <ReferenceName>LD 160</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>160</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Ld</UsageType>
     </Part>
     <Part Name="183" Modulation="61">
       <ReferenceName>LDS 183</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>183</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Lds</UsageType>
     </Part>
     <Part Name="150" Modulation="61">
       <ReferenceName>LDS 150</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>150</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Lds</UsageType>
     </Part>
     <Part Name="122" Modulation="61">
       <ReferenceName>LDS 122</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>122</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Lds</UsageType>
     </Part>
     <Part Name="100" Modulation="61">
       <ReferenceName>LDS 100</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>100</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Lds</UsageType>
     </Part>
     <Part Name="80" Modulation="61">
       <ReferenceName>LDS 80</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>80</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Lds</UsageType>
     </Part>
     <Part Name="61" Modulation="61">
       <ReferenceName>LDS 61</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>61</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Lds</UsageType>
     </Part>
     <Part Name="50" Modulation="61">
       <ReferenceName>LDS 50</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>50</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Lds</UsageType>
     </Part>
     <Part Name="160" Modulation="80">
       <ReferenceName>LDS 160</ReferenceName>
       <Layer>LONGDISTR</Layer>
       <Width>160</Width>
-      <Height>4</Height>
-      <PivotPoint>MiddleLeft</PivotPoint>
+      <Height>7</Height>
+      <PivotPointX>0</PivotPointX>
+      <PivotPointY>3.5</PivotPointY>
       <UsageType>Lds</UsageType>
     </Part>
     <Part Name="Cabeça" Modulation="61">
       <ReferenceName>CABEÇA COM PINO</ReferenceName>
       <Layer>CABEÇA</Layer>
-      <Width>5</Width>
+      <Width>12</Width>
       <Height>8</Height>
-      <PivotPoint>MiddleCenter</PivotPoint>
+      <PivotPointX>7</PivotPointX>
+      <PivotPointY>4</PivotPointY>
       <UsageType>Head</UsageType>
     </Part>
   </Parts>
