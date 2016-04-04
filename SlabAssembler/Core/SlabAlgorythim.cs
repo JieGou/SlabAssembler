@@ -98,7 +98,7 @@ namespace Urbbox.SlabAssembler.Core
             var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
             var useStartLp = Especifications.Algorythim.UseStartLp && Especifications.Algorythim.SelectedStartLp != null;
 
-            var offset = (useStartLp)? selectedStartLp.StartOffset - (selectedLp.Width - selectedStartLp.Width) - Especifications.Algorythim.DistanceBetweenLp : selectedLp.StartOffset;
+            var offset = (useStartLp)? selectedStartLp.StartOffset - (selectedLp.Width - selectedStartLp.Width) + Especifications.Algorythim.DistanceBetweenLp : selectedLp.StartOffset;
             var startDesloc = new Vector3d(0, offset, 0);
             var xIncr = selectedLp.Height + selectedLd.Width + spacing * 2;
             var yIncr = selectedLp.Width + Especifications.Algorythim.DistanceBetweenLp;

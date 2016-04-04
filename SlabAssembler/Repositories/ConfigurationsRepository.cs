@@ -141,10 +141,12 @@ namespace Urbbox.SlabAssembler.Repositories
             catch (UnauthorizedAccessException) { }
         }
 
-        public Part GetNextSmallerPart(Part part, UsageType? usage = null)
+        public Part GetNextSmallerPart(Part part, UsageType? usage = null, int modulation = 0)
         {
             if (usage == null) usage = part.UsageType;
-            foreach (var p in Data.Parts.Where(p => p.UsageType == usage).OrderByDescending(p => p.Width))
+            if (modulation == 0) modulation = part.Modulation;
+
+            foreach (var p in Data.Parts.Where(p => p.UsageType == usage && p.Modulation == part.Modulation).OrderByDescending(p => p.Width))
             {
                 if (p.Width < part.Width)
                     return p;

@@ -15,7 +15,6 @@ C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Release\System.Reactive.Int
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Release\System.Reactive.Linq.xml
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Release\System.Reactive.PlatformServices.xml
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\bin\Release\System.Reactive.Windows.Threading.xml
-C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Release\SlabAssembler.csprojResolveAssemblyReference.cache
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Views\AlgorythimControl.g.cs
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Views\LogWindow.g.cs
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Views\PartWindow.g.cs
