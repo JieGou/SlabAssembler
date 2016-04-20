@@ -6,6 +6,8 @@ using Autodesk.AutoCAD.Windows;
 using Urbbox.SlabAssembler.Repositories;
 using Urbbox.SlabAssembler.Properties;
 using Urbbox.SlabAssembler.Core;
+using System.Reactive.Linq;
+using System;
 
 namespace Urbbox.SlabAssembler
 {
@@ -28,9 +30,22 @@ namespace Urbbox.SlabAssembler
             var especificationsView = new Views.EspecificationsControl(_configRepository, _acManager);
             var algorythimView = new Views.AlgorythimControl(especificationsView.ViewModel, _configRepository);
             var partsView = new Views.PartsControl(_configRepository, _acManager);
+            var prop = new SlabProperties() {
+                Algorythim = algorythimView.ViewModel,
+                Parts = especificationsView.ViewModel
+            };
 
-            builder.EspecificationsViewModel = especificationsView.ViewModel;
-            builder.AlgorythimViewModel = algorythimView.ViewModel;
+            especificationsView.ViewModel.DrawSlab.Subscribe(_ => {
+                prop.Algorythim = algorythimView.ViewModel;
+                prop.Parts = especificationsView.ViewModel;
+                builder.Start(prop);
+            });
+            especificationsView.ViewModel.SelectOutline.Subscribe(_ => {
+                especificationsView.ViewModel.SelectedOutline = builder.SelectOutline();
+                prop.MaxPoint = builder.GetMaxPoint(prop);
+                prop.StartPoint = builder.GetStartPoint(prop);
+            });
+
             _mainPallet.Add("Especificações", GetElementHost(especificationsView));
             _mainPallet.Add("Algoritmo", GetElementHost(algorythimView));
             _mainPallet.Add("Peças", GetElementHost(partsView));

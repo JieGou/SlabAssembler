@@ -353,7 +353,7 @@
     </Part>
   </Parts>
   <OutlineDistance>10</OutlineDistance>
-  <DistanceBetweenLp>0.2</DistanceBetweenLp>
+  <DistanceBetweenLp>3</DistanceBetweenLp>
   <DistanceBetweenLpAndLd>0.25</DistanceBetweenLpAndLd>
   <UseLds>true</UseLds>
   <UseEndLp>true</UseEndLp>

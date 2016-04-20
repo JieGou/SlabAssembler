@@ -126,10 +126,10 @@
   <ItemGroup>
     <Compile Include="Core\SlabAlgorythim.cs" />
     <Compile Include="Core\SlabBuilder.cs" />
-    <Compile Include="Core\SlabBuildingResult.cs" />
     <Compile Include="Core\SlabEspecifications.cs" />
     <Compile Include="Core\Variations\UsageType.cs" />
     <Compile Include="Core\Variations\UsageTypeExtensions.cs" />
+    <Compile Include="Repositories\XmlModelDatabase.cs" />
     <Compile Include="ViewModels\Commands\BaseCommand.cs" />
     <Compile Include="ViewModels\Commands\RelayCommand.cs" />
     <Compile Include="ViewModels\Converters\UsageTypeConverter.cs" />

@@ -3,7 +3,7 @@ using Urbbox.SlabAssembler.ViewModels;
 
 namespace Urbbox.SlabAssembler.Core
 {
-    public class SlabEspecifications
+    public class SlabProperties
     {
         public EspecificationsViewModel Parts { get; set; }
         public AlgorythimViewModel Algorythim { get; set; }

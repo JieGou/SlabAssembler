@@ -28,7 +28,7 @@ namespace Urbbox.SlabAssembler.Views
             ViewModel = new PartsViewModel(config);
             ViewModel.Reset.Subscribe(x => config.ResetDefaults());
             ViewModel.DeleteSelectedPart.Subscribe(p => {
-                config.DeletePart((p as Part).Id);
+                config.DeletePart((p as Part).ReferenceName);
             });
             ViewModel.EditSelectedPart.Subscribe(p => OpenPartWindow(p as Part));
             ViewModel.CreatePart.Subscribe(x => OpenPartWindow(new Part()));

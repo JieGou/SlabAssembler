@@ -83,8 +83,6 @@ namespace Urbbox.SlabAssembler.Core
         }
 
         [XmlIgnore]
-        public int Id => ReferenceName.GetHashCode();
-        [XmlIgnore]
         public ReactiveCommand<object> Save { get; protected set; }
 
         public Part()

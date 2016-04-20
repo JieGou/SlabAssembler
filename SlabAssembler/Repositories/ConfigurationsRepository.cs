@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Xml.Serialization;
 using Urbbox.SlabAssembler.Core;
 using System.Collections.Generic;
@@ -42,39 +41,36 @@ namespace Urbbox.SlabAssembler.Repositories
         public ConfigurationData Data { get; set; }
         public event DataLoadedEventHandler DataLoaded;
         public event PartsChangedEventHandler PartsChanged;
+        public XmlModelDatabase<ConfigurationData> DataManager;
 
-        private readonly string _file;
         private readonly string _defaults;
 
         public ConfigurationsRepository(string configurationFile, string defaults)
         {
-            _file = configurationFile;
             _defaults = defaults;
             Data = new ConfigurationData();
+            DataManager = new XmlModelDatabase<ConfigurationData>(configurationFile);
         }
 
         public void LoadData()
         {
-            if (!File.Exists(_file)) CreateConfigurationFile();
+            if (!File.Exists(DataManager.File)) CreateConfigurationFile();
 
-            try { 
-                var deserializer = new XmlSerializer(typeof(ConfigurationData));
-                using (TextReader reader = new StreamReader(_file))
-                    Data = (ConfigurationData) deserializer.Deserialize(reader);
-            }
-            catch (IOException) { }
-            catch (StackOverflowException) { }
-            catch (UnauthorizedAccessException) { }
-
+            Data = DataManager.LoadData();
             PartsChanged?.Invoke(Data.Parts);
             DataLoaded?.Invoke(Data);
+        }
+
+        public void SaveData()
+        {
+            DataManager.SaveData(Data);
         }
 
         public void SavePart(Part part)
         {
             for (int i = 0; i < Data.Parts.Count; i++)
             {
-                if (Data.Parts[i].Id == part.Id)
+                if (Data.Parts[i].ReferenceName == part.ReferenceName)
                 {
                     Data.Parts[i] = part;
                     SaveData();
@@ -90,28 +86,15 @@ namespace Urbbox.SlabAssembler.Repositories
         private void CreateConfigurationFile()
         {
             try {
-                File.Copy(_defaults, _file);
+                File.Copy(_defaults, DataManager.File);
             } catch (IOException) { }
-              catch (UnauthorizedAccessException) { }
         }
 
-        public void SaveData()
-        {
-            try { 
-                var serializer = new XmlSerializer(typeof(ConfigurationData));
-                using (TextWriter writer = new StreamWriter(_file))
-                    serializer.Serialize(writer, Data);
-            }
-            catch (IOException) { }
-            catch (StackOverflowException) { }
-            catch (UnauthorizedAccessException) { }
-        }
-
-        public bool DeletePart(int id)
+        public bool DeletePart(string referenceName)
         {
             foreach (Part p in Data.Parts)
             {
-                if (p.Id == id)
+                if (p.ReferenceName == referenceName)
                 {
                     if (Data.Parts.Remove(p)) SaveData();
                     PartsChanged?.Invoke(Data.Parts);
@@ -133,12 +116,11 @@ namespace Urbbox.SlabAssembler.Repositories
 
             try
             {
-                File.Delete(_file);
+                File.Delete(DataManager.File);
                 LoadData();
                 PartsChanged?.Invoke(Data.Parts);
             }
             catch (IOException) { }
-            catch (UnauthorizedAccessException) { }
         }
 
         public Part GetNextSmallerPart(Part part, UsageType? usage = null, int modulation = 0)

@@ -27,8 +27,8 @@
       <Height>80</Height>
       <UsageType>Box</UsageType>
       <Layer>CAIXAS IMPACTO</Layer>
-      <PivotPointX>30.5</PivotPointX>
-      <PivotPointY>30.5</PivotPointY>
+      <PivotPointX>40</PivotPointX>
+      <PivotPointY>40</PivotPointY>
       <StartOffset>0</StartOffset>
     </Part>
     <Part Name="305" Modulation="61">

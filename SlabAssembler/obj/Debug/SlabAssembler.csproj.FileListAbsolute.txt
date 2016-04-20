@@ -42,3 +42,4 @@ C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\Urbbox.SlabAssembler.
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\SlabAssembler.csproj.GenerateResource.Cache
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\Urbbox.SlabAssembler.dll
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\Urbbox.SlabAssembler.pdb
+C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\SlabAssembler.csprojResolveAssemblyReference.cache

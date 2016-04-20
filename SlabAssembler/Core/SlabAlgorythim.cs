@@ -9,11 +9,11 @@ namespace Urbbox.SlabAssembler.Core
 {
     public class SlabAlgorythim
     {
-        protected SlabEspecifications Especifications;
+        public SlabProperties Properties { get; set; }
 
-        public SlabAlgorythim(SlabEspecifications especifications)
+        public SlabAlgorythim(SlabProperties prop)
         {
-            Especifications = especifications;
+            Properties = prop;
         }
 
         public static Point3d RotatePoint(double x, double y, double z, double angle)
@@ -30,11 +30,11 @@ namespace Urbbox.SlabAssembler.Core
         protected Point3dCollection GetPointMatrix(Vector3d startDesloc, double yIncr, double xIncr)
         {
             Point3dCollection list = new Point3dCollection();
-            var angle = ToRadians(90 - Especifications.Algorythim.OrientationAngle);
-            var startPt = Especifications.StartPoint.Add(startDesloc.RotateBy(angle, Vector3d.ZAxis));
+            var angle = ToRadians(90 - Properties.Algorythim.OrientationAngle);
+            var startPt = Properties.StartPoint.Add(startDesloc.RotateBy(angle, Vector3d.ZAxis));
 
-            for (double y = startPt.Y; y < Especifications.MaxPoint.Y; y += yIncr * Math.Cos(angle) + xIncr * Math.Sin(angle))
-                for (double x = startPt.X; x < Especifications.MaxPoint.X; x += xIncr * Math.Cos(angle) + yIncr * Math.Sin(angle))
+            for (double y = startPt.Y; y < Properties.MaxPoint.Y; y += yIncr * Math.Cos(angle) + xIncr * Math.Sin(angle))
+                for (double x = startPt.X; x < Properties.MaxPoint.X; x += xIncr * Math.Cos(angle) + yIncr * Math.Sin(angle))
                         list.Add(new Point3d(x, y, 0));
 
             return list;
@@ -43,11 +43,11 @@ namespace Urbbox.SlabAssembler.Core
         public Point3dCollection GetCastPointList()
         {
             var result = new Point3dCollection();
-            var selectedLp = Especifications.Parts.SelectedLp;
-            var selectedLd = Especifications.Parts.SelectedLd;
-            var selectedCast = Especifications.Parts.SelectedCast;
-            var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
-            var orientationAngle = 90 - Especifications.Algorythim.OrientationAngle;
+            var selectedLp = Properties.Parts.SelectedLp;
+            var selectedLd = Properties.Parts.SelectedLd;
+            var selectedCast = Properties.Parts.SelectedCast;
+            var spacing = Properties.Algorythim.DistanceBetweenLpAndLd;
+            var orientationAngle = 90 - Properties.Algorythim.OrientationAngle;
 
             var startDesloc = new Vector3d(selectedLp.Height + spacing, selectedLd.Height / 2.0D, 0);
             var xIncr = selectedLd.Width + 2 * spacing + selectedLp.Height;
@@ -55,7 +55,7 @@ namespace Urbbox.SlabAssembler.Core
             var auxPts = GetPointMatrix(startDesloc, yIncr, xIncr);
 
             foreach (Point3d p in auxPts)
-                for (int i = 0; i < Especifications.CastGroupSize; i++)
+                for (int i = 0; i < Properties.CastGroupSize; i++)
                     result.Add(RotatePoint(p.X + (i * selectedCast.Width), p.Y, 0, orientationAngle));
 
             return result;
@@ -63,15 +63,16 @@ namespace Urbbox.SlabAssembler.Core
 
         public Point3dCollection GetLdPointList(bool ignoreLds)
         {
-            var selectedLd = Especifications.Parts.SelectedLd;
-            var selectedLp = Especifications.Parts.SelectedLp;
-            var selectedCast = Especifications.Parts.SelectedCast;
-            var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
+            var selectedLd = Properties.Parts.SelectedLd;
+            var selectedLp = Properties.Parts.SelectedLp;
+            var selectedCast = Properties.Parts.SelectedCast;
+            var spacing = Properties.Algorythim.DistanceBetweenLpAndLd;
 
             var startDesloc = new Vector3d(selectedLp.Height + spacing, 0, 0);
             var xIncr = selectedLd.Width + 2 * spacing + selectedLp.Height;
             var yIncr = selectedCast.Height;
             var points = GetPointMatrix(startDesloc, yIncr, xIncr);
+            if (points.Count == 0) return points;
 
             if (ignoreLds)
             {
@@ -91,21 +92,23 @@ namespace Urbbox.SlabAssembler.Core
 
         public Point3dCollection GetLpPointList(bool ignoreStartLp)
         {
-            var selectedLd = Especifications.Parts.SelectedLd;
-            var selectedLp = Especifications.Parts.SelectedLp;
-            var selectedStartLp = Especifications.Algorythim.SelectedStartLp;
-            var selectedCast = Especifications.Parts.SelectedCast;
-            var spacing = Especifications.Algorythim.DistanceBetweenLpAndLd;
-            var useStartLp = Especifications.Algorythim.UseStartLp && Especifications.Algorythim.SelectedStartLp != null;
+            var selectedLd = Properties.Parts.SelectedLd;
+            var selectedLp = Properties.Parts.SelectedLp;
+            var selectedStartLp = Properties.Algorythim.SelectedStartLp;
+            var selectedCast = Properties.Parts.SelectedCast;
+            var spacing = Properties.Algorythim.DistanceBetweenLpAndLd;
+            var useStartLp = Properties.Algorythim.UseStartLp && Properties.Algorythim.SelectedStartLp != null;
 
-            var offset = (useStartLp)? selectedStartLp.StartOffset - (selectedLp.Width - selectedStartLp.Width) + Especifications.Algorythim.DistanceBetweenLp : selectedLp.StartOffset;
+            var offset = (useStartLp)? selectedStartLp.StartOffset - (selectedLp.Width - selectedStartLp.Width) + Properties.Algorythim.DistanceBetweenLp : selectedLp.StartOffset;
             var startDesloc = new Vector3d(0, offset, 0);
             var xIncr = selectedLp.Height + selectedLd.Width + spacing * 2;
-            var yIncr = selectedLp.Width + Especifications.Algorythim.DistanceBetweenLp;
+            var yIncr = selectedLp.Width + Properties.Algorythim.DistanceBetweenLp;
             var points = GetPointMatrix(startDesloc, yIncr, xIncr);
+            if (points.Count == 0) return points;
+
             var startPoint = points[0];
             var result = new Point3dCollection();
-            var orientationAngle = Especifications.Algorythim.OrientationAngle;
+            var orientationAngle = Properties.Algorythim.OrientationAngle;
      
             if (ignoreStartLp)
             {
@@ -121,11 +124,13 @@ namespace Urbbox.SlabAssembler.Core
         public Point3dCollection GetStartLpPointList()
         {
             var lpPoints = GetLpPointList(false);
+            if (lpPoints.Count == 0) return lpPoints;
+
             var firstPoint = lpPoints[0];
             var result = new Point3dCollection();
-            var selectedLp = Especifications.Parts.SelectedLp;
-            var selectedStartLp = Especifications.Algorythim.SelectedStartLp;
-            var orientationAngle = ToRadians(Especifications.Algorythim.OrientationAngle);
+            var selectedLp = Properties.Parts.SelectedLp;
+            var selectedStartLp = Properties.Algorythim.SelectedStartLp;
+            var orientationAngle = ToRadians(Properties.Algorythim.OrientationAngle);
             var pivotFix = (selectedStartLp.PivotPoint - Point3d.Origin).RotateBy(-orientationAngle, Vector3d.ZAxis);
             var posFix = (selectedStartLp.PivotPoint - Point3d.Origin)
                 .Add(new Vector3d(selectedLp.Width - selectedStartLp.Width, -selectedStartLp.Height, 0))
@@ -141,9 +146,11 @@ namespace Urbbox.SlabAssembler.Core
         public Point3dCollection GetHeadPointList(Part selectedHead)
         {
             var ldPoints = GetLdPointList(false);
-            var orientationAngle = ToRadians(90 - Especifications.Algorythim.OrientationAngle);
-            var selectedLd = Especifications.Parts.SelectedLd;
-            var selectedLp = Especifications.Parts.SelectedLp;
+            if (ldPoints.Count == 0) return ldPoints;
+
+            var orientationAngle = ToRadians(90 - Properties.Algorythim.OrientationAngle);
+            var selectedLd = Properties.Parts.SelectedLd;
+            var selectedLp = Properties.Parts.SelectedLp;
             var pivotFix = (selectedHead.PivotPoint - Point3d.Origin).RotateBy(-orientationAngle, Vector3d.ZAxis);
             var posFix = new Vector3d(-selectedLp.Height / 2.0f, selectedLd.Height / 2.0f, 0).RotateBy(orientationAngle, Vector3d.ZAxis);
             var result = new Point3dCollection();
@@ -157,6 +164,8 @@ namespace Urbbox.SlabAssembler.Core
         public Point3dCollection GetLdsPointList()
         {
             var ldPoints = GetLdPointList(false);
+            if (ldPoints.Count == 0) return ldPoints;
+
             var firstPoint = ldPoints[0];
             var lastPoint = ldPoints[ldPoints.Count - 1];
             var result = new Point3dCollection();
@@ -216,7 +225,7 @@ namespace Urbbox.SlabAssembler.Core
 
         public bool CheckIfIsStartLP(Point3d startPoint, Point3d point)
         {
-            var orientation = Especifications.Algorythim.SelectedOrientation;
+            var orientation = Properties.Algorythim.SelectedOrientation;
             return ((point.Y <= startPoint.Y && orientation == Orientation.Vertical) 
                 || (point.X <= startPoint.X && orientation == Orientation.Horizontal));
         }
@@ -228,7 +237,7 @@ namespace Urbbox.SlabAssembler.Core
 
         public bool CheckIfIsLDS(Point3d point, Point3d firstPoint, Point3d lastPoint)
         {
-            var orientation = Especifications.Algorythim.SelectedOrientation;
+            var orientation = Properties.Algorythim.SelectedOrientation;
             var isAtTheBeginningOrEndingOnVertical = (point.Y <= firstPoint.Y || point.Y >= lastPoint.Y) && (orientation == Orientation.Vertical);
             var isAtTheBeginningEndingOnHorizontal = (point.X <= firstPoint.X || point.X >= lastPoint.X) && (orientation == Orientation.Horizontal);
 
@@ -237,15 +246,15 @@ namespace Urbbox.SlabAssembler.Core
 
         public bool IsAtTheEnd(Point3d lastPoint, Point3d point)
         {
-            var orientation = Especifications.Algorythim.SelectedOrientation;
+            var orientation = Properties.Algorythim.SelectedOrientation;
             return ((point.Y >= lastPoint.Y && orientation == Orientation.Vertical) 
                 || (point.X >= lastPoint.X && orientation == Orientation.Horizontal));
         }
 
         public Point3d? GetBelowLpPoint(Point3dCollection points, Point3d current)
         {
-            var dist = Especifications.Parts.SelectedLp.Width + Especifications.Algorythim.DistanceBetweenLp;
-            var orientation = Especifications.Algorythim.SelectedOrientation;
+            var dist = Properties.Parts.SelectedLp.Width + Properties.Algorythim.DistanceBetweenLp;
+            var orientation = Properties.Algorythim.SelectedOrientation;
 
             foreach (Point3d point in points)
             {
@@ -283,7 +292,7 @@ namespace Urbbox.SlabAssembler.Core
         {
             firstPart = null;
             secondPart = null;
-            double distanceToInterference = distance - Especifications.Algorythim.OutlineDistance;
+            double distanceToInterference = distance - Properties.Algorythim.OutlineDistance;
             double delta = double.MaxValue;
             double tmpDelta = 0;
 
@@ -298,7 +307,7 @@ namespace Urbbox.SlabAssembler.Core
 
                 foreach (var part2 in secondList)
                 {
-                    tmpDelta = (part1.Width + part2.Width) - distanceToInterference;
+                    tmpDelta = (part1.Width + Properties.Algorythim.DistanceBetweenLp + part2.Width) - distanceToInterference;
                     if (tmpDelta <= 0 && Math.Abs(tmpDelta) < delta)
                     {
                         delta = Math.Abs(tmpDelta);
