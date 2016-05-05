@@ -22,8 +22,8 @@ namespace Urbbox.SlabAssembler.ViewModels
 
         public LogWindowViewModel()
         {
-            ResultsMessage = "Analisando...";
-            LogMessage = "";
+            _resultsMessage = "Analisando...";
+            _logMessage = String.Empty;
         }
     }
 }

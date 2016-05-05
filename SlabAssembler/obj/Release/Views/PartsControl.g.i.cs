@@ -43,7 +43,7 @@ namespace Urbbox.SlabAssembler.Views {
     /// <summary>
     /// PartsControl
     /// </summary>
-    public partial class PartsControl : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+    public partial class PartsListControl : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
         
         
         #line 43 "..\..\..\Views\PartsControl.xaml"

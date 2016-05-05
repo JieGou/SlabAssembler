@@ -1,8 +1,6 @@
-﻿using Urbbox.SlabAssembler.Repositories;
-using System;
-using System.Reactive.Linq;
-using Urbbox.SlabAssembler.ViewModels;
+﻿using Urbbox.SlabAssembler.ViewModels;
 using System.Windows.Controls;
+using Urbbox.SlabAssembler.Managers;
 
 namespace Urbbox.SlabAssembler.Views
 {
@@ -13,9 +11,9 @@ namespace Urbbox.SlabAssembler.Views
     {
         public AlgorythimViewModel ViewModel { get; private set; }
 
-        public AlgorythimControl(EspecificationsViewModel especifications, ConfigurationsRepository config)
+        public AlgorythimControl(EspecificationsViewModel especifications, ConfigurationsManager manager)
         {
-            ViewModel = new AlgorythimViewModel(ref especifications, config);
+            ViewModel = new AlgorythimViewModel(especifications, manager);
             DataContext = ViewModel;
             InitializeComponent();
         }

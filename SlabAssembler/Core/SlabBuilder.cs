@@ -1,108 +1,30 @@
-﻿using Autodesk.AutoCAD.Customization;
-using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.EditorInput;
+﻿using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using System;
 using Urbbox.SlabAssembler.Repositories;
-using Urbbox.SlabAssembler.ViewModels;
 using System.Linq;
 using Urbbox.SlabAssembler.Core.Variations;
 using Autodesk.AutoCAD.Colors;
+using Urbbox.SlabAssembler.Managers;
 
 namespace Urbbox.SlabAssembler.Core
 {
-    public class SlabBuilder
+    public class SlabBuilder : IDisposable
     {
         protected AutoCadManager _acad;
-        protected ConfigurationsRepository _config;
+        protected IPartRepository _partRepository;
         protected Polyline _outline;
         protected DBObjectCollection _girders;
         protected DBObjectCollection _collumns;
         protected DBObjectCollection _empties;
 
-        public SlabBuilder(AutoCadManager acad, ConfigurationsRepository config)
+        public SlabBuilder(AutoCadManager acad, IPartRepository repo)
         {
             _acad = acad;
-            _config = config;
+            _partRepository = repo;
             _girders = new DBObjectCollection();
             _collumns = new DBObjectCollection();
             _empties = new DBObjectCollection();
-        }
-
-        #region Initializers
-        public Point3d GetStartPoint(SlabProperties prop)
-        {
-            if (prop.Parts.SpecifyStartPoint)
-            {
-                Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
-                var result = _acad.GetPoint("\nInforme o ponto de partida");
-                if (result.Status == PromptStatus.OK)
-                    return result.Value.Add(prop.StartPointDeslocation);
-                else
-                    throw new OperationCanceledException();
-            } else {
-                using (var t = _acad.StartTransaction())
-                {
-                    var outline = t.GetObject(prop.Parts.SelectedOutline, OpenMode.ForRead);
-                    return outline.Bounds.Value.MinPoint.Add(prop.StartPointDeslocation);
-                }
-                    
-            }
-        }
-
-        public Point3d GetMaxPoint(SlabProperties prop)
-        {
-            using (var t = _acad.StartOpenCloseTransaction())
-            {
-                var bounds = t.GetObject(prop.Parts.SelectedOutline, OpenMode.ForRead).Bounds.Value;
-                return bounds.MaxPoint;
-            }
-        }
-
-        public Orientation GetOrientation()
-        {
-            Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
-            var result = _acad.GetKeywords("\nSelecione uma orientação", new[] { "Vertical", "Horizontal" });
-            if (result.Status == PromptStatus.OK)
-                return (result.StringResult == "Vertical") ? Orientation.Vertical : Orientation.Horizontal;
-            else
-                throw new OperationCanceledException();
-        }
-
-        public bool ValidateOutline(ObjectId objectId)
-        {
-            using (var t = _acad.StartOpenCloseTransaction())
-            {
-                var outline = t.GetObject(objectId, OpenMode.ForRead) as Polyline;
-                return outline != null && outline.Bounds.HasValue;
-            }
-        }
-
-        public ObjectId SelectOutline()
-        {
-            Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
-            var result = _acad.GetEntity("\nSelecione o contorno da laje");
-            if (result.Status == PromptStatus.OK)
-            {
-                var selected = result.ObjectId;
-                if (ValidateOutline(selected))
-                    return selected;
-                else
-                    throw new ArgumentException("\nSelecione um contorno válido.");
-            }
-            else
-                return ObjectId.Null;
-        }
-
-        private void InitializeBuilding(SlabProperties prop)
-        {
-            SelectedCollisionObjects(prop);
-
-            if (prop.Parts.SelectedOutline == ObjectId.Null)
-                prop.Parts.SelectedOutline = SelectOutline();
-
-            if (prop.StartPoint == null)
-                prop.StartPoint = GetStartPoint(prop);
         }
 
         private void SelectedCollisionObjects(SlabProperties prop)
@@ -137,22 +59,20 @@ namespace Urbbox.SlabAssembler.Core
             }
         }
 
-        #endregion
-
         public void Start(SlabProperties prop)
         {
-            InitializeBuilding(prop);
+            SelectedCollisionObjects(prop);
             var algorythim = new SlabAlgorythim(prop);
 
             using (_acad.WorkingDocument.LockDocument())
             {
                 try {
-                    if (prop.Algorythim.UseStartLp && prop.Algorythim.SelectedStartLp != null)
+                    if (prop.Algorythim.Options.UseStartLp && prop.Algorythim.SelectedStartLp != null)
                         BuildStartLp(algorythim);
 
                     BuildLp(algorythim);
 
-                    if (prop.Algorythim.UseLds)
+                    if (prop.Algorythim.Options.UseLds)
                         BuildLds(algorythim);
 
                     BuildLd(algorythim);
@@ -162,7 +82,6 @@ namespace Urbbox.SlabAssembler.Core
                     if (!prop.Algorythim.OnlyCimbrament)
                         BuildCast(algorythim);
                 }
-                catch (OperationCanceledException) { _acad.WorkingDocument.Editor.WriteMessage("\nLaje cancelada."); }
                 catch (Exception e) { _acad.WorkingDocument.Editor.WriteMessage($"\n{e.Message}\n {e.StackTrace}"); }
 
                 _acad.WorkingDocument.Editor.WriteMessage("\nLaje finalizada.");
@@ -177,7 +96,7 @@ namespace Urbbox.SlabAssembler.Core
             {
                 var blkTbl = t.GetObject(_acad.Database.BlockTableId, OpenMode.ForWrite) as BlockTable;
 
-                foreach (var p in _config.Data.Parts)
+                foreach (var p in _partRepository.GetParts())
                 {
                     if (blkTbl.Has(p.OutlineReferenceName))
                     {
@@ -276,7 +195,7 @@ namespace Urbbox.SlabAssembler.Core
 
             do
                 normalZoneList = PlaceMultipleParts(al.Properties, normalZoneList, part, orientationAngle);
-            while (normalZoneList.Count > 0 && (part = _config.GetNextSmallerPart(part)) != null);
+            while (normalZoneList.Count > 0 && (part = _partRepository.GetNextSmaller(part, part.UsageType)) != null);
 
             if (dangerZoneList.Count > 0)
                 BuildDangerZoneLp(al, dangerZoneList, orientationAngle);
@@ -301,7 +220,7 @@ namespace Urbbox.SlabAssembler.Core
                             PlacePart(firstLp, p, orientationAngle, GetOrCreatePart(firstLp));
 
                         var lpDirection = SlabAlgorythim.VectorFrom(orientationAngle);
-                        var nextPoint = p.Add(lpDirection * (firstLp.Width + al.Properties.Algorythim.DistanceBetweenLp));
+                        var nextPoint = p.Add(lpDirection * (firstLp.Width + al.Properties.Algorythim.Options.DistanceBetweenLp));
                         if (secondLp != null)
                         {
                             secondLpOutline = CreatePartOutline(al.Properties, secondLp);
@@ -325,7 +244,7 @@ namespace Urbbox.SlabAssembler.Core
             do { 
                 points = PlaceMultipleParts(al.Properties, points, part, orientationAngle, placedObjects);
                 if (points.Count > 0) lastPoints = points;
-            } while (points.Count > 0 && (part = _config.GetNextSmallerPart(part)) != null);
+            } while (points.Count > 0 && (part = _partRepository.GetNextSmaller(part, part.UsageType)) != null);
 
             BuildAlternativeZoneStartLp(al.Properties, lastPoints, orientationAngle, altPlacedObjects);
 
@@ -338,7 +257,7 @@ namespace Urbbox.SlabAssembler.Core
             var alternativePoints = new Point3dCollection();
             var direction = SlabAlgorythim.VectorFrom(orientationAngle);
             var lastPart = prop.Algorythim.SelectedStartLp;
-            var part = _config.GetNextSmallerPart(lastPart);
+            var part = _partRepository.GetNextSmaller(lastPart, lastPart.UsageType);
 
             do
             {
@@ -350,12 +269,12 @@ namespace Urbbox.SlabAssembler.Core
 
                 points = PlaceMultipleParts(prop, points, part, orientationAngle, placedObjects);
                 lastPart = part;
-            } while (points.Count > 0 && (part = _config.GetNextSmallerPart(part)) != null);
+            } while (points.Count > 0 && (part = _partRepository.GetNextSmaller(part, lastPart.UsageType)) != null);
         }
 
         public void BuildLd(SlabAlgorythim al)
         {
-            var points = al.GetLdPointList(al.Properties.Algorythim.UseLds);
+            var points = al.GetLdPointList(al.Properties.Algorythim.Options.UseLds);
             if (points.Count == 0) return;
 
             var part = al.Properties.Parts.SelectedLd;
@@ -369,7 +288,7 @@ namespace Urbbox.SlabAssembler.Core
             {
                 points = PlaceMultipleParts(al.Properties, points, part, orientationAngle, placedObjects);
                 if (points.Count > 0) lastPoints = points;
-            } while (points.Count > 0 && (part = _config.GetNextSmallerPart(part)) != null);
+            } while (points.Count > 0 && (part = _partRepository.GetNextSmaller(part, part.UsageType)) != null);
 
             BuildAlternativeZoneLd(al.Properties, lastPoints, orientationAngle, false, altPlacedObjects);
 
@@ -382,7 +301,7 @@ namespace Urbbox.SlabAssembler.Core
             var alternativePoints = new Point3dCollection();
             var direction = SlabAlgorythim.VectorFrom(orientationAngle);
             var lastPart = prop.Parts.SelectedLd;
-            var part = _config.GetNextSmallerPart(lastPart, (isLds)? UsageType.Lds : UsageType.Ld);
+            var part = _partRepository.GetNextSmaller(lastPart, (isLds)? UsageType.Lds : UsageType.Ld);
 
             do
             {
@@ -394,7 +313,7 @@ namespace Urbbox.SlabAssembler.Core
 
                 points = PlaceMultipleParts(prop, points, part, orientationAngle, placedObjects);
                 lastPart = part;
-            } while (points.Count > 0 && (part = _config.GetNextSmallerPart(part)) != null);
+            } while (points.Count > 0 && (part = _partRepository.GetNextSmaller(part, part.UsageType)) != null);
         }
 
         public void BuildLds(SlabAlgorythim al)
@@ -403,8 +322,8 @@ namespace Urbbox.SlabAssembler.Core
             if (points.Count == 0) return;
 
             var lastPoints = new Point3dCollection();
-            var part = _config.GetRespectiveOfUsageType(al.Properties.Parts.SelectedLd, UsageType.Lds);
-            var rightPart = _config.GetNextSmallerPart(part);
+            var part = _partRepository.GetRespectiveOfType(al.Properties.Parts.SelectedLd, UsageType.Lds);
+            var rightPart = _partRepository.GetNextSmaller(part, part.UsageType);
             var orientationAngle = 90 - al.Properties.Algorythim.OrientationAngle;
             var directionVector = SlabAlgorythim.VectorFrom(orientationAngle);
             var placedObjects = new ObjectIdCollection();
@@ -413,7 +332,7 @@ namespace Urbbox.SlabAssembler.Core
             do {
                 points = PlaceMultipleParts(al.Properties, points, part, orientationAngle, placedObjects);
                 if (points.Count > 0) lastPoints = points;
-            } while (points.Count > 0 && (part = _config.GetNextSmallerPart(part)) != null);
+            } while (points.Count > 0 && (part = _partRepository.GetNextSmaller(part, part.UsageType)) != null);
 
             BuildAlternativeZoneLd(al.Properties, lastPoints, orientationAngle, true, altPlacedObjects);
 
@@ -423,7 +342,7 @@ namespace Urbbox.SlabAssembler.Core
 
         public void BuildHead(SlabAlgorythim al)
         {
-            var part = _config.Data.Parts.Where(p => p.UsageType == UsageType.Head).First();
+            var part = _partRepository.GetPartsByType(UsageType.Head).First();
             PlaceMultipleParts(al.Properties, al.GetHeadPointList(part), part, 90 - al.Properties.Algorythim.OrientationAngle);
         }
         #endregion
@@ -470,7 +389,7 @@ namespace Urbbox.SlabAssembler.Core
                 var blkTbl = t.GetObject(_acad.Database.BlockTableId, OpenMode.ForWrite) as BlockTable;
                 if (blkTbl.Has(part.OutlineReferenceName)) return blkTbl[part.OutlineReferenceName];
 
-                var border = prop.Algorythim.OutlineDistance - 0.01;
+                var border = prop.Algorythim.Options.OutlineDistance - 0.01;
                 using (var record = new BlockTableRecord())
                 {
                     record.Name = part.OutlineReferenceName;
@@ -577,7 +496,6 @@ namespace Urbbox.SlabAssembler.Core
                     {
                         reference.Erase();
                         t.Commit();
-                        t.Dispose();
                         return;
                     }
                 }
@@ -588,9 +506,9 @@ namespace Urbbox.SlabAssembler.Core
         #region Testing Algorythims
         private void FindBetterLpCombination(SlabAlgorythim al, double dist, out Part firstLp, out Part secondLp)
         {
-            var secondUsageType = (al.Properties.Algorythim.UseEndLp) ? Variations.UsageType.EndLp : Variations.UsageType.Lp;
-            var firstList = _config.Data.Parts.Where(p => p.UsageType == Variations.UsageType.Lp);
-            var secondList = _config.Data.Parts.Where(p => p.UsageType == secondUsageType);
+            var secondUsageType = (al.Properties.Algorythim.Options.UseEndLp) ? Variations.UsageType.EndLp : Variations.UsageType.Lp;
+            var firstList = _partRepository.GetPartsByType(Variations.UsageType.Lp);
+            var secondList = _partRepository.GetPartsByType(secondUsageType);
             al.FindBetterPartCombination(firstList, secondList, dist, out firstLp, out secondLp);
         }
 
@@ -669,6 +587,14 @@ namespace Urbbox.SlabAssembler.Core
             }
 
             return true;
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)_outline).Dispose();
+            _girders.Dispose();
+            _empties.Dispose();
+            _collumns.Dispose();
         }
         #endregion
 

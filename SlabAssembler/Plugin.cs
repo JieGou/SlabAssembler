@@ -3,18 +3,18 @@ using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
-using Urbbox.SlabAssembler.Repositories;
 using Urbbox.SlabAssembler.Properties;
 using Urbbox.SlabAssembler.Core;
 using System.Reactive.Linq;
 using System;
+using Urbbox.SlabAssembler.Managers;
 
 namespace Urbbox.SlabAssembler
 {
-    public class Plugin
+    public static class Plugin
     {
         private static PaletteSet _mainPallet;
-        private static ConfigurationsRepository _configRepository;
+        private static ConfigurationsManager _configManager;
         private static AutoCadManager _acManager;
 
         [CommandMethod("URBLAJE")]
@@ -23,33 +23,36 @@ namespace Urbbox.SlabAssembler
             if (_mainPallet != null) return;
             _mainPallet = InitializeMainPallet();
             _mainPallet.StateChanged += _mainPallet_StateChanged;
-            _configRepository = new ConfigurationsRepository(Resources.ConfigurationsFile, Resources.DefaultsConfigurationFile);
+            _configManager = new ConfigurationsManager(Resources.ConfigurationsFile, Resources.DefaultsConfigurationFile);
             _acManager = new AutoCadManager();
 
-            var builder = new SlabBuilder(_acManager, _configRepository);
-            var especificationsView = new Views.EspecificationsControl(_configRepository, _acManager);
-            var algorythimView = new Views.AlgorythimControl(especificationsView.ViewModel, _configRepository);
-            var partsView = new Views.PartsControl(_configRepository, _acManager);
+            var especificationsView = new Views.EspecificationsControl(_configManager, _acManager);
+            var algorythimView = new Views.AlgorythimControl(especificationsView.ViewModel, _configManager);
+            var partsView = new Views.PartsListControl(_configManager, _acManager);
+            var helper = new BuildingHelper(_acManager);
             var prop = new SlabProperties() {
                 Algorythim = algorythimView.ViewModel,
                 Parts = especificationsView.ViewModel
             };
 
             especificationsView.ViewModel.DrawSlab.Subscribe(_ => {
-                prop.Algorythim = algorythimView.ViewModel;
-                prop.Parts = especificationsView.ViewModel;
-                builder.Start(prop);
+                using (var builder = new SlabBuilder(_acManager, _configManager))
+                {
+                    prop.MaxPoint = helper.GetMaxPoint(especificationsView.ViewModel.SelectedOutline);
+                    prop.StartPoint = helper
+                        .GetStartPoint(especificationsView.ViewModel.SelectedOutline, especificationsView.ViewModel.SpecifyStartPoint)
+                        .Add(prop.StartPointDeslocation);
+                    builder.Start(prop);
+                }
             });
+
             especificationsView.ViewModel.SelectOutline.Subscribe(_ => {
-                especificationsView.ViewModel.SelectedOutline = builder.SelectOutline();
-                prop.MaxPoint = builder.GetMaxPoint(prop);
-                prop.StartPoint = builder.GetStartPoint(prop);
+                especificationsView.ViewModel.SelectedOutline = helper.SelectOutline();
             });
 
             _mainPallet.Add("Especificações", GetElementHost(especificationsView));
             _mainPallet.Add("Algoritmo", GetElementHost(algorythimView));
             _mainPallet.Add("Peças", GetElementHost(partsView));
-            _configRepository.LoadData();
         }
 
         private static ElementHost GetElementHost(System.Windows.UIElement element)
@@ -67,7 +70,7 @@ namespace Urbbox.SlabAssembler
             if (e.NewState == StateEventIndex.Hide) { 
                 _mainPallet = null;
                 _acManager = null;
-                _configRepository = null;
+                _configManager = null;
             }
         }
 

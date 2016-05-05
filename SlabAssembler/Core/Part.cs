@@ -10,6 +10,14 @@ namespace Urbbox.SlabAssembler.Core
     [Serializable]
     public class Part : ReactiveObject
     {
+        [XmlAttribute]
+        private Guid _id;
+        public Guid Id
+        {
+            get { return _id; }
+            set { this.RaiseAndSetIfChanged(ref _id, value); }
+        }
+
         private string _referenceName;
         public string ReferenceName {
             get { return _referenceName; }
@@ -69,14 +77,12 @@ namespace Urbbox.SlabAssembler.Core
         }
 
         private string _name;
-        [XmlAttribute]
         public string Name {
             get { return _name; }
             set { this.RaiseAndSetIfChanged(ref _name, value); }
         }
 
         private int _modulation;
-        [XmlAttribute]
         public int Modulation {
             get { return _modulation; }
             set { this.RaiseAndSetIfChanged(ref _modulation, value); }

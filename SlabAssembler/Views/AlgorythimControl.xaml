@@ -23,10 +23,10 @@
     <StackPanel>
         <GroupBox x:Name="groupBox" Header="Peças Opcionais" Margin="5,10,5,0">
             <StackPanel HorizontalAlignment="Left"  Margin="10,5,0,0" VerticalAlignment="Top" Width="270">
-                <CheckBox x:Name="checkBox" Content="Utilizar LDS" Margin="10,10,0,0" IsChecked="{Binding Path=UseLds, Mode=TwoWay}"/>
-                <CheckBox x:Name="checkBox_Copy" Content="Utilizar LP Final" Margin="10,10,0,0" IsChecked="{Binding Path=UseEndLp, Mode=TwoWay}"/>
-                <CheckBox x:Name="checkBox_Copy1" Content="Utilizar LP de Partida" Margin="10,10,0,0" IsChecked="{Binding Path=UseStartLp, Mode=TwoWay}"/>
-                <ComboBox x:Name="comboBox" Margin="10,5,10,10" ItemsSource="{Binding Path=StartLpList}" SelectedItem="{Binding SelectedStartLp, Mode=TwoWay}"  DisplayMemberPath="Name"/>
+                <CheckBox x:Name="checkBox" Content="Utilizar LDS" Margin="10,10,0,0" IsChecked="{Binding Options.UseLds, Mode=TwoWay}"/>
+                <CheckBox x:Name="checkBox_Copy" Content="Utilizar LP Final" Margin="10,10,0,0" IsChecked="{Binding Options.UseEndLp, Mode=TwoWay}"/>
+                <CheckBox x:Name="checkBox_Copy1" Content="Utilizar LP de Partida" Margin="10,10,0,0" IsChecked="{Binding Options.UseStartLp, Mode=TwoWay}"/>
+                <ComboBox x:Name="comboBox" Margin="10,5,10,10" ItemsSource="{Binding Path=StartLpList}" SelectedItem="{Binding Options.SelectedStartLp, Mode=TwoWay}"  DisplayMemberPath="Name"/>
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Distancias Constantes" Margin="5,10,5,0">
@@ -43,15 +43,16 @@
                         <RowDefinition Height="35"/>
                     </Grid.RowDefinitions>
                     <Label Grid.Column="0" Grid.Row="0" Content="Distancia do Contorno"/>
-                    <TextBox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Width="70" Text="{Binding OutlineDistance, Mode=TwoWay}" Margin="0,2,0,10"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Width="70" Text="{Binding Options.OutlineDistance, Mode=TwoWay}" Margin="0,2,0,10"/>
                     <Label Grid.Column="2" Grid.Row="0" Content="cm"/>
                     <Label Grid.Column="0" Grid.Row="1" Content="Distancia entre LPs"/>
-                    <TextBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Width="70" Text="{Binding DistanceBetweenLp, Mode=TwoWay}" Margin="0,2,0,10"/>
+                    <TextBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Width="70" Text="{Binding Options.DistanceBetweenLp, Mode=TwoWay}" Margin="0,2,0,10"/>
                     <Label Grid.Column="2" Grid.Row="1" Content="cm"/>
                     <Label Grid.Column="0" Grid.Row="2" Content="Distancia entre LP e LD"/>
-                    <TextBox Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Width="70" Text="{Binding DistanceBetweenLpAndLd, Mode=TwoWay}" Margin="0,2,0,10"/>
+                    <TextBox Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Width="70" Text="{Binding Options.DistanceBetweenLpAndLd, Mode=TwoWay}" Margin="0,2,0,10"/>
                     <Label Grid.Column="2" Grid.Row="2" Content="cm"/>
                 </Grid>
+                <Button Content="Salvar" Width="100" Command="{Binding Update}" HorizontalAlignment="Right" Margin="0,0,5,0"/>
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Estilo" Margin="5,10,5,0">

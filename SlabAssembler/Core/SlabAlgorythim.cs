@@ -46,7 +46,7 @@ namespace Urbbox.SlabAssembler.Core
             var selectedLp = Properties.Parts.SelectedLp;
             var selectedLd = Properties.Parts.SelectedLd;
             var selectedCast = Properties.Parts.SelectedCast;
-            var spacing = Properties.Algorythim.DistanceBetweenLpAndLd;
+            var spacing = Properties.Algorythim.Options.DistanceBetweenLpAndLd;
             var orientationAngle = 90 - Properties.Algorythim.OrientationAngle;
 
             var startDesloc = new Vector3d(selectedLp.Height + spacing, selectedLd.Height / 2.0D, 0);
@@ -66,7 +66,7 @@ namespace Urbbox.SlabAssembler.Core
             var selectedLd = Properties.Parts.SelectedLd;
             var selectedLp = Properties.Parts.SelectedLp;
             var selectedCast = Properties.Parts.SelectedCast;
-            var spacing = Properties.Algorythim.DistanceBetweenLpAndLd;
+            var spacing = Properties.Algorythim.Options.DistanceBetweenLpAndLd;
 
             var startDesloc = new Vector3d(selectedLp.Height + spacing, 0, 0);
             var xIncr = selectedLd.Width + 2 * spacing + selectedLp.Height;
@@ -96,13 +96,13 @@ namespace Urbbox.SlabAssembler.Core
             var selectedLp = Properties.Parts.SelectedLp;
             var selectedStartLp = Properties.Algorythim.SelectedStartLp;
             var selectedCast = Properties.Parts.SelectedCast;
-            var spacing = Properties.Algorythim.DistanceBetweenLpAndLd;
-            var useStartLp = Properties.Algorythim.UseStartLp && Properties.Algorythim.SelectedStartLp != null;
+            var spacing = Properties.Algorythim.Options.DistanceBetweenLpAndLd;
+            var useStartLp = Properties.Algorythim.Options.UseStartLp && Properties.Algorythim.SelectedStartLp != null;
 
-            var offset = (useStartLp)? selectedStartLp.StartOffset - (selectedLp.Width - selectedStartLp.Width) + Properties.Algorythim.DistanceBetweenLp : selectedLp.StartOffset;
+            var offset = (useStartLp)? selectedStartLp.StartOffset - (selectedLp.Width - selectedStartLp.Width) + Properties.Algorythim.Options.DistanceBetweenLp : selectedLp.StartOffset;
             var startDesloc = new Vector3d(0, offset, 0);
             var xIncr = selectedLp.Height + selectedLd.Width + spacing * 2;
-            var yIncr = selectedLp.Width + Properties.Algorythim.DistanceBetweenLp;
+            var yIncr = selectedLp.Width + Properties.Algorythim.Options.DistanceBetweenLp;
             var points = GetPointMatrix(startDesloc, yIncr, xIncr);
             if (points.Count == 0) return points;
 
@@ -253,7 +253,7 @@ namespace Urbbox.SlabAssembler.Core
 
         public Point3d? GetBelowLpPoint(Point3dCollection points, Point3d current)
         {
-            var dist = Properties.Parts.SelectedLp.Width + Properties.Algorythim.DistanceBetweenLp;
+            var dist = Properties.Parts.SelectedLp.Width + Properties.Algorythim.Options.DistanceBetweenLp;
             var orientation = Properties.Algorythim.SelectedOrientation;
 
             foreach (Point3d point in points)
@@ -292,7 +292,7 @@ namespace Urbbox.SlabAssembler.Core
         {
             firstPart = null;
             secondPart = null;
-            double distanceToInterference = distance - Properties.Algorythim.OutlineDistance;
+            double distanceToInterference = distance - Properties.Algorythim.Options.OutlineDistance;
             double delta = double.MaxValue;
             double tmpDelta = 0;
 
@@ -307,7 +307,7 @@ namespace Urbbox.SlabAssembler.Core
 
                 foreach (var part2 in secondList)
                 {
-                    tmpDelta = (part1.Width + Properties.Algorythim.DistanceBetweenLp + part2.Width) - distanceToInterference;
+                    tmpDelta = (part1.Width + Properties.Algorythim.Options.DistanceBetweenLp + part2.Width) - distanceToInterference;
                     if (tmpDelta <= 0 && Math.Abs(tmpDelta) < delta)
                     {
                         delta = Math.Abs(tmpDelta);

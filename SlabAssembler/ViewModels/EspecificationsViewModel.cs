@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Urbbox.SlabAssembler.Core;
 using Urbbox.SlabAssembler.Core.Variations;
-using Urbbox.SlabAssembler.Repositories;
 using System;
 using ReactiveUI;
 using System.Reactive.Linq;
+using Urbbox.SlabAssembler.Managers;
 
 namespace Urbbox.SlabAssembler.ViewModels
 {
@@ -86,12 +86,14 @@ namespace Urbbox.SlabAssembler.ViewModels
             set { this.RaiseAndSetIfChanged(ref _selectedOutline, value); }
         }
 
-        public EspecificationsViewModel(ConfigurationsRepository config)
+        private ConfigurationsManager _configManager;
+
+        public EspecificationsViewModel(ConfigurationsManager config)
         {
-            _parts = new List<Part>();
             _selecting = false;
             _drawing = false;
-           
+            _configManager = config;
+
             Modulations = new ReactiveList<int>() { 0 };
             FormsAndBoxes = new ReactiveList<Part>();
             LdList = new ReactiveList<Part>();
@@ -126,7 +128,13 @@ namespace Urbbox.SlabAssembler.ViewModels
                     SelectionStatus = (s.Value != ObjectId.Null)? $"Contorno selecionado: #{s.Value.GetHashCode()}" : "Nenhum contorno selecionado.";
                 });
 
-            config.PartsChanged += Config_PartsChanged;
+            _configManager.Config.Parts.ItemChanged.Subscribe(e =>
+            {
+                Modulations.Clear();
+                foreach (var group in _configManager.GetParts().GroupBy(p => p.Modulation))
+                    Modulations.Add(group.Key);
+                RefreshParts();
+            });
         }
 
         private void Config_PartsChanged(List<Part> parts)
@@ -137,20 +145,18 @@ namespace Urbbox.SlabAssembler.ViewModels
 
         private void RefreshParts()
         {
-            Modulations.Clear();
-            foreach (var p in _parts.GroupBy(p => p.Modulation).Select(g => g.Key))
-                Modulations.Add(p);
+            var parts = _configManager.GetPartsByModulaton(SelectedModulation);
 
             FormsAndBoxes.Clear();
-            foreach (var p in _parts.Where(p => (p.UsageType == UsageType.Box || p.UsageType == UsageType.Form) && p.Modulation == SelectedModulation))
+            foreach (var p in _parts.Where(p => (p.UsageType == UsageType.Box || p.UsageType == UsageType.Form)))
                 FormsAndBoxes.Add(p);
 
             LpList.Clear();
-            foreach (var p in _parts.Where(p => (p.UsageType == UsageType.Lp) && p.Modulation == SelectedModulation))
+            foreach (var p in _parts.Where(p => (p.UsageType == UsageType.Lp)))
                 LpList.Add(p);
 
             LdList.Clear();
-            foreach (var p in _parts.Where(p => (p.UsageType == UsageType.Ld) && p.Modulation == SelectedModulation))
+            foreach (var p in _parts.Where(p => (p.UsageType == UsageType.Ld)))
                 LdList.Add(p);
         }
 

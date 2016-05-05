@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
+using Urbbox.SlabAssembler.Managers;
 using Urbbox.SlabAssembler.Repositories;
 using Urbbox.SlabAssembler.ViewModels;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Core.Application;
@@ -13,7 +14,7 @@ namespace Urbbox.SlabAssembler.Views
     {
         public EspecificationsViewModel ViewModel { get; protected set; }
 
-        public EspecificationsControl(ConfigurationsRepository manager, AutoCadManager acad)
+        public EspecificationsControl(ConfigurationsManager manager, AutoCadManager acad)
         {
             ViewModel = new EspecificationsViewModel(manager);
             AcApplication.DocumentManager.DocumentActivationChanged += (e, a) => UpdateLayers(acad.GetLayers());

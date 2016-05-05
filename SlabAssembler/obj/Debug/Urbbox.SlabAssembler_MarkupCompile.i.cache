@@ -4,17 +4,17 @@
 library
 C#
 .cs
-C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\
+D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\
 Urbbox.SlabAssembler
 none
 false
-TRACE;DEBUG
+CODE_ANALYSIS;TRACE;DEBUG
 
-5-163966144
+5-1289501555
 1-1444751261
-30-339614708
-331855837251
-Views\AlgorythimControl.xaml;Views\LogWindow.xaml;Views\PartWindow.xaml;Views\EspecificationsControl.xaml;Views\PartsControl.xaml;
+33776865280
+33-1095917908
+Views\AlgorythimControl.xaml;Views\LogWindow.xaml;Views\PartWindow.xaml;Views\EspecificationsControl.xaml;Views\PartsListControl.xaml;
 
 False
 

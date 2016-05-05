@@ -1,39 +1,51 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace Urbbox.SlabAssembler.Repositories
 {
     public class XmlModelDatabase<T> where T : new()
     {
-        public string File { get; set; }
+        public string FilePathName { get; private set; }
 
         public XmlModelDatabase(string file)
         {
-            File = file;
+            FilePathName = file;
         }
 
         public T LoadData()
         {
             try
             {
-                var deserializer = new XmlSerializer(typeof(ConfigurationData));
-                using (TextReader reader = new StreamReader(File))
-                    return (T) deserializer.Deserialize(reader);
+                var deserializer = new XmlSerializer(typeof(T));
+                using (TextReader reader = new StreamReader(FilePathName))
+                    return (T)deserializer.Deserialize(reader);
             }
-            catch (IOException) { }
+            catch (IOException)
+            {
+                return new T();
+            }
+        }
 
-            return new T();
+        public Task<T> LoadDataAsync()
+        {
+            return Task.Run(() => LoadData());
         }
 
         public void SaveData(T data)
         {
             try
             {
-                var serializer = new XmlSerializer(typeof(ConfigurationData));
-                using (TextWriter writer = new StreamWriter(File))
+                var serializer = new XmlSerializer(typeof(T));
+                using (TextWriter writer = new StreamWriter(FilePathName))
                     serializer.Serialize(writer, data);
             }
             catch (IOException) { }
+        }
+
+        public Task SaveDataAsync(T data)
+        {
+            return Task.Run(() => SaveData(data));
         }
     }
 }

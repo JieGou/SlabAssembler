@@ -12,14 +12,14 @@ namespace Urbbox.SlabAssembler.Views
     public partial class PartWindow : Window
     {
         public Part ViewModel { get; protected set; }
-        private ConfigurationsRepository _manager;
+        private IPartRepository _partRepository;
 
-        public PartWindow(ConfigurationsRepository configurationsManager, Part part)
+        public PartWindow(IPartRepository repo, Part part)
         {
-            _manager = configurationsManager;
+            _partRepository = repo;
             ViewModel = part;
             ViewModel.Save.Subscribe(x => {
-                configurationsManager.SavePart(ViewModel);
+                _partRepository.AddPart(ViewModel);
                 Close();
             });
 
