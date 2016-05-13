@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Urbbox.SlabAssembler.Core;
 using Urbbox.SlabAssembler.Core.Variations;
 using System;
 using ReactiveUI;
-using System.Reactive.Linq;
 using Autodesk.AutoCAD.Customization;
 using Urbbox.SlabAssembler.Managers;
 
@@ -40,13 +38,11 @@ namespace Urbbox.SlabAssembler.ViewModels
         public AssemblyOptions Options { get; set; }
         public ReactiveCommand<object> Update { get; private set; }
 
-        private ConfigurationsManager _configManager;
-        private EspecificationsViewModel _especifications;
+        private readonly ConfigurationsManager _configManager;
 
         public AlgorythimViewModel(EspecificationsViewModel especifications, ConfigurationsManager manager)
         {
             _configManager = manager;
-            _especifications = especifications;
 
             Options = manager.Config.Options;
             StartLpList = new ReactiveList<Part>();
@@ -56,7 +52,7 @@ namespace Urbbox.SlabAssembler.ViewModels
             Update = ReactiveCommand.Create();
             Update.Subscribe(x => _configManager.SaveConfig());
 
-            _especifications.ObservableForProperty(x => x.SelectedModulation)
+            especifications.ObservableForProperty(x => x.SelectedModulation)
                 .Subscribe(x => {
                     var parts = _configManager.GetPartsByModulaton(x.GetValue()).Where(p => p.UsageType == UsageType.StartLp);
                     StartLpList.Clear();

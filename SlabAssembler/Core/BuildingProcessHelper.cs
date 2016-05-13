@@ -7,11 +7,11 @@ using Urbbox.SlabAssembler.Managers;
 
 namespace Urbbox.SlabAssembler.Core
 {
-    class BuildingHelper
+    class BuildingProcessHelper
     {
         protected AutoCadManager _acad;
 
-        public BuildingHelper(AutoCadManager manager)
+        public BuildingProcessHelper(AutoCadManager manager)
         {
             _acad = manager;
         }
@@ -24,26 +24,31 @@ namespace Urbbox.SlabAssembler.Core
                 var result = _acad.GetPoint("\nInforme o ponto de partida");
                 if (result.Status == PromptStatus.OK)
                     return result.Value;
-                else
-                    throw new OperationCanceledException();
-            }
-            else
-            {
-                using (var t = _acad.StartTransaction())
-                {
-                    var outline = t.GetObject(selectedOutline, OpenMode.ForRead);
-                    return outline.Bounds.Value.MinPoint;
-                }
 
+                throw new OperationCanceledException();
             }
+
+            using (var t = _acad.StartTransaction())
+            {
+                var outline = t.GetObject(selectedOutline, OpenMode.ForRead);
+                if (outline.Bounds != null) return outline.Bounds.Value.MinPoint;
+            }
+
+            throw new InvalidOperationException("Não foi possível descobrir o ponto de partida do contorno selecionada.");
         }
 
         public Point3d GetMaxPoint(ObjectId selectedOutline)
         {
             using (var t = _acad.StartOpenCloseTransaction())
             {
-                var bounds = t.GetObject(selectedOutline, OpenMode.ForRead).Bounds.Value;
-                return bounds.MaxPoint;
+                var extents3D = t.GetObject(selectedOutline, OpenMode.ForRead, true, true).Bounds;
+                if (extents3D != null)
+                {
+                    var bounds = extents3D.Value;
+                    return bounds.MaxPoint;
+                }
+
+                throw new InvalidOperationException("Não foi possível obter o ponto máximo do contorno.");
             }
         }
 
@@ -62,7 +67,7 @@ namespace Urbbox.SlabAssembler.Core
             using (var t = _acad.StartOpenCloseTransaction())
             {
                 var outline = t.GetObject(objectId, OpenMode.ForRead) as Polyline;
-                return outline != null && outline.Bounds.HasValue;
+                return outline?.Bounds != null;
             }
         }
 
@@ -75,11 +80,11 @@ namespace Urbbox.SlabAssembler.Core
                 var selected = result.ObjectId;
                 if (ValidateOutline(selected))
                     return selected;
-                else
-                    throw new ArgumentException("\nSelecione um contorno válido.");
+
+                throw new ArgumentException("\nSelecione um contorno válido.");
             }
-            else
-                return ObjectId.Null;
+
+            return ObjectId.Null;
         }
     }
 }

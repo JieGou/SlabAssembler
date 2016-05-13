@@ -27,14 +27,25 @@ namespace Urbbox.SlabAssembler.Core
             return point.RotateBy(ToRadians(angle), Vector3d.ZAxis, Point3d.Origin);
         }
 
+        private static double Clamp(double value, double min, double max)
+        {
+            if (value < min)
+                return min;
+            else if (value > max)
+                return max;
+            else
+                return value;
+        }
+
         protected Point3dCollection GetPointMatrix(Vector3d startDesloc, double yIncr, double xIncr)
         {
-            Point3dCollection list = new Point3dCollection();
+            var list = new Point3dCollection();
             var angle = ToRadians(90 - Properties.Algorythim.OrientationAngle);
             var startPt = Properties.StartPoint.Add(startDesloc.RotateBy(angle, Vector3d.ZAxis));
+            var incrementVec = new Vector3d(xIncr, yIncr, 0).RotateBy(angle, Vector3d.ZAxis);
 
-            for (double y = startPt.Y; y < Properties.MaxPoint.Y; y += yIncr * Math.Cos(angle) + xIncr * Math.Sin(angle))
-                for (double x = startPt.X; x < Properties.MaxPoint.X; x += xIncr * Math.Cos(angle) + yIncr * Math.Sin(angle))
+            for (var y = startPt.Y; y < Properties.MaxPoint.Y; y += incrementVec.Y)
+                for (var x = startPt.X; x < Properties.MaxPoint.X; x += incrementVec.X)
                         list.Add(new Point3d(x, y, 0));
 
             return list;
@@ -55,8 +66,8 @@ namespace Urbbox.SlabAssembler.Core
             var auxPts = GetPointMatrix(startDesloc, yIncr, xIncr);
 
             foreach (Point3d p in auxPts)
-                for (int i = 0; i < Properties.CastGroupSize; i++)
-                    result.Add(RotatePoint(p.X + (i * selectedCast.Width), p.Y, 0, orientationAngle));
+                for (var i = 0; i < Properties.CastGroupSize; i++)
+                    result.Add(RotatePoint(p.X + i * selectedCast.Width, p.Y, 0, orientationAngle));
 
             return result;
         }
@@ -69,96 +80,63 @@ namespace Urbbox.SlabAssembler.Core
             var spacing = Properties.Algorythim.Options.DistanceBetweenLpAndLd;
 
             var startDesloc = new Vector3d(selectedLp.Height + spacing, 0, 0);
-            var xIncr = selectedLd.Width + 2 * spacing + selectedLp.Height;
+            var xIncr = selectedLd.Width + 2.0D * spacing + selectedLp.Height;
             var yIncr = selectedCast.Height;
             var points = GetPointMatrix(startDesloc, yIncr, xIncr);
-            if (points.Count == 0) return points;
+            if (points.Count == 0 || !ignoreLds) return points;
 
-            if (ignoreLds)
-            {
-                var firstPoint = points[0];
-                var lastPoint = points[points.Count - 1];
-                var result = new Point3dCollection();
+            var firstPoint = points[0];
+            var lastPoint = points[points.Count - 1];
+            var result = new Point3dCollection();
 
-                foreach (Point3d point in points)
-                    if (!CheckIfIsLDS(point, firstPoint, lastPoint))
-                        result.Add(point);
+            foreach (Point3d point in points)
+                if (!CheckIfIsLDS(point, firstPoint, lastPoint))
+                    result.Add(point);
 
-                return result;
-            }
-           
-            return points;
+            return result;
         }
 
-        public Point3dCollection GetLpPointList(bool ignoreStartLp)
+        public Point3dCollection GetLpPointList()
         {
             var selectedLd = Properties.Parts.SelectedLd;
             var selectedLp = Properties.Parts.SelectedLp;
             var selectedStartLp = Properties.Algorythim.SelectedStartLp;
-            var selectedCast = Properties.Parts.SelectedCast;
             var spacing = Properties.Algorythim.Options.DistanceBetweenLpAndLd;
-            var useStartLp = Properties.Algorythim.Options.UseStartLp && Properties.Algorythim.SelectedStartLp != null;
+            var useStartLp = Properties.Algorythim.SelectedStartLp != null;
 
-            var offset = (useStartLp)? selectedStartLp.StartOffset - (selectedLp.Width - selectedStartLp.Width) + Properties.Algorythim.Options.DistanceBetweenLp : selectedLp.StartOffset;
+            var startLpOffsetFix = selectedStartLp.Width + Clamp(selectedLp.Width - selectedStartLp.Width, 0, selectedLp.Width) + Properties.Algorythim.Options.DistanceBetweenLp;
+            var offset = useStartLp ? selectedStartLp.StartOffset + startLpOffsetFix : selectedLp.StartOffset;
             var startDesloc = new Vector3d(0, offset, 0);
-            var xIncr = selectedLp.Height + selectedLd.Width + spacing * 2;
+            var xIncr = selectedLp.Height + selectedLd.Width + spacing * 2.0D;
             var yIncr = selectedLp.Width + Properties.Algorythim.Options.DistanceBetweenLp;
-            var points = GetPointMatrix(startDesloc, yIncr, xIncr);
-            if (points.Count == 0) return points;
 
-            var startPoint = points[0];
-            var result = new Point3dCollection();
-            var orientationAngle = Properties.Algorythim.OrientationAngle;
-     
-            if (ignoreStartLp)
-            {
-                foreach (Point3d p in points)
-                    if (!CheckIfIsStartLP(startPoint, p))
-                        result.Add(p);
-                return result;
-            }
-
-            return points;
+            return GetPointMatrix(startDesloc, yIncr, xIncr);
         }
 
         public Point3dCollection GetStartLpPointList()
         {
-            var lpPoints = GetLpPointList(false);
-            if (lpPoints.Count == 0) return lpPoints;
-
-            var firstPoint = lpPoints[0];
-            var result = new Point3dCollection();
+            var selectedLd = Properties.Parts.SelectedLd;
             var selectedLp = Properties.Parts.SelectedLp;
             var selectedStartLp = Properties.Algorythim.SelectedStartLp;
-            var orientationAngle = ToRadians(Properties.Algorythim.OrientationAngle);
-            var pivotFix = (selectedStartLp.PivotPoint - Point3d.Origin).RotateBy(-orientationAngle, Vector3d.ZAxis);
-            var posFix = (selectedStartLp.PivotPoint - Point3d.Origin)
-                .Add(new Vector3d(selectedLp.Width - selectedStartLp.Width, -selectedStartLp.Height, 0))
-                .RotateBy(orientationAngle, Vector3d.ZAxis);
+            var spacing = Properties.Algorythim.Options.DistanceBetweenLpAndLd;
 
-            foreach (Point3d p in lpPoints)
-                if (CheckIfIsStartLP(firstPoint, p))
-                    result.Add(p.Subtract(pivotFix).Add(posFix));
+            var startDesloc = new Vector3d(0, selectedStartLp.StartOffset, 0);
+            var xIncr = selectedLp.Height + selectedLd.Width + spacing * 2.0D;
 
-            return result;
+            return GetPointMatrix(startDesloc, 0, xIncr);
         }
 
         public Point3dCollection GetHeadPointList(Part selectedHead)
         {
-            var ldPoints = GetLdPointList(false);
-            if (ldPoints.Count == 0) return ldPoints;
-
-            var orientationAngle = ToRadians(90 - Properties.Algorythim.OrientationAngle);
             var selectedLd = Properties.Parts.SelectedLd;
             var selectedLp = Properties.Parts.SelectedLp;
-            var pivotFix = (selectedHead.PivotPoint - Point3d.Origin).RotateBy(-orientationAngle, Vector3d.ZAxis);
-            var posFix = new Vector3d(-selectedLp.Height / 2.0f, selectedLd.Height / 2.0f, 0).RotateBy(orientationAngle, Vector3d.ZAxis);
-            var result = new Point3dCollection();
+            var selectedCast = Properties.Parts.SelectedCast;
+            var distBetweenLdAndLp = Properties.Algorythim.Options.DistanceBetweenLpAndLd;
+            var startDesloc = new Vector3d(selectedLd.Width + distBetweenLdAndLp + (selectedLp.Height / 2.0D), 0, 0);
+            var yIncr = selectedCast.Height;
+            var xIncr = selectedLp.Height + distBetweenLdAndLp + selectedLd.Width;
 
-            foreach (Point3d p in ldPoints)
-                result.Add(p.Subtract(pivotFix).Add(posFix));
-
-            return result;
+            return GetPointMatrix(startDesloc, xIncr, yIncr);
         }
 
         public Point3dCollection GetLdsPointList()
@@ -179,11 +157,14 @@ namespace Urbbox.SlabAssembler.Core
 
         public static Polyline3d CreateSquare(Part part, double border)
         {
-            var pts = new Point3dCollection();
-            pts.Add(new Point3d(-border, -border, 0));
-            pts.Add(new Point3d(-border, part.Height + border, 0));
-            pts.Add(new Point3d(part.Width + border, part.Height + border, 0));
-            pts.Add(new Point3d(part.Width + border, - border, 0));
+            var pts = new Point3dCollection
+            {
+                new Point3d(-border, -border, 0),
+                new Point3d(-border, part.Height + border, 0),
+                new Point3d(part.Width + border, part.Height + border, 0),
+                new Point3d(part.Width + border, -border, 0)
+            };
+
             var polyline = new Polyline3d(Poly3dType.SimplePoly, pts, true);
             if (border > 0) polyline.Color = Color.FromRgb(255, 0, 0);
 
@@ -192,21 +173,17 @@ namespace Urbbox.SlabAssembler.Core
 
         public static bool IsInsidePolygon(Polyline polygon, Point3d pt)
         {
-            int n = polygon.NumberOfVertices;
+            var n = polygon.NumberOfVertices;
             double angle = 0;
-            Point2d pt1, pt2;
 
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
-                pt1 = new Point2d(polygon.GetPoint2dAt(i).X - pt.X, polygon.GetPoint2dAt(i).Y - pt.Y);
-                pt2 = new Point2d(polygon.GetPoint2dAt((i + 1) % n).X - pt.X, polygon.GetPoint2dAt((i + 1) % n).Y - pt.Y);
+                var pt1 = new Point2d(polygon.GetPoint2dAt(i).X - pt.X, polygon.GetPoint2dAt(i).Y - pt.Y);
+                var pt2 = new Point2d(polygon.GetPoint2dAt((i + 1) % n).X - pt.X, polygon.GetPoint2dAt((i + 1) % n).Y - pt.Y);
                 angle += GetAngle2D(pt1.X, pt1.Y, pt2.X, pt2.Y);
             }
 
-            if (Math.Abs(angle) < Math.PI)
-                return false;
-            else
-                return true;
+            return !(Math.Abs(angle) < Math.PI);
         }
 
         private static double GetAngle2D(double x1, double y1, double x2, double y2)
@@ -263,7 +240,7 @@ namespace Urbbox.SlabAssembler.Core
                     var isBellow = (orientation == Orientation.Vertical && point.Y < current.Y)
                         || (orientation == Orientation.Horizontal && point.X > current.X);
 
-                    if (isBellow && current.DistanceTo(point) == dist)
+                    if (isBellow && Math.Abs(current.DistanceTo(point) - dist) < 0.01f)
                         return point;
                 }
             }
@@ -288,17 +265,16 @@ namespace Urbbox.SlabAssembler.Core
             return RotatePoint(new Point3d(1, 0, 0), angle) - Point3d.Origin;
         }
 
-        public void FindBetterPartCombination(IEnumerable<Part> firstList, IEnumerable<Part> secondList, double distance, out Part firstPart, out Part secondPart)
+        public void FindBetterPartCombination(Part[] firstList, Part[] secondList, double distance, out Part firstPart, out Part secondPart)
         {
             firstPart = null;
             secondPart = null;
-            double distanceToInterference = distance - Properties.Algorythim.Options.OutlineDistance;
-            double delta = double.MaxValue;
-            double tmpDelta = 0;
+            var distanceToInterference = distance - Properties.Algorythim.Options.OutlineDistance;
+            var delta = double.MaxValue;
 
             foreach (var part1 in firstList)
             {
-                tmpDelta = part1.Width - distanceToInterference;
+                var tmpDelta = part1.Width - distanceToInterference;
                 if (tmpDelta <= 0 && Math.Abs(tmpDelta) < delta)
                 {
                     delta = Math.Abs(tmpDelta);
@@ -308,12 +284,11 @@ namespace Urbbox.SlabAssembler.Core
                 foreach (var part2 in secondList)
                 {
                     tmpDelta = (part1.Width + Properties.Algorythim.Options.DistanceBetweenLp + part2.Width) - distanceToInterference;
-                    if (tmpDelta <= 0 && Math.Abs(tmpDelta) < delta)
-                    {
-                        delta = Math.Abs(tmpDelta);
-                        firstPart = part1;
-                        secondPart = part2;
-                    }
+                    if (!(tmpDelta <= 0) || !(Math.Abs(tmpDelta) < delta)) continue;
+
+                    delta = Math.Abs(tmpDelta);
+                    firstPart = part1;
+                    secondPart = part2;
                 }
             }
 

@@ -41,13 +41,6 @@ namespace Urbbox.SlabAssembler.Managers
             set { this.RaiseAndSetIfChanged(ref _useEndLp, value); }
         }
 
-        private bool _useStartLp;
-        public bool UseStartLp
-        {
-            get { return _useStartLp; }
-            set { this.RaiseAndSetIfChanged(ref _useStartLp, value); }
-        }
-
         public AssemblyOptions()
         {
             OutlineDistance = 0;
@@ -55,7 +48,6 @@ namespace Urbbox.SlabAssembler.Managers
             DistanceBetweenLpAndLd = 0;
             UseLds = false;
             UseEndLp = false;
-            UseStartLp = false;
         }
     }
 

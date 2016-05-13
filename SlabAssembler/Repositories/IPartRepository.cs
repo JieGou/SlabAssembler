@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Urbbox.SlabAssembler.Core;
 using Urbbox.SlabAssembler.Core.Variations;
 

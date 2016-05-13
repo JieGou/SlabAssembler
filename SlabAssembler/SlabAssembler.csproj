@@ -125,13 +125,14 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\BuildingHelper.cs" />
+    <Compile Include="Core\BuildingProcessHelper.cs" />
     <Compile Include="Core\SlabAlgorythim.cs" />
     <Compile Include="Core\SlabBuilder.cs" />
     <Compile Include="Core\SlabEspecifications.cs" />
     <Compile Include="Core\Variations\UsageType.cs" />
     <Compile Include="Core\Variations\UsageTypeExtensions.cs" />
     <Compile Include="Managers\ConfigurationData.cs" />
+    <Compile Include="Repositories\IAlgorythimRepository.cs" />
     <Compile Include="Repositories\IPartRepository.cs" />
     <Compile Include="Repositories\XmlModelDatabase.cs" />
     <Compile Include="ViewModels\Commands\BaseCommand.cs" />

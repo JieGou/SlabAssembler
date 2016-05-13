@@ -29,7 +29,7 @@ namespace Urbbox.SlabAssembler
             var especificationsView = new Views.EspecificationsControl(_configManager, _acManager);
             var algorythimView = new Views.AlgorythimControl(especificationsView.ViewModel, _configManager);
             var partsView = new Views.PartsListControl(_configManager, _acManager);
-            var helper = new BuildingHelper(_acManager);
+            var helper = new BuildingProcessHelper(_acManager);
             var prop = new SlabProperties() {
                 Algorythim = algorythimView.ViewModel,
                 Parts = especificationsView.ViewModel
