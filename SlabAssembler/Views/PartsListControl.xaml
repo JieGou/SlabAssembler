@@ -27,9 +27,10 @@
                     <ControlTemplate>
                         <Expander IsExpanded="True">
                             <Expander.Header>
-                                <TextBlock Text="{Binding Name, Converter={StaticResource UsageTypeConverter}}" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding Name, Converter={StaticResource UsageTypeConverter}}"
+                                           FontWeight="Bold"
+                                           d:DataContext="{d:DesignInstance b:Part}" />
                             </Expander.Header>
-                            <ItemsPresenter Margin="10,0,0,0" Width="265" />
                         </Expander>
                     </ControlTemplate>
                 </Setter.Value>
@@ -38,29 +39,35 @@
         
     </UserControl.Resources>
     
-    <StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label x:Name="label" Content="Lista de Peças" VerticalAlignment="Top" FontSize="18" Padding="10,5" Margin="10,3,10,0" Width="160"/>
-        </StackPanel>
+    <StackPanel CanHorizontallyScroll="True" MinWidth="300">
+        <StackPanel Margin="10">
+            <Label Content="Lista de Peças" FontSize="18"/>
         
-        <ListView x:Name="PartsListView" Margin="10,0,10,5" ItemsSource="{Binding Source={StaticResource PartsViewSource}}" SelectedItem="{Binding SelectedPart, Mode=TwoWay}" Height="400">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Nome de Referência" Width="280" DisplayMemberBinding="{Binding ReferenceName}" />
-                </GridView>
-            </ListView.View>
-            <ListBox.GroupStyle>
-                <GroupStyle HidesIfEmpty="True" ContainerStyle="{StaticResource ResourceKey=UsageTypeContainerStyle}"/>
-            </ListBox.GroupStyle>
-        </ListView>
+            <ListView x:Name="PartsListView" Margin="0,5" ItemsSource="{Binding Source={StaticResource PartsViewSource}}" SelectedItem="{Binding SelectedPart, Mode=TwoWay}" Height="400">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Nome de Referência" DisplayMemberBinding="{Binding ReferenceName}" />
+                    </GridView>
+                </ListView.View>
+                <ListBox.GroupStyle>
+                    <GroupStyle HidesIfEmpty="True" ContainerStyle="{StaticResource ResourceKey=UsageTypeContainerStyle}"/>
+                </ListBox.GroupStyle>
+            </ListView>
 
-        <StackPanel Orientation="Horizontal" Margin="10,0,10,5">
-            <Button Content="Adicionar" Margin="0,0,5,0" Height="25" Command="{Binding CreatePart}" Width="130" />
-            <Button Content="Editar" Margin="0,0,5,0" Height="25" Command="{Binding EditSelectedPart}" CommandParameter="{Binding SelectedItem, ElementName=PartsListView}" Width="70"/>
-            <Button Content="Remover" Margin="0" Height="25" Command="{Binding DeleteSelectedPart}" CommandParameter="{Binding SelectedItem, ElementName=PartsListView}" Width="70"/>
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+            
+                <Button Grid.Column="0" Content="Adicionar Peça" Height="25" Margin="2,0" Command="{Binding CreatePart}" />
+                <Button Grid.Column="1" Content="Editar" Height="25" Margin="2,0" Command="{Binding EditSelectedPart}" CommandParameter="{Binding SelectedItem, ElementName=PartsListView}"/>
+                <Button Grid.Column="2" Content="Remover" Height="25" Margin="2,0" Command="{Binding DeleteSelectedPart}" CommandParameter="{Binding SelectedItem, ElementName=PartsListView}"/>
+            </Grid>
+
+            <Button Content="Analisar Peças" Command="{Binding Analyze}" Height="30"/>
         </StackPanel>
-
-        <Button Content="Analisar Peças" Command="{Binding Analyze}" Margin="10,0" Height="30"/>
     </StackPanel>
 
     <UserControl.ContextMenu>

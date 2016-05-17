@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Urbbox.SlabAssembler.Repositories
+namespace Urbbox.SlabAssembler.Managers
 {
     public class XmlModelDatabase<T> where T : new()
     {

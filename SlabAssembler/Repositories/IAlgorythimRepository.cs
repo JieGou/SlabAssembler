@@ -4,7 +4,8 @@ namespace Urbbox.SlabAssembler.Repositories
 {
     public interface IAlgorythimRepository
     {
-        void SetOptions(AssemblyOptions options);
-        AssemblyOptions GetDefaultOptions();
+        AssemblyOptions GetAssemblyOptions();
+        void SetAssemblyOptions(AssemblyOptions options);
+        void ResetAssemblyOptions();
     }
 }

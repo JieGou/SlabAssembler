@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using Urbbox.SlabAssembler.Core;
 using Urbbox.SlabAssembler.Managers;
 using Urbbox.SlabAssembler.Repositories;
@@ -13,33 +14,38 @@ namespace Urbbox.SlabAssembler.Views
     public partial class PartsListControl
     {
         public PartsViewModel ViewModel { get; protected set; }
-        private IPartRepository _partRepository;
-        private AutoCadManager _acad;
+        private readonly IPartRepository _partRepository;
+        private readonly AutoCadManager _acad;
 
-        public PartsListControl(ConfigurationsManager manager, AutoCadManager acad)
+        public PartsListControl(IPartRepository partRepository, AutoCadManager acad)
         {
-            _partRepository = manager;
+            _partRepository = partRepository;
             _acad = acad;
 
-            ViewModel = new PartsViewModel();
-            ViewModel.Reset.Subscribe(x => manager.ResetDefaults());
-            ViewModel.DeleteSelectedPart.Subscribe(p => {
-                var part = p as Part;
-                _partRepository.RemovePart(part.Id);
-            });
+            ViewModel = new PartsViewModel(_partRepository);
+            ViewModel.Reset.Subscribe(ResetImpl);
+
+            ViewModel.DeleteSelectedPart.Subscribe(DeleteSelectedPartImpl);
             ViewModel.EditSelectedPart.Subscribe(p => OpenPartWindow(p as Part));
             ViewModel.CreatePart.Subscribe(_ => OpenPartWindow(new Part()));
             ViewModel.Analyze.Subscribe(_ => AnalyzeImpl());
 
-            manager.Config.Parts.ItemChanged.Subscribe(_ =>
-            {
-                ViewModel.Parts.Clear();
-                foreach (var p in _partRepository.GetParts())
-                    ViewModel.Parts.Add(p);
-            });
-
             DataContext = ViewModel;
             InitializeComponent();
+        }
+
+        private void DeleteSelectedPartImpl(object p)
+        {
+            var part = p as Part;
+            if (part != null) _partRepository.RemovePart(part.Id);
+        }
+
+        private void ResetImpl(object x)
+        {
+            var result = MessageBox.Show("Deseja realmente resetar todas as peças para o padrão?", "Resetar Permanentemente", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+                _partRepository.ResetParts();
         }
 
         private void OpenPartWindow(Part part)
@@ -53,11 +59,11 @@ namespace Urbbox.SlabAssembler.Views
             var logWindow = new LogWindow();
             AcApplication.ShowModelessWindow(logWindow);
 
-            string log = "";
+            var log = "";
             foreach (var part in ViewModel.Parts)
             {
-                bool e = _acad.CheckBlockExists(part.ReferenceName);
-                bool l = _acad.CheckLayerExists(part.Layer);
+                var e = _acad.CheckBlockExists(part.ReferenceName);
+                var l = _acad.CheckLayerExists(part.Layer);
                 log += $"{part.ReferenceName}\t -> ";
                 if (e && l)
                     log += "OK";
@@ -71,7 +77,7 @@ namespace Urbbox.SlabAssembler.Views
                 logWindow.SetLogMessage(log);
             }
 
-            logWindow.SetResultTitle(String.Format("{0} peças analizadas.", ViewModel.Parts.Count));
+            logWindow.SetResultTitle($"{ViewModel.Parts.Count} peças analizadas.");
         }
     }
 }

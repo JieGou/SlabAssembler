@@ -1,4 +1,5 @@
-﻿using Urbbox.SlabAssembler.Core;
+﻿using System;
+using Urbbox.SlabAssembler.Core;
 using Urbbox.SlabAssembler.Repositories;
 using ReactiveUI;
 using Urbbox.SlabAssembler.Managers;
@@ -20,7 +21,7 @@ namespace Urbbox.SlabAssembler.ViewModels
             set { this.RaiseAndSetIfChanged(ref _selectedPart, value); }
         }
    
-        public PartsViewModel()
+        public PartsViewModel(IPartRepository partRepository)
         {
             Parts = new ReactiveList<Part>();
             CreatePart = ReactiveCommand.Create();
@@ -30,6 +31,13 @@ namespace Urbbox.SlabAssembler.ViewModels
             DeleteSelectedPart = canSelectPart.ToCommand();
             Reset = ReactiveCommand.Create();
             Analyze = this.WhenAny(x => x.Parts.Count, x => x.Value > 0).ToCommand();
+
+            partRepository.GetPartsObservable().Subscribe(_ =>
+            {
+                Parts.Clear();
+                foreach (var p in partRepository.GetParts())
+                    Parts.Add(p);
+            });
         }
 
     }

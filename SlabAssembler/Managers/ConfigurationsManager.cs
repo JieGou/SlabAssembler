@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Xml.Serialization;
 using Urbbox.SlabAssembler.Core;
 using System.Collections.Generic;
 using System.Windows;
@@ -7,36 +6,34 @@ using Urbbox.SlabAssembler.Core.Variations;
 using System.Linq;
 using Urbbox.SlabAssembler.Repositories;
 using System;
+using System.Collections.Specialized;
 
 namespace Urbbox.SlabAssembler.Managers
 {
-    public class ConfigurationsManager : IPartRepository
+    public class ConfigurationsManager : IPartRepository, IAlgorythimRepository
     {
         public XmlModelDatabase<ConfigurationData> DataManager;
 
-        private readonly string _defaults;
+        protected ConfigurationData DefaultConfiguration;
 
         private ConfigurationData _config;
-        public ConfigurationData Config {
-            get
-            {
-                if (_config == null) _config = DataManager.LoadData();
-                return _config;
-            }
-            protected set { _config = value; }
+        protected ConfigurationData Config {
+            get { return _config ?? (_config = DataManager.LoadData()); }
+            set { _config = value; }
         }
 
         public ConfigurationsManager(string configurationFile, string defaults)
         {
-            _defaults = defaults;
-            _config = new ConfigurationData();
-            DataManager = new XmlModelDatabase<ConfigurationData>(configurationFile);
-
             if (!File.Exists(configurationFile))
-                File.Copy(_defaults, DataManager.FilePathName);
+                File.Copy(defaults, DataManager.FilePathName);
+
+            var defaultManager = new XmlModelDatabase<ConfigurationData>(defaults);
+            var mainManager = new XmlModelDatabase<ConfigurationData>(configurationFile);
+            DataManager = mainManager;
+            DefaultConfiguration = defaultManager.LoadData();
         }
 
-        public void SaveConfig()
+        protected void SaveConfig()
         {
             DataManager.SaveData(Config);
         }
@@ -55,38 +52,50 @@ namespace Urbbox.SlabAssembler.Managers
 
         public IEnumerable<Part> GetParts()
         {
-            return _config.Parts;
+            return Config.Parts;
         }
 
         public IEnumerable<Part> GetPartsByType(UsageType usage)
         {
-            return _config.Parts.Where(p => p.UsageType == usage);
+            return Config.Parts.Where(p => p.UsageType == usage);
         }
 
         public IEnumerable<Part> GetPartsByModulaton(int modulation)
         {
-            return _config.Parts.Where(p => p.Modulation == modulation);
+            return Config.Parts.Where(p => p.Modulation == modulation);
         }
 
         public Part GetPart(Guid id)
         {
             return GetParts()
-                .Where(p => p.Id == id)
-                .First();
+                .First(p => p.Id == id);
         }
 
-        public Guid AddPart(Part part)
+        public Guid SavePart(Part part)
         {
-            part.Id = Guid.NewGuid();
-            _config.Parts.Add(part);
-            DataManager.SaveData(_config);
+            if (GetPart(part.Id) != null) RemovePart(part.Id);
+            
+            Config.Parts.Add(part);
+            DataManager.SaveData(Config);
             return part.Id;
         }
 
         public void RemovePart(Guid id)
         {
-            _config.Parts.Remove(GetPart(id));
-            DataManager.SaveData(_config);
+            Config.Parts.Remove(GetPart(id));
+            DataManager.SaveData(Config);
+        }
+
+        public void ResetParts()
+        {
+            Config.Parts.Clear();
+            Config.Parts.AddRange(DefaultConfiguration.Parts);
+            DataManager.SaveData(Config);
+        }
+
+        public IObservable<NotifyCollectionChangedEventArgs> GetPartsObservable()
+        {
+            return Config.Parts.Changed;
         }
 
         public Part GetNextSmaller(Part currentPart, UsageType necessaryUsageType)
@@ -94,15 +103,41 @@ namespace Urbbox.SlabAssembler.Managers
             return GetPartsByModulaton(currentPart.Modulation)
                 .Where(p => p.UsageType == necessaryUsageType)
                 .OrderByDescending(p => p.Width)
-                .Where(p => p.Width < currentPart.Width)
-                .First();
+                .First(p => p.Width < currentPart.Width);
         }
 
         public Part GetRespectiveOfType(Part actual, UsageType expectedType)
         {
             return GetPartsByType(expectedType)
-                .Where(p => p.Width == actual.Width)
-                .First();
+                .First(p => Math.Abs(p.Width - actual.Width) < 0.1f);
+        }
+
+        public AssemblyOptions GetAssemblyOptions()
+        {
+            return Config.Options;
+        }
+
+        public void SetAssemblyOptions(AssemblyOptions options)
+        {
+            Config.Options = options;
+            DataManager.SaveData(Config);
+        }
+
+        public void ResetAssemblyOptions()
+        {
+            Config.Options = DefaultConfiguration.Options;
+            DataManager.SaveData(Config);
+        }
+
+        public void SaveOptions()
+        {
+            DataManager.SaveData(Config);
+        }
+
+        public void ResetOptions()
+        {
+            Config.Options = DefaultConfiguration.Options;
+            DataManager.SaveData(Config);
         }
     }
 }

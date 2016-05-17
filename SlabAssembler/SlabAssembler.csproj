@@ -134,7 +134,7 @@
     <Compile Include="Managers\ConfigurationData.cs" />
     <Compile Include="Repositories\IAlgorythimRepository.cs" />
     <Compile Include="Repositories\IPartRepository.cs" />
-    <Compile Include="Repositories\XmlModelDatabase.cs" />
+    <Compile Include="Managers\XmlModelDatabase.cs" />
     <Compile Include="ViewModels\Commands\BaseCommand.cs" />
     <Compile Include="ViewModels\Commands\RelayCommand.cs" />
     <Compile Include="ViewModels\Converters\UsageTypeConverter.cs" />

@@ -93,6 +93,7 @@ namespace Urbbox.SlabAssembler.Core
 
         public Part()
         {
+            Id = Guid.NewGuid();
             Width = 0;
             Height = 0;
             StartOffset = 0;

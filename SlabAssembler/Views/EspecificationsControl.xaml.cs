@@ -14,9 +14,9 @@ namespace Urbbox.SlabAssembler.Views
     {
         public EspecificationsViewModel ViewModel { get; protected set; }
 
-        public EspecificationsControl(ConfigurationsManager manager, AutoCadManager acad)
+        public EspecificationsControl(IPartRepository partRepository, AutoCadManager acad)
         {
-            ViewModel = new EspecificationsViewModel(manager);
+            ViewModel = new EspecificationsViewModel(partRepository);
             AcApplication.DocumentManager.DocumentActivationChanged += (e, a) => UpdateLayers(acad.GetLayers());
             UpdateLayers(acad.GetLayers());
 

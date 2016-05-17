@@ -19,7 +19,7 @@ namespace Urbbox.SlabAssembler.Views
             _partRepository = repo;
             ViewModel = part;
             ViewModel.Save.Subscribe(x => {
-                _partRepository.AddPart(ViewModel);
+                _partRepository.SavePart(ViewModel);
                 Close();
             });
 

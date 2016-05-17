@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using Urbbox.SlabAssembler.Core;
 using Urbbox.SlabAssembler.Core.Variations;
 
@@ -13,7 +14,9 @@ namespace Urbbox.SlabAssembler.Repositories
         Part GetNextSmaller(Part currentPart, UsageType necessaryUsageType);
         Part GetRespectiveOfType(Part part, UsageType usage);
         Part GetPart(Guid id);
-        Guid AddPart(Part part);
+        Guid SavePart(Part part);
         void RemovePart(Guid id);
+        void ResetParts();
+        IObservable<NotifyCollectionChangedEventArgs> GetPartsObservable();
     }
 }

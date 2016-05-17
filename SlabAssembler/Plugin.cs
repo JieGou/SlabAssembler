@@ -27,10 +27,10 @@ namespace Urbbox.SlabAssembler
             _acManager = new AutoCadManager();
 
             var especificationsView = new Views.EspecificationsControl(_configManager, _acManager);
-            var algorythimView = new Views.AlgorythimControl(especificationsView.ViewModel, _configManager);
+            var algorythimView = new Views.AlgorythimControl(_configManager, _configManager);
             var partsView = new Views.PartsListControl(_configManager, _acManager);
             var helper = new BuildingProcessHelper(_acManager);
-            var prop = new SlabProperties() {
+            var prop = new SlabProperties {
                 Algorythim = algorythimView.ViewModel,
                 Parts = especificationsView.ViewModel
             };
@@ -46,9 +46,9 @@ namespace Urbbox.SlabAssembler
                 }
             });
 
-            especificationsView.ViewModel.SelectOutline.Subscribe(_ => {
-                especificationsView.ViewModel.SelectedOutline = helper.SelectOutline();
-            });
+            especificationsView.ViewModel.SelectOutline.Subscribe(_ =>
+                especificationsView.ViewModel.SelectedOutline = helper.SelectOutline()
+            );
 
             _mainPallet.Add("Especificações", GetElementHost(especificationsView));
             _mainPallet.Add("Algoritmo", GetElementHost(algorythimView));

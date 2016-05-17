@@ -1,6 +1,7 @@
-﻿using Urbbox.SlabAssembler.ViewModels;
+﻿using System;
+using Urbbox.SlabAssembler.ViewModels;
 using System.Windows.Controls;
-using Urbbox.SlabAssembler.Managers;
+using Urbbox.SlabAssembler.Repositories;
 
 namespace Urbbox.SlabAssembler.Views
 {
@@ -9,11 +10,11 @@ namespace Urbbox.SlabAssembler.Views
     /// </summary>
     public partial class AlgorythimControl : UserControl
     {
-        public AlgorythimViewModel ViewModel { get; private set; }
+        public AlgorythimViewModel ViewModel { get; }
 
-        public AlgorythimControl(EspecificationsViewModel especifications, ConfigurationsManager manager)
+        public AlgorythimControl(IPartRepository partRepository, IAlgorythimRepository algorythimRepository)
         {
-            ViewModel = new AlgorythimViewModel(especifications, manager);
+            ViewModel = new AlgorythimViewModel(partRepository, algorythimRepository);
             DataContext = ViewModel;
             InitializeComponent();
         }

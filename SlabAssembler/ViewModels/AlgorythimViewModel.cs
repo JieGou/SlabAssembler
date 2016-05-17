@@ -5,61 +5,71 @@ using System;
 using ReactiveUI;
 using Autodesk.AutoCAD.Customization;
 using Urbbox.SlabAssembler.Managers;
+using Urbbox.SlabAssembler.Repositories;
 
 namespace Urbbox.SlabAssembler.ViewModels
 {
     public class AlgorythimViewModel : ReactiveObject
     {
+        private Orientation _selectedOrientation = Orientation.Vertical;
+        private bool _onlyCimbrament;
+        private Part _selectedStartLp;
+        private readonly IPartRepository _partRepository;
+        private readonly IAlgorythimRepository _algorythimRepository;
+
+        public double OrientationAngle => (SelectedOrientation == Orientation.Vertical) ? 90 : 0;
+        public AssemblyOptions Options => _algorythimRepository.GetAssemblyOptions();
+
         public ReactiveList<Part> StartLpList { get; }
         public ReactiveCommand<object> Reset { get; private set; }
+        public ReactiveCommand<object> Update { get; private set; }
 
-        private Orientation _selectedOrientation = Orientation.Vertical;
         public Orientation SelectedOrientation {
             get { return _selectedOrientation; }
             set { this.RaiseAndSetIfChanged(ref _selectedOrientation, value); }
         }
 
-        public double OrientationAngle => (SelectedOrientation == Orientation.Vertical) ? 90 : 0;
-
-        private bool _onlyCimbrament;
         public bool OnlyCimbrament
         {
             get { return _onlyCimbrament; }
             set { this.RaiseAndSetIfChanged(ref _onlyCimbrament, value); }
         }
 
-        private Part _selectedStartLp;
         public Part SelectedStartLp
         {
             get { return _selectedStartLp; }
             set { this.RaiseAndSetIfChanged(ref _selectedStartLp, value); }
         }
 
-        public AssemblyOptions Options { get; set; }
-        public ReactiveCommand<object> Update { get; private set; }
-
-        private readonly ConfigurationsManager _configManager;
-
-        public AlgorythimViewModel(EspecificationsViewModel especifications, ConfigurationsManager manager)
+        public AlgorythimViewModel(IAlgorythimRepository algorythimRepository)
         {
-            _configManager = manager;
-
-            Options = manager.Config.Options;
+            _algorythimRepository = algorythimRepository;
             StartLpList = new ReactiveList<Part>();
             Reset = ReactiveCommand.Create();
-            Reset.Subscribe(x => _configManager.ResetDefaults());
-
             Update = ReactiveCommand.Create();
-            Update.Subscribe(x => _configManager.SaveConfig());
 
-            especifications.ObservableForProperty(x => x.SelectedModulation)
-                .Subscribe(x => {
-                    var parts = _configManager.GetPartsByModulaton(x.GetValue()).Where(p => p.UsageType == UsageType.StartLp);
-                    StartLpList.Clear();
-                    foreach (var p in parts)
-                        StartLpList.Add(p);
-                });
+            Reset.Subscribe(_ => _algorythimRepository.ResetAssemblyOptions());
+            Update.Subscribe(_ => _algorythimRepository.SetAssemblyOptions(Options));
         }
 
+        public AlgorythimViewModel(IPartRepository partRepository, IAlgorythimRepository algorythimRepository)
+        {
+            this._partRepository = partRepository;
+            this._algorythimRepository = algorythimRepository;
+
+            _partRepository.GetPartsObservable().Subscribe(e =>
+            {
+                StartLpList.Clear();
+                foreach (Part p in e.NewItems)
+                    StartLpList.Add(p);
+            });
+
+            StartLpList = new ReactiveList<Part>();
+            Reset = ReactiveCommand.Create();
+            Update = ReactiveCommand.Create();
+
+            Reset.Subscribe(_ => _algorythimRepository.ResetAssemblyOptions());
+            Update.Subscribe(_ => _algorythimRepository.SetAssemblyOptions(Options));
+        }
     }
 }

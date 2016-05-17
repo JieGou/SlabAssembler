@@ -7,6 +7,7 @@ using System;
 using ReactiveUI;
 using System.Reactive.Linq;
 using Urbbox.SlabAssembler.Managers;
+using Urbbox.SlabAssembler.Repositories;
 
 namespace Urbbox.SlabAssembler.ViewModels
 {
@@ -86,15 +87,15 @@ namespace Urbbox.SlabAssembler.ViewModels
             set { this.RaiseAndSetIfChanged(ref _selectedOutline, value); }
         }
 
-        private ConfigurationsManager _configManager;
+        private readonly IPartRepository _partRepository;
 
-        public EspecificationsViewModel(ConfigurationsManager config)
+        public EspecificationsViewModel(IPartRepository partRepository)
         {
             _selecting = false;
             _drawing = false;
-            _configManager = config;
+            _partRepository = partRepository;
 
-            Modulations = new ReactiveList<int>() { 0 };
+            Modulations = new ReactiveList<int> { 0 };
             FormsAndBoxes = new ReactiveList<Part>();
             LdList = new ReactiveList<Part>();
             LpList = new ReactiveList<Part>();
@@ -128,10 +129,10 @@ namespace Urbbox.SlabAssembler.ViewModels
                     SelectionStatus = (s.Value != ObjectId.Null)? $"Contorno selecionado: #{s.Value.GetHashCode()}" : "Nenhum contorno selecionado.";
                 });
 
-            _configManager.Config.Parts.ItemChanged.Subscribe(e =>
+            _partRepository.GetPartsObservable().Subscribe(e =>
             {
                 Modulations.Clear();
-                foreach (var group in _configManager.GetParts().GroupBy(p => p.Modulation))
+                foreach (var group in _partRepository.GetParts().GroupBy(p => p.Modulation))
                     Modulations.Add(group.Key);
                 RefreshParts();
             });
@@ -145,7 +146,7 @@ namespace Urbbox.SlabAssembler.ViewModels
 
         private void RefreshParts()
         {
-            var parts = _configManager.GetPartsByModulaton(SelectedModulation);
+            var parts = _partRepository.GetPartsByModulaton(SelectedModulation);
 
             FormsAndBoxes.Clear();
             foreach (var p in _parts.Where(p => (p.UsageType == UsageType.Box || p.UsageType == UsageType.Form)))

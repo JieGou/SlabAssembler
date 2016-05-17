@@ -7,34 +7,35 @@ namespace Urbbox.SlabAssembler.Managers
     public class AssemblyOptions : ReactiveObject
     {
         private float _outlineDistance;
+        private float _distanceBetweenLp;
+        private float _distanceBetweenLpAndLd;
+        private bool _useLds;
+        private bool _useEndLp;
+
         public float OutlineDistance
         {
             get { return _outlineDistance; }
             set { this.RaiseAndSetIfChanged(ref _outlineDistance, value); }
         }
 
-        private float _distanceBetweenLp;
         public float DistanceBetweenLp
         {
             get { return _distanceBetweenLp; }
             set { this.RaiseAndSetIfChanged(ref _distanceBetweenLp, value); }
         }
 
-        private float _distanceBetweenLpAndLd;
         public float DistanceBetweenLpAndLd
         {
             get { return _distanceBetweenLpAndLd; }
             set { this.RaiseAndSetIfChanged(ref _distanceBetweenLpAndLd, value); }
         }
 
-        private bool _useLds;
         public bool UseLds
         {
             get { return _useLds; }
             set { this.RaiseAndSetIfChanged(ref _useLds, value); }
         }
 
-        private bool _useEndLp;
         public bool UseEndLp
         {
             get { return _useEndLp; }
@@ -53,14 +54,21 @@ namespace Urbbox.SlabAssembler.Managers
 
     public class ConfigurationData : ReactiveObject
     {
+        private AssemblyOptions _options;
+
         [XmlArray]
         public ReactiveList<Part> Parts { get; private set; }
-        public AssemblyOptions Options { get; private set; }
+
+        public AssemblyOptions Options
+        {
+            get { return _options; }
+            set { this.RaiseAndSetIfChanged(ref _options, value); }
+        }
 
         public ConfigurationData()
         {
             Parts = new ReactiveList<Part>();
-            Options = new AssemblyOptions();
+            _options = new AssemblyOptions();
         }
     }
 }
