@@ -1,8 +1,6 @@
 ﻿using ReactiveUI;
-using Urbbox.SlabAssembler.Core;
-using System.Xml.Serialization;
 
-namespace Urbbox.SlabAssembler.Managers
+namespace Urbbox.SlabAssembler.Core.Models
 {
     public class AssemblyOptions : ReactiveObject
     {
@@ -49,26 +47,6 @@ namespace Urbbox.SlabAssembler.Managers
             DistanceBetweenLpAndLd = 0;
             UseLds = false;
             UseEndLp = false;
-        }
-    }
-
-    public class ConfigurationData : ReactiveObject
-    {
-        private AssemblyOptions _options;
-
-        [XmlArray]
-        public ReactiveList<Part> Parts { get; private set; }
-
-        public AssemblyOptions Options
-        {
-            get { return _options; }
-            set { this.RaiseAndSetIfChanged(ref _options, value); }
-        }
-
-        public ConfigurationData()
-        {
-            Parts = new ReactiveList<Part>();
-            _options = new AssemblyOptions();
         }
     }
 }

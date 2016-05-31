@@ -32,11 +32,10 @@ namespace Urbbox.SlabAssembler.ViewModels
             Reset = ReactiveCommand.Create();
             Analyze = this.WhenAny(x => x.Parts.Count, x => x.Value > 0).ToCommand();
 
-            partRepository.GetPartsObservable().Subscribe(_ =>
+            partRepository.PartsChanged.Subscribe(_ =>
             {
                 Parts.Clear();
-                foreach (var p in partRepository.GetParts())
-                    Parts.Add(p);
+                Parts.AddRange(partRepository.GetAll());
             });
         }
 

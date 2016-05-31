@@ -1,11 +1,12 @@
-﻿using Urbbox.SlabAssembler.Managers;
+﻿using Urbbox.SlabAssembler.Core.Models;
+using Urbbox.SlabAssembler.Repositories.Core;
 
 namespace Urbbox.SlabAssembler.Repositories
 {
-    public interface IAlgorythimRepository
+    public interface IAlgorythimRepository : IRepository<AssemblyOptions>, IOperableByTransaction<AssemblyOptions>
     {
-        AssemblyOptions GetAssemblyOptions();
-        void SetAssemblyOptions(AssemblyOptions options);
-        void ResetAssemblyOptions();
+        AssemblyOptions Get();
+        void SaveChanges();
+        void Reset();
     }
 }

@@ -61,20 +61,38 @@ namespace Urbbox.SlabAssembler.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resources/Configurations.xml.
+        ///   Looks up a localized string similar to Resources/Options.Defaults.xml.
         /// </summary>
-        internal static string ConfigurationsFile {
+        internal static string DefaultOptionsDataFile {
             get {
-                return ResourceManager.GetString("ConfigurationsFile", resourceCulture);
+                return ResourceManager.GetString("DefaultOptionsDataFile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resources/Configurations.Defaults.xml.
+        ///   Looks up a localized string similar to Resources/Parts.Defaults.xml.
         /// </summary>
-        internal static string DefaultsConfigurationFile {
+        internal static string DefaultsPartsDataFile {
             get {
-                return ResourceManager.GetString("DefaultsConfigurationFile", resourceCulture);
+                return ResourceManager.GetString("DefaultsPartsDataFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resources/Options.xml.
+        /// </summary>
+        internal static string OptionsDataFile {
+            get {
+                return ResourceManager.GetString("OptionsDataFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resources/Parts.xml.
+        /// </summary>
+        internal static string PartsDataFile {
+            get {
+                return ResourceManager.GetString("PartsDataFile", resourceCulture);
             }
         }
     }

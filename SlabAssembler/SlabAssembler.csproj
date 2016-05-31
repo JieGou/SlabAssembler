@@ -125,18 +125,24 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Models\AssemblyOptions.cs" />
     <Compile Include="Core\BuildingProcessHelper.cs" />
     <Compile Include="Core\SlabAlgorythim.cs" />
     <Compile Include="Core\SlabBuilder.cs" />
     <Compile Include="Core\SlabEspecifications.cs" />
     <Compile Include="Core\Variations\UsageType.cs" />
     <Compile Include="Core\Variations\UsageTypeExtensions.cs" />
-    <Compile Include="Managers\ConfigurationData.cs" />
+    <Compile Include="Repositories\AlgorythimRepository.cs" />
+    <Compile Include="Repositories\Core\IEntity.cs" />
+    <Compile Include="Repositories\Core\IOperableByTransaction.cs" />
+    <Compile Include="Repositories\Core\IRepository.cs" />
+    <Compile Include="Repositories\Core\IRepositoryAsync.cs" />
+    <Compile Include="Repositories\Core\ITransaction.cs" />
+    <Compile Include="Repositories\Core\Repository.cs" />
+    <Compile Include="Repositories\Core\XMLRepository.cs" />
     <Compile Include="Repositories\IAlgorythimRepository.cs" />
     <Compile Include="Repositories\IPartRepository.cs" />
-    <Compile Include="Managers\XmlModelDatabase.cs" />
-    <Compile Include="ViewModels\Commands\BaseCommand.cs" />
-    <Compile Include="ViewModels\Commands\RelayCommand.cs" />
+    <Compile Include="Repositories\PartRepository.cs" />
     <Compile Include="ViewModels\Converters\UsageTypeConverter.cs" />
     <Compile Include="ViewModels\LogWindowViewModel.cs" />
     <Compile Include="ViewModels\PartsViewModel.cs" />
@@ -145,7 +151,6 @@
       <DependentUpon>AlgorythimControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Managers\AutoCadManager.cs" />
-    <Compile Include="Managers\ConfigurationsManager.cs" />
     <Compile Include="Views\LogWindow.xaml.cs">
       <DependentUpon>LogWindow.xaml</DependentUpon>
     </Compile>
@@ -155,7 +160,7 @@
     <Compile Include="Views\EspecificationsControl.xaml.cs">
       <DependentUpon>EspecificationsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\Part.cs" />
+    <Compile Include="Core\Models\Part.cs" />
     <Compile Include="Views\PartsListControl.xaml.cs">
       <DependentUpon>PartsListControl.xaml</DependentUpon>
     </Compile>

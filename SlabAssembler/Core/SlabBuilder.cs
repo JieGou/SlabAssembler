@@ -350,7 +350,7 @@ namespace Urbbox.SlabAssembler.Core
 
         public void BuildHead(SlabAlgorythim al)
         {
-            var part = PartRepository.GetPartsByType(UsageType.Head).First();
+            var part = PartRepository.GetAllOfType(UsageType.Head).First();
             PlaceMultipleParts(al.Properties, al.GetHeadPointList(part), part, 90 - al.Properties.Algorythim.OrientationAngle);
         }
         #endregion
@@ -523,8 +523,8 @@ namespace Urbbox.SlabAssembler.Core
         private void FindBetterLpCombination(SlabAlgorythim al, double dist, out Part firstLp, out Part secondLp)
         {
             var secondUsageType = (al.Properties.Algorythim.Options.UseEndLp) ? UsageType.EndLp : UsageType.Lp;
-            var firstList = PartRepository.GetPartsByType(UsageType.Lp);
-            var secondList = PartRepository.GetPartsByType(secondUsageType);
+            var firstList = PartRepository.GetAllOfType(UsageType.Lp);
+            var secondList = PartRepository.GetAllOfType(secondUsageType);
             al.FindBetterPartCombination(firstList.ToArray(), secondList.ToArray(), dist, out firstLp, out secondLp);
         }
 

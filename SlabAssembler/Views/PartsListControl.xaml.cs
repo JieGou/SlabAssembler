@@ -37,7 +37,7 @@ namespace Urbbox.SlabAssembler.Views
         private void DeleteSelectedPartImpl(object p)
         {
             var part = p as Part;
-            if (part != null) _partRepository.RemovePart(part.Id);
+            if (part != null) _partRepository.Remove(part);
         }
 
         private void ResetImpl(object x)

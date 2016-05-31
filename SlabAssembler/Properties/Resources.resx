@@ -117,12 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfigurationsFile" xml:space="preserve">
-    <value>Resources/Configurations.xml</value>
-    <comment>Where all parts are stored (editable).</comment>
+  <data name="DefaultOptionsDataFile" xml:space="preserve">
+    <value>Resources/Options.Defaults.xml</value>
   </data>
-  <data name="DefaultsConfigurationFile" xml:space="preserve">
-    <value>Resources/Configurations.Defaults.xml</value>
+  <data name="DefaultsPartsDataFile" xml:space="preserve">
+    <value>Resources/Parts.Defaults.xml</value>
     <comment>Where all parts are stored in.</comment>
+  </data>
+  <data name="OptionsDataFile" xml:space="preserve">
+    <value>Resources/Options.xml</value>
+  </data>
+  <data name="PartsDataFile" xml:space="preserve">
+    <value>Resources/Parts.xml</value>
+    <comment>Where all parts are stored (editable).</comment>
   </data>
 </root>

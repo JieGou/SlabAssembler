@@ -4,19 +4,15 @@ using System.Reactive.Linq;
 using System.Xml.Serialization;
 using Urbbox.SlabAssembler.Core.Variations;
 using Autodesk.AutoCAD.Geometry;
+using Urbbox.SlabAssembler.Repositories.Core;
 
 namespace Urbbox.SlabAssembler.Core
 {
     [Serializable]
-    public class Part : ReactiveObject
+    public class Part : ReactiveObject, IEntity
     {
         [XmlAttribute]
-        private Guid _id;
-        public Guid Id
-        {
-            get { return _id; }
-            set { this.RaiseAndSetIfChanged(ref _id, value); }
-        }
+        public int Id { get; set; }
 
         private string _referenceName;
         public string ReferenceName {

@@ -129,24 +129,18 @@ namespace Urbbox.SlabAssembler.ViewModels
                     SelectionStatus = (s.Value != ObjectId.Null)? $"Contorno selecionado: #{s.Value.GetHashCode()}" : "Nenhum contorno selecionado.";
                 });
 
-            _partRepository.GetPartsObservable().Subscribe(e =>
+            _partRepository.PartsChanged.Subscribe(e =>
             {
                 Modulations.Clear();
-                foreach (var group in _partRepository.GetParts().GroupBy(p => p.Modulation))
+                foreach (var group in _partRepository.GetAll().GroupBy(p => p.Modulation))
                     Modulations.Add(group.Key);
                 RefreshParts();
             });
         }
 
-        private void Config_PartsChanged(List<Part> parts)
-        {
-            _parts = parts;
-            RefreshParts();
-        }
-
         private void RefreshParts()
         {
-            var parts = _partRepository.GetPartsByModulaton(SelectedModulation);
+            var parts = _partRepository.GetByModulaton(SelectedModulation);
 
             FormsAndBoxes.Clear();
             foreach (var p in _parts.Where(p => (p.UsageType == UsageType.Box || p.UsageType == UsageType.Form)))
