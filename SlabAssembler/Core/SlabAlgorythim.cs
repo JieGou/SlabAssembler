@@ -4,6 +4,7 @@ using Autodesk.AutoCAD.Colors;
 using System;
 using Autodesk.AutoCAD.Customization;
 using System.Collections.Generic;
+using Urbbox.SlabAssembler.Core.Models;
 
 namespace Urbbox.SlabAssembler.Core
 {

@@ -8,8 +8,9 @@
              xmlns:cv="clr-namespace:Urbbox.SlabAssembler.ViewModels.Converters"
              xmlns:b="clr-namespace:Urbbox.SlabAssembler.Core"     
              xmlns:v="clr-namespace:Urbbox.SlabAssembler.Core.Variations"
+             xmlns:models="clr-namespace:Urbbox.SlabAssembler.Core.Models"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance b:Part}" Background="#FFEBEBEB" Width="500" Height="367" ResizeMode="NoResize" Title="Definição de Peça">
+             d:DataContext="{d:DesignInstance models:Part}" Background="#FFEBEBEB" Width="500" Height="367" ResizeMode="NoResize" Title="Definição de Peça">
     <Window.Resources>
         <cv:UsageTypeConverter x:Key="UsageTypeConverter"/>
         <ObjectDataProvider x:Key="UsageTypeList" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
@@ -30,11 +31,11 @@
             <GroupBox Header="Definições" Grid.Column="0" Padding="5" Margin="10,10" BorderBrush="#FF6C46FF" Foreground="#FF6C46FF">
                 <StackPanel>
                     <Label Content="Nome de Exibição:"/>
-                    <TextBox Text="{Binding Name, Mode=TwoWay}"/>
+                    <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="Nome de Referência (AutoCAD):"/>
-                    <TextBox Text="{Binding ReferenceName, Mode=TwoWay}"/>
+                    <TextBox Text="{Binding ReferenceName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="Nome da Camada (AutoCAD):"/>
-                    <TextBox Text="{Binding Layer, Mode=TwoWay}"/>
+                    <TextBox Text="{Binding Layer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="Tipo de Uso:"/>
                     <ComboBox x:Name="comboBox" Grid.Column="1" Grid.Row="2" SelectedItem="{Binding UsageType, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource UsageTypeList}}" Margin="0">
                         <ComboBox.ItemTemplate>
@@ -49,10 +50,10 @@
             <GroupBox Header="Métricas" Grid.Column="1" Padding="5" Margin="10,10" BorderBrush="#FF6C46FF" Foreground="#FF6C46FF">
                 <StackPanel>
                     <Label Content="Comprimento:" />
-                    <TextBox Text="{Binding Width, Mode=TwoWay}"/>
+                    <TextBox Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Content="Largura:"/>
-                    <TextBox Text="{Binding Height, Mode=TwoWay}" />
+                    <TextBox Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -67,7 +68,7 @@
                         </Grid.RowDefinitions>
 
                         <Label Content="Modulação:" Grid.Column="0" Grid.Row="0" Margin="-4,0,4,0" Grid.ColumnSpan="2"/>
-                        <TextBox Text="{Binding Modulation, Mode=TwoWay}"  Grid.Row="1" Margin="0,0,1,0"/>
+                        <TextBox Text="{Binding Modulation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="1" Margin="0,0,1,0"/>
 
                         <Label Content="Desvio de Partida:" Grid.Column="1" Grid.Row="0" Margin="3,1,8,17" Grid.ColumnSpan="3" FontSize="10.667" Grid.RowSpan="2"/>
                         <TextBox Text="{Binding StartOffset, Mode=TwoWay}" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2"/>

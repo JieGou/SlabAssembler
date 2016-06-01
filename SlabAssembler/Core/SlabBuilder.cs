@@ -7,6 +7,7 @@ using System.Windows;
 using Urbbox.SlabAssembler.Core.Variations;
 using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.GraphicsInterface;
+using Urbbox.SlabAssembler.Core.Models;
 using Urbbox.SlabAssembler.Managers;
 using Polyline = Autodesk.AutoCAD.DatabaseServices.Polyline;
 
@@ -94,28 +95,28 @@ namespace Urbbox.SlabAssembler.Core
                 }
 
                 Acad.WorkingDocument.Editor.WriteMessage("\nLaje finalizada.");
-
-                
             }
         }
 
         private void ClearOutlineParts()
         {
-            using (var t = Acad.StartTransaction())
+            using (Acad.WorkingDocument.LockDocument())
             {
-                var blkTbl = t.GetObject(Acad.Database.BlockTableId, OpenMode.ForWrite) as BlockTable;
-                if (blkTbl == null) return;
-
-                foreach (var p in PartRepository.GetParts())
+                using (var t = Acad.StartTransaction())
                 {
-                    var record = t.GetObject(blkTbl[p.OutlineReferenceName], OpenMode.ForWrite) as BlockTableRecord;
-                    record?.Erase();
-                }
+                    var blkTbl = t.GetObject(Acad.Database.BlockTableId, OpenMode.ForWrite) as BlockTable;
+                    if (blkTbl == null) return;
 
-                t.Commit();
+                    foreach (var p in PartRepository.GetAll())
+                    {
+                        var record = t.GetObject(blkTbl[p.OutlineReferenceName], OpenMode.ForWrite) as BlockTableRecord;
+                        record?.Erase();
+                    }
+
+                    t.Commit();
+                }
             }
         }
-
 
         public Point3dCollection PlaceMultipleParts(SlabProperties prop, Point3dCollection locations, Part part, double orientationAngle, ObjectIdCollection placedObjects)
         {
@@ -166,10 +167,10 @@ namespace Urbbox.SlabAssembler.Core
             return referenceId;
         }
 
-        private void FixPartStackPosition(Part part, double orientationAngle, Point3d loc, BlockReference blkRef)
+        /*private void FixPartStackPosition(Part part, double orientationAngle, Point3d loc, BlockReference blkRef)
         {
             
-        }
+        }*/
 
         #region Builders
         public void BuildCast(SlabAlgorythim al)
@@ -252,7 +253,8 @@ namespace Urbbox.SlabAssembler.Core
             var altPlacedObjects = new ObjectIdCollection();
             var lastPoints = new Point3dCollection();
 
-            do { 
+            do
+            { 
                 points = PlaceMultipleParts(al.Properties, points, part, orientationAngle, placedObjects);
                 if (points.Count > 0) lastPoints = points;
             } while (points.Count > 0 && (part = PartRepository.GetNextSmaller(part, part.UsageType)) != null);
@@ -350,7 +352,7 @@ namespace Urbbox.SlabAssembler.Core
 
         public void BuildHead(SlabAlgorythim al)
         {
-            var part = PartRepository.GetAllOfType(UsageType.Head).First();
+            var part = PartRepository.GetByType(UsageType.Head).First();
             PlaceMultipleParts(al.Properties, al.GetHeadPointList(part), part, 90 - al.Properties.Algorythim.OrientationAngle);
         }
         #endregion
@@ -522,9 +524,9 @@ namespace Urbbox.SlabAssembler.Core
         #region Testing Algorythims
         private void FindBetterLpCombination(SlabAlgorythim al, double dist, out Part firstLp, out Part secondLp)
         {
-            var secondUsageType = (al.Properties.Algorythim.Options.UseEndLp) ? UsageType.EndLp : UsageType.Lp;
-            var firstList = PartRepository.GetAllOfType(UsageType.Lp);
-            var secondList = PartRepository.GetAllOfType(secondUsageType);
+            var secondUsageType = al.Properties.Algorythim.Options.UseEndLp ? UsageType.EndLp : UsageType.Lp;
+            var firstList = PartRepository.GetByModulaton(al.Properties.Algorythim.SelectedModulation).WhereType(UsageType.Lp);
+            var secondList = PartRepository.GetByModulaton(al.Properties.Algorythim.SelectedModulation).WhereType(secondUsageType);
             al.FindBetterPartCombination(firstList.ToArray(), secondList.ToArray(), dist, out firstLp, out secondLp);
         }
 

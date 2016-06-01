@@ -13,9 +13,9 @@ namespace Urbbox.SlabAssembler.Repositories.Core
             Entities = new List<TEntity>();
         }
 
-        public TEntity Get(int id)
+        public TEntity Get(int pos)
         {
-            return Entities[id];
+            return Entities[pos];
         }
 
         public IEnumerable<TEntity> GetAll()
@@ -39,6 +39,11 @@ namespace Urbbox.SlabAssembler.Repositories.Core
                 Add(e);
         }
 
+        public void RemoveAt(int pos)
+        {
+            Entities.RemoveAt(pos);
+        }
+
         public virtual void Remove(TEntity entity)
         {
             Entities.Remove(entity);
@@ -46,8 +51,8 @@ namespace Urbbox.SlabAssembler.Repositories.Core
 
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
-            foreach (var e in entities)
-                Remove(e);
+            foreach (var entity in entities)
+                Remove(entity);
         }
 
         public void Clear()

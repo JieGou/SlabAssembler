@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ReactiveUI;
 using Urbbox.SlabAssembler.Core;
+using Urbbox.SlabAssembler.Core.Models;
 using Urbbox.SlabAssembler.Core.Variations;
 using Urbbox.SlabAssembler.Repositories.Core;
 
@@ -23,11 +24,17 @@ namespace Urbbox.SlabAssembler.Repositories
 
     public class PartRepository : XMLRepository<Part>, IPartRepository
     {
-        public IReactiveCommand PartsChanged { get; }
+        public ReactiveCommand<object> PartsChanged { get; }
 
         public PartRepository() : base(Properties.Resources.PartsDataFile)
         {
             PartsChanged = ReactiveCommand.Create();
+            PartsChanged.Execute(null);
+        }
+
+        public Part GetById(string id)
+        {
+            return Find(p => p.Id == id).FirstOrDefault();
         }
 
         public IEnumerable<Part> GetByType(UsageType usage)
@@ -68,10 +75,11 @@ namespace Urbbox.SlabAssembler.Repositories
 
         public void ResetParts()
         {
-            var defaultRepo = new PartRepository { RepositoryDataFile = Properties.Resources.DefaultsPartsDataFile };
+            var defaultRepo = new XMLRepository<Part>(Properties.Resources.DefaultsPartsDataFile);
+
+            Clear();
             using (var t = StartTransaction())
             { 
-                Clear();
                 AddRange(defaultRepo.GetAll());
                 t.Commit();
             }

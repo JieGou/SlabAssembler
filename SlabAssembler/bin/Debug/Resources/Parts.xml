@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfPart xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Part Id="42e93bf2-cb30-4a84-89d8-07b3b9ac66a2">
+    <ReferenceName>PLASTERIT</ReferenceName>
+    <Width>61</Width>
+    <Height>61</Height>
+    <UsageType>Form</UsageType>
+    <Layer>IP - PLASTERIT</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>0</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>Plasterit</Name>
+    <Modulation>61</Modulation>
+  </Part>
+  <Part Id="81168a06-30fa-4cc5-ae91-6b8d91894571">
+    <ReferenceName>CAIXA 61x61</ReferenceName>
+    <Width>61</Width>
+    <Height>61</Height>
+    <UsageType>Box</UsageType>
+    <Layer>CAIXAS IMPACTO</Layer>
+    <PivotPointX>30.5</PivotPointX>
+    <PivotPointY>30.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>Caixa 61x61</Name>
+    <Modulation>61</Modulation>
+  </Part>
+  <Part Id="13fba27a-ed17-4e92-803e-b94d7d711216">
+    <ReferenceName>CAIXA 80x80</ReferenceName>
+    <Width>80</Width>
+    <Height>80</Height>
+    <UsageType>Form</UsageType>
+    <Layer>CAIXAS IMPACTO</Layer>
+    <PivotPointX>40</PivotPointX>
+    <PivotPointY>40</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>Caixa 80x80</Name>
+    <Modulation>80</Modulation>
+  </Part>
+  <Part Id="0414afd8-7dd9-435f-9588-ae41a9278878">
+    <ReferenceName>LP 305</ReferenceName>
+    <Width>305</Width>
+    <Height>4</Height>
+    <UsageType>Lp</UsageType>
+    <Layer>LONGPRINCIPAL</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>2</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>305</Name>
+    <Modulation>61</Modulation>
+  </Part>
+  <Part Id="b9409a76-6a6a-4ddd-bbc0-05e57e745597">
+    <ReferenceName>LD 144</ReferenceName>
+    <Width>144</Width>
+    <Height>7</Height>
+    <UsageType>Ld</UsageType>
+    <Layer>LD IMPACTO</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>0</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>144</Name>
+    <Modulation>61</Modulation>
+  </Part>
+</ArrayOfPart>

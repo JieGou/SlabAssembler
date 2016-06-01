@@ -12,6 +12,12 @@ namespace Urbbox.SlabAssembler.Repositories.Core
         public XMLRepository(string datafile)
         {
             RepositoryDataFile = datafile;
+            if (!File.Exists(datafile))
+            {
+                using (File.Create(datafile)) { }
+                Save();
+            }
+
             Load();
         }
 
@@ -37,30 +43,30 @@ namespace Urbbox.SlabAssembler.Repositories.Core
                 CurrentTransaction.Remove(entity);
             else
             {
-                base.Add(entity);
+                base.Remove(entity);
                 Save();
             }
         }
 
         private void Save()
         {
-            var serializer = new XmlSerializer(typeof(IEnumerable<TEntity>));
+            var serializer = new XmlSerializer(typeof(List<TEntity>));
             using (TextWriter writer = new StreamWriter(RepositoryDataFile))
                 serializer.Serialize(writer, Entities);
         }
 
         private void Load()
         {
-            IEnumerable<TEntity> entities;
-            var deserializer = new XmlSerializer(typeof(IEnumerable<TEntity>));
+            List<TEntity> entities;
+            var deserializer = new XmlSerializer(typeof(List<TEntity>));
             using (TextReader reader = new StreamReader(RepositoryDataFile))
-                entities = (IEnumerable<TEntity>) deserializer.Deserialize(reader);
+                entities = (List<TEntity>) deserializer.Deserialize(reader);
 
             Entities.Clear();
             Entities.AddRange(entities);
         }
 
-        public class XMLRepositoryTransaction : ITransaction<TEntity>
+        public sealed class XMLRepositoryTransaction : ITransaction<TEntity>
         {
             private readonly XMLRepository<TEntity> _xmlRepository;
             private LinkedList<TEntity> _addedEntities;
@@ -92,8 +98,10 @@ namespace Urbbox.SlabAssembler.Repositories.Core
 
             public void Commit()
             {
-                _xmlRepository.AddRange(_addedEntities);
-                _xmlRepository.RemoveRange(_removedEntities);
+                _xmlRepository.Entities.AddRange(_addedEntities);
+                foreach (var entity in _removedEntities)
+                    _xmlRepository.Entities.Remove(entity);
+
                 _xmlRepository.Save();
                 Rollback();
             }

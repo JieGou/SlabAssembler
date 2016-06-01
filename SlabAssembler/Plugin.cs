@@ -3,9 +3,11 @@ using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
-using Urbbox.SlabAssembler.Properties;
 using Urbbox.SlabAssembler.Core;
 using System;
+using System.Linq;
+using ReactiveUI;
+using Urbbox.SlabAssembler.Core.Models;
 using Urbbox.SlabAssembler.Managers;
 using Urbbox.SlabAssembler.Repositories;
 
@@ -14,9 +16,9 @@ namespace Urbbox.SlabAssembler
     public static class Plugin
     {
         private static PaletteSet _mainPallet;
+        private static AutoCadManager _acManager;
         private static IAlgorythimRepository _algorythimRepository;
         private static IPartRepository _partRepository;
-        private static AutoCadManager _acManager;
 
         [CommandMethod("URBLAJE")]
         public static void ShowPallet()
@@ -37,6 +39,9 @@ namespace Urbbox.SlabAssembler
                 Parts = especificationsView.ViewModel
             };
 
+            if (!_algorythimRepository.GetAll().Any()) _algorythimRepository.Add(new AssemblyOptions());
+
+            especificationsView.ViewModel.WhenAnyValue(x => x.SelectedModulation).ToProperty(algorythimView.ViewModel, x => x.SelectedModulation);
             especificationsView.ViewModel.DrawSlab.Subscribe(_ =>
             {
                 using (var builder = new SlabBuilder(_acManager, _partRepository))

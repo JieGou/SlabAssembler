@@ -45,7 +45,6 @@ D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Urbbox.SlabAssembler_
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Urbbox.SlabAssembler_MarkupCompile.lref
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Urbbox.SlabAssembler.dll
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Urbbox.SlabAssembler.pdb
-D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\bin\Release\Resources\Configurations.Defaults.xml
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\bin\Release\Urbbox.SlabAssembler.dll
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\bin\Release\Urbbox.SlabAssembler.pdb
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\bin\Release\ReactiveUI.dll

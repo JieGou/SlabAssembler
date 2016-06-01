@@ -1,6 +1,7 @@
 ﻿using Urbbox.SlabAssembler.Core;
 using Urbbox.SlabAssembler.Core.Variations;
 using System;
+using System.Reactive.Linq;
 using ReactiveUI;
 using Autodesk.AutoCAD.Customization;
 using Urbbox.SlabAssembler.Core.Models;
@@ -14,17 +15,28 @@ namespace Urbbox.SlabAssembler.ViewModels
         private bool _onlyCimbrament;
         private Part _selectedStartLp;
         private readonly IPartRepository _partRepository;
-        private readonly IAlgorythimRepository _algorythimRepository;
+        private int _selectedModulation;
+        private bool _hasChanges;
+        private bool HasChanges
+        {
+            get { return _hasChanges; }
+            set { this.RaiseAndSetIfChanged(ref _hasChanges, value); }
+        }
 
-        public double OrientationAngle => (SelectedOrientation == Orientation.Vertical) ? 90 : 0;
-        public AssemblyOptions Options => _algorythimRepository.Get();
-
-        public int SelectedModulation { get; set; }
+        public double OrientationAngle => SelectedOrientation == Orientation.Vertical ? 90 : 0;
+        public AssemblyOptions Options { get; }
         public ReactiveList<Part> StartLpList { get; }
         public ReactiveCommand<object> Reset { get; }
         public ReactiveCommand<object> Update { get; }
 
-        public Orientation SelectedOrientation {
+        public int SelectedModulation
+        {
+            get { return _selectedModulation; }
+            set { this.RaiseAndSetIfChanged(ref _selectedModulation, value); }
+        }
+
+        public Orientation SelectedOrientation
+        {
             get { return _selectedOrientation; }
             set { this.RaiseAndSetIfChanged(ref _selectedOrientation, value); }
         }
@@ -44,20 +56,29 @@ namespace Urbbox.SlabAssembler.ViewModels
         public AlgorythimViewModel(IPartRepository partRepository, IAlgorythimRepository algorythimRepository)
         {
             _partRepository = partRepository;
-            _algorythimRepository = algorythimRepository;
+            HasChanges = false;
 
-            _partRepository.PartsChanged.Subscribe(_ =>
-            {
-                StartLpList.Clear();
-                StartLpList.AddRange(_partRepository.GetByModulaton(SelectedModulation).WhereType(UsageType.StartLp));
-            });
-
+            Options = algorythimRepository.Get();
             StartLpList = new ReactiveList<Part>();
             Reset = ReactiveCommand.Create();
-            Update = ReactiveCommand.Create();
+            Update = this.WhenAny(x => x.HasChanges, c => c.Value).ToCommand();
 
-            Reset.Subscribe(_ => _algorythimRepository.Reset());
-            Update.Subscribe(_ => _algorythimRepository.SaveChanges());
+            Options.Changed.Subscribe(x => HasChanges = true);
+            this.WhenAnyValue(x => x.SelectedModulation).Subscribe(_ => ResetParts());
+            _partRepository.PartsChanged.Subscribe(_ => ResetParts());
+            Reset.Subscribe(_ => algorythimRepository.Reset());
+            Update.Subscribe(_ =>
+            {
+                algorythimRepository.SaveChanges();
+                HasChanges = false;
+            });
+        }
+
+        private void ResetParts()
+        {
+            StartLpList.Clear();
+            foreach (var p in _partRepository.GetByModulaton(SelectedModulation).WhereType(UsageType.StartLp))
+                StartLpList.Add(p);
         }
     }
 }

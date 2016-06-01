@@ -9,5 +9,6 @@ namespace Urbbox.SlabAssembler.Repositories.Core
     public interface IOperableByTransaction<in TElement> where TElement : class
     {
         ITransaction<TElement> CurrentTransaction { get; }
+        ITransaction<TElement> StartTransaction();
     }
 }

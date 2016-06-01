@@ -8,6 +8,7 @@
              xmlns:v="clr-namespace:Urbbox.SlabAssembler.Core.Variations"       
              xmlns:vm="clr-namespace:Urbbox.SlabAssembler.ViewModels"
              xmlns:cv="clr-namespace:Urbbox.SlabAssembler.ViewModels.Converters"
+             xmlns:models="clr-namespace:Urbbox.SlabAssembler.Core.Models"
              x:Class="Urbbox.SlabAssembler.Views.PartsListControl"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance vm:PartsViewModel}"
@@ -29,8 +30,9 @@
                             <Expander.Header>
                                 <TextBlock Text="{Binding Name, Converter={StaticResource UsageTypeConverter}}"
                                            FontWeight="Bold"
-                                           d:DataContext="{d:DesignInstance b:Part}" />
+                                           d:DataContext="{d:DesignData models:Part}" />
                             </Expander.Header>
+                            <ItemsPresenter/>
                         </Expander>
                     </ControlTemplate>
                 </Setter.Value>
@@ -46,12 +48,12 @@
             <ListView x:Name="PartsListView" Margin="0,5" ItemsSource="{Binding Source={StaticResource PartsViewSource}}" SelectedItem="{Binding SelectedPart, Mode=TwoWay}" Height="400">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Nome de Referência" DisplayMemberBinding="{Binding ReferenceName}" />
+                        <GridViewColumn Header="Nome de Referência" Width="250" DisplayMemberBinding="{Binding ReferenceName}" />
                     </GridView>
                 </ListView.View>
-                <ListBox.GroupStyle>
+                <ListView.GroupStyle>
                     <GroupStyle HidesIfEmpty="True" ContainerStyle="{StaticResource ResourceKey=UsageTypeContainerStyle}"/>
-                </ListBox.GroupStyle>
+                </ListView.GroupStyle>
             </ListView>
 
             <Grid Margin="0,0,0,5">

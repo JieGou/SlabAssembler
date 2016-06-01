@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using Urbbox.SlabAssembler.Core;
+using Urbbox.SlabAssembler.Core.Models;
 using Urbbox.SlabAssembler.Managers;
 using Urbbox.SlabAssembler.Repositories;
 using Urbbox.SlabAssembler.ViewModels;
@@ -64,13 +64,13 @@ namespace Urbbox.SlabAssembler.Views
             {
                 var e = _acad.CheckBlockExists(part.ReferenceName);
                 var l = _acad.CheckLayerExists(part.Layer);
-                log += $"{part.ReferenceName}\t -> ";
+                log += $"{part.ReferenceName}\n";
                 if (e && l)
                     log += "OK";
                 else
                 {
-                    if (!e) log += "REFERÊNCIA INEXISTENTE, ";
-                    if (!l) log += "CAMADA INEXISTENTE";
+                    if (!e) log += "\tReferência Inexistente\n";
+                    if (!l) log += "\tCamada Inexistente";
                 }
 
                 log += "\n";

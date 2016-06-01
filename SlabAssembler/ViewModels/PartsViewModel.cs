@@ -2,6 +2,7 @@
 using Urbbox.SlabAssembler.Core;
 using Urbbox.SlabAssembler.Repositories;
 using ReactiveUI;
+using Urbbox.SlabAssembler.Core.Models;
 using Urbbox.SlabAssembler.Managers;
 
 namespace Urbbox.SlabAssembler.ViewModels
@@ -35,7 +36,8 @@ namespace Urbbox.SlabAssembler.ViewModels
             partRepository.PartsChanged.Subscribe(_ =>
             {
                 Parts.Clear();
-                Parts.AddRange(partRepository.GetAll());
+                foreach (var p in partRepository.GetAll())
+                    Parts.Add(p);
             });
         }
 

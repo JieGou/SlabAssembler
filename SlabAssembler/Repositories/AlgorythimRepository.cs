@@ -4,31 +4,38 @@ using Urbbox.SlabAssembler.Repositories.Core;
 
 namespace Urbbox.SlabAssembler.Repositories
 {
-    class AlgorythimRepository : XMLRepository<AssemblyOptions>, IAlgorythimRepository
+    public class AlgorythimRepository : XMLRepository<AssemblyOptions>, IAlgorythimRepository
     {
         public AlgorythimRepository() : base(Properties.Resources.OptionsDataFile) { }
 
         public AssemblyOptions Get()
         {
             StartTransaction();
-            return GetAll().First();
+            return Get(0);
         }
 
         public void SaveChanges()
         {
             CurrentTransaction.Commit();
+            CurrentTransaction.Dispose();
             StartTransaction();
         }
 
         public void Reset()
         {
-            var defaultRepo = new AlgorythimRepository { RepositoryDataFile = Properties.Resources.DefaultOptionsDataFile };
+            var defaultRepo = new XMLRepository<AssemblyOptions>(Properties.Resources.DefaultOptionsDataFile);
+
+            Clear();
             using (var t = StartTransaction())
             {
-                Clear();
-                AddRange(defaultRepo.GetAll());
+                if (!defaultRepo.GetAll().Any())
+                    Add(new AssemblyOptions());
+                else
+                    AddRange(defaultRepo.GetAll());
                 t.Commit();
             }
+
+            StartTransaction();
         }
     }
 }

@@ -6,6 +6,7 @@ using Urbbox.SlabAssembler.Core.Variations;
 using System;
 using ReactiveUI;
 using System.Reactive.Linq;
+using Urbbox.SlabAssembler.Core.Models;
 using Urbbox.SlabAssembler.Managers;
 using Urbbox.SlabAssembler.Repositories;
 
@@ -13,8 +14,6 @@ namespace Urbbox.SlabAssembler.ViewModels
 {
     public class EspecificationsViewModel : ReactiveObject
     {
-        private List<Part> _parts;
-
         private bool _selecting;
         private bool _drawing;
         public ReactiveList<int> Modulations { get; }
@@ -120,13 +119,13 @@ namespace Urbbox.SlabAssembler.ViewModels
                     && x.Item5 != null
                     && !x.Item6)
                     .ToCommand();
-            DrawSlab.IsExecuting.ToProperty(this, x => x._drawing, false);
+            DrawSlab.IsExecuting.ToProperty(this, x => x._drawing);
 
-            this.ObservableForProperty(x => x.SelectedModulation)
+            this.WhenAnyValue(x => x.SelectedModulation)
                 .Subscribe(x => RefreshParts());
-            this.ObservableForProperty(x => x.SelectedOutline)
-                .Subscribe(s => {
-                    SelectionStatus = (s.Value != ObjectId.Null)? $"Contorno selecionado: #{s.Value.GetHashCode()}" : "Nenhum contorno selecionado.";
+            this.WhenAnyValue(x => x.SelectedOutline)
+                .Subscribe(id => {
+                    SelectionStatus = id != ObjectId.Null ? $"Contorno selecionado: #{id.GetHashCode()}" : "Nenhum contorno selecionado.";
                 });
 
             _partRepository.PartsChanged.Subscribe(e =>
@@ -140,18 +139,18 @@ namespace Urbbox.SlabAssembler.ViewModels
 
         private void RefreshParts()
         {
-            var parts = _partRepository.GetByModulaton(SelectedModulation);
+            var parts = _partRepository.GetByModulaton(SelectedModulation).ToList();
 
             FormsAndBoxes.Clear();
-            foreach (var p in _parts.Where(p => (p.UsageType == UsageType.Box || p.UsageType == UsageType.Form)))
+            foreach (var p in parts.Where(p => p.UsageType == UsageType.Box || p.UsageType == UsageType.Form))
                 FormsAndBoxes.Add(p);
 
             LpList.Clear();
-            foreach (var p in _parts.Where(p => (p.UsageType == UsageType.Lp)))
+            foreach (var p in parts.WhereType(UsageType.Lp))
                 LpList.Add(p);
 
             LdList.Clear();
-            foreach (var p in _parts.Where(p => (p.UsageType == UsageType.Ld)))
+            foreach (var p in parts.WhereType(UsageType.Ld))
                 LdList.Add(p);
         }
 

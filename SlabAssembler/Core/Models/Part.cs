@@ -1,18 +1,17 @@
-﻿using ReactiveUI;
-using System;
+﻿using System;
 using System.Reactive.Linq;
 using System.Xml.Serialization;
-using Urbbox.SlabAssembler.Core.Variations;
 using Autodesk.AutoCAD.Geometry;
-using Urbbox.SlabAssembler.Repositories.Core;
+using ReactiveUI;
+using Urbbox.SlabAssembler.Core.Variations;
 
-namespace Urbbox.SlabAssembler.Core
+namespace Urbbox.SlabAssembler.Core.Models
 {
     [Serializable]
-    public class Part : ReactiveObject, IEntity
+    public class Part : ReactiveObject
     {
         [XmlAttribute]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         private string _referenceName;
         public string ReferenceName {
@@ -89,14 +88,14 @@ namespace Urbbox.SlabAssembler.Core
 
         public Part()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid().ToString();
             Width = 0;
             Height = 0;
             StartOffset = 0;
             PivotPointX = 0;
             PivotPointY = 0;
             Save = this.WhenAnyValue(x => x.ReferenceName, x => x.Name, x => x.Layer, x => x.Width, x => x.Height, x => x.Modulation)
-                .Select(x => !String.IsNullOrEmpty(x.Item1) && !String.IsNullOrEmpty(x.Item2) && !String.IsNullOrEmpty(x.Item3) && x.Item4 > 0 && x.Item5 > 0 && x.Item6 > 0)
+                .Select(x => !string.IsNullOrEmpty(x.Item1) && !string.IsNullOrEmpty(x.Item2) && !string.IsNullOrEmpty(x.Item3) && x.Item4 > 0 && x.Item5 > 0 && x.Item6 > 0)
                 .ToCommand();
         }
 
