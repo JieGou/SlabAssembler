@@ -1,5 +1,4 @@
-﻿using Urbbox.SlabAssembler.Core;
-using Urbbox.SlabAssembler.Repositories;
+﻿using Urbbox.SlabAssembler.Repositories;
 using System;
 using System.Windows;
 using Urbbox.SlabAssembler.Core.Models;

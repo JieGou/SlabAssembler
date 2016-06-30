@@ -4,14 +4,13 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Core.Application;
-using System;
 
 namespace Urbbox.SlabAssembler.Managers
 {
     public class AutoCadManager
     {
         public Document WorkingDocument => AcApplication.DocumentManager.MdiActiveDocument;
-        public Autodesk.AutoCAD.DatabaseServices.Database Database => WorkingDocument.Database;
+        public Database Database => WorkingDocument.Database;
         public CoordinateSystem3d UCS => WorkingDocument.Editor.CurrentUserCoordinateSystem.CoordinateSystem3d;
 
         public Transaction StartOpenCloseTransaction()
@@ -43,6 +42,15 @@ namespace Urbbox.SlabAssembler.Managers
             return list;
         }
 
+        public ObjectId FindObject(string blockName)
+        {
+            using (var t = StartOpenCloseTransaction())
+            {
+                var blktbl = t.GetObject(Database.BlockTableId, OpenMode.ForRead) as BlockTable;
+                return blktbl.Has(blockName) ? blktbl[blockName] : ObjectId.Null;
+            }
+        }
+
         public PromptPointResult GetPoint(string message)
         {
             using (WorkingDocument.LockDocument())
@@ -56,7 +64,7 @@ namespace Urbbox.SlabAssembler.Managers
             using (var t = StartOpenCloseTransaction())
             {
                 var blockTable = t.GetObject(Database.BlockTableId, OpenMode.ForRead) as BlockTable;
-                return blockTable.Has(blockName);
+                return blockTable != null && blockTable.Has(blockName);
             }
         }
 
@@ -65,7 +73,7 @@ namespace Urbbox.SlabAssembler.Managers
             using (var t = StartOpenCloseTransaction())
             {
                 var layerTable = t.GetObject(Database.LayerTableId, OpenMode.ForRead) as LayerTable;
-                return layerTable.Has(layerName);
+                return layerTable != null && layerTable.Has(layerName);
             }
         }
 
@@ -90,11 +98,9 @@ namespace Urbbox.SlabAssembler.Managers
 
         public ObjectIdCollection GetLayerObjects(string layerName)
         {
-            TypedValue[] tvs = new TypedValue[1] {
-                new TypedValue((int) DxfCode.LayerName, layerName)
-            };
-            SelectionFilter sf = new SelectionFilter(tvs);
-            PromptSelectionResult psr = WorkingDocument.Editor.SelectAll(sf);
+            var tvs = new[] { new TypedValue((int) DxfCode.LayerName, layerName) };
+            var sf = new SelectionFilter(tvs);
+            var psr = WorkingDocument.Editor.SelectAll(sf);
 
             if (psr.Status == PromptStatus.OK)
                 return new ObjectIdCollection(psr.Value.GetObjectIds());

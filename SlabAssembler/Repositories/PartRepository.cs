@@ -30,6 +30,9 @@ namespace Urbbox.SlabAssembler.Repositories
         {
             PartsChanged = ReactiveCommand.Create();
             PartsChanged.Execute(null);
+
+            if (GetAll().Count() == 0)
+                ResetParts();
         }
 
         public Part GetById(string id)
@@ -45,13 +48,13 @@ namespace Urbbox.SlabAssembler.Repositories
         public override void Add(Part entity)
         {
             base.Add(entity);
-            PartsChanged.Execute(null);
+            PartsChanged?.Execute(null);
         }
 
         public override void Remove(Part entity)
         {
             base.Remove(entity);
-            PartsChanged.Execute(null);
+            PartsChanged?.Execute(null);
         }
 
         public IEnumerable<Part> GetByModulaton(int modulation)
@@ -62,15 +65,16 @@ namespace Urbbox.SlabAssembler.Repositories
         public Part GetNextSmaller(Part currentPart, UsageType necessaryUsageType)
         {
             return GetByModulaton(currentPart.Modulation)
+                .WhereType(necessaryUsageType)
                 .OrderByDescending(p => p.Width)
-                .First(p => p.Width < currentPart.Width);
+                .FirstOrDefault(p => p.Width < currentPart.Width);
         }
 
         public Part GetRespectiveOfType(Part currentPart, UsageType usage, float tolerance = 5)
         {
             return GetByModulaton(currentPart.Modulation)
                 .WhereType(usage)
-                .First(p => Math.Abs(p.Width - currentPart.Width) < tolerance);
+                .FirstOrDefault(p => Math.Abs(p.Width - currentPart.Width) < tolerance);
         }
 
         public void ResetParts()

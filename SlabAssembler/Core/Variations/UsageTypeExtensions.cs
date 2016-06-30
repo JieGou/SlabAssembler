@@ -79,5 +79,26 @@ namespace Urbbox.SlabAssembler.Core.Variations
                     throw new ArgumentOutOfRangeException(nameof(usage), usage, null);
             }
         }
+
+        public static float ToOrietationAngle(this UsageType usage, float selectedOrientation)
+        {
+            switch (usage)
+            {
+                case UsageType.Box:
+                case UsageType.Form:
+                case UsageType.Ld:
+                case UsageType.Lds:
+                case UsageType.Head:
+                    return 90 - selectedOrientation;
+
+                case UsageType.StartLp:
+                case UsageType.EndLp:
+                case UsageType.Lp:
+                    return selectedOrientation;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(usage), usage, null);
+            }
+        }
     }
 }

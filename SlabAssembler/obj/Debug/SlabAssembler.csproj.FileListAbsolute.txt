@@ -43,6 +43,8 @@ C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\SlabAssembler.csproj.
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\Urbbox.SlabAssembler.dll
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\Urbbox.SlabAssembler.pdb
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Debug\SlabAssembler.csprojResolveAssemblyReference.cache
+D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\Resources\Options.Defaults.xml
+D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\Resources\Parts.Defaults.xml
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\Urbbox.SlabAssembler.dll
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\Urbbox.SlabAssembler.pdb
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\bin\Debug\Urbbox.SlabAssembler.dll.CodeAnalysisLog.xml

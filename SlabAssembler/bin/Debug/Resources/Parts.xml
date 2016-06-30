@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfPart xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <Part Id="42e93bf2-cb30-4a84-89d8-07b3b9ac66a2">
-    <ReferenceName>PLASTERIT</ReferenceName>
+  <Part Id="49a3ac0b-28af-4779-8170-3c4da60997c1">
+    <ReferenceName>CAIXA 80X80</ReferenceName>
+    <Width>80</Width>
+    <Height>80</Height>
+    <UsageType>Box</UsageType>
+    <Layer>IP - CAIXAS IMPACTO</Layer>
+    <PivotPointX>40</PivotPointX>
+    <PivotPointY>40</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>CAIXA 80X80</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="7c73d20d-e99b-41d5-baa2-f97f33a07753">
+    <ReferenceName>PLASTERIT 61X61</ReferenceName>
     <Width>61</Width>
     <Height>61</Height>
     <UsageType>Form</UsageType>
@@ -9,55 +22,554 @@
     <PivotPointX>0</PivotPointX>
     <PivotPointY>0</PivotPointY>
     <StartOffset>0</StartOffset>
-    <Name>Plasterit</Name>
+    <Name>PLASTERIT 61X61</Name>
     <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
   </Part>
-  <Part Id="81168a06-30fa-4cc5-ae91-6b8d91894571">
-    <ReferenceName>CAIXA 61x61</ReferenceName>
+  <Part Id="6a99dfa2-87e4-4c75-9c33-ce24fbaf5408">
+    <ReferenceName>CAIXA 61X61</ReferenceName>
     <Width>61</Width>
     <Height>61</Height>
     <UsageType>Box</UsageType>
-    <Layer>CAIXAS IMPACTO</Layer>
+    <Layer>IP - CAIXAS IMPACTO</Layer>
     <PivotPointX>30.5</PivotPointX>
     <PivotPointY>30.5</PivotPointY>
     <StartOffset>0</StartOffset>
-    <Name>Caixa 61x61</Name>
+    <Name>CAIXA 61X61</Name>
     <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
   </Part>
-  <Part Id="13fba27a-ed17-4e92-803e-b94d7d711216">
-    <ReferenceName>CAIXA 80x80</ReferenceName>
-    <Width>80</Width>
-    <Height>80</Height>
-    <UsageType>Form</UsageType>
-    <Layer>CAIXAS IMPACTO</Layer>
-    <PivotPointX>40</PivotPointX>
-    <PivotPointY>40</PivotPointY>
+  <Part Id="99d08d32-d206-4826-aa8b-e27440af5425">
+    <ReferenceName>CABEÇA COM PINO</ReferenceName>
+    <Width>12</Width>
+    <Height>8</Height>
+    <UsageType>Head</UsageType>
+    <Layer>IP - CABEÇA</Layer>
+    <PivotPointX>5</PivotPointX>
+    <PivotPointY>4</PivotPointY>
     <StartOffset>0</StartOffset>
-    <Name>Caixa 80x80</Name>
+    <Name>CABEÇA COM PINO</Name>
     <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
   </Part>
-  <Part Id="0414afd8-7dd9-435f-9588-ae41a9278878">
-    <ReferenceName>LP 305</ReferenceName>
-    <Width>305</Width>
+  <Part Id="3f470356-4dfd-43c4-bdd4-97e8729e0eaf">
+    <ReferenceName>CABEÇA COM PINO</ReferenceName>
+    <Width>12</Width>
+    <Height>8</Height>
+    <UsageType>Head</UsageType>
+    <Layer>IP - CABEÇA</Layer>
+    <PivotPointX>5</PivotPointX>
+    <PivotPointY>4</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>CABEÇA COM PINO</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="0739e846-f7cc-4659-bf6b-e6a26bde847b">
+    <ReferenceName>LDS80</ReferenceName>
+    <Width>80</Width>
+    <Height>7</Height>
+    <UsageType>Lds</UsageType>
+    <Layer>IP - LONGDISTRVAR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LDS 80</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="81f3f348-e86c-4730-b783-5ae1f2ea3fa4">
+    <ReferenceName>LDS115.5</ReferenceName>
+    <Width>115.5</Width>
+    <Height>7</Height>
+    <UsageType>Lds</UsageType>
+    <Layer>IP - LONGDISTRVAR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LDS 115.5</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="feddb247-f67d-4b29-8c51-98b5403a19ea">
+    <ReferenceName>LDS120</ReferenceName>
+    <Width>120</Width>
+    <Height>7</Height>
+    <UsageType>Lds</UsageType>
+    <Layer>IP - LONGDISTRVAR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LDS 120</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="20cd493b-7d5d-4b39-8a5a-d0357769e615">
+    <ReferenceName>LDS155.5</ReferenceName>
+    <Width>155.5</Width>
+    <Height>7</Height>
+    <UsageType>Lds</UsageType>
+    <Layer>IP - LONGDISTRVAR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LDS 155.5</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="1a1641d9-a279-48c4-97ff-040ae14ec835">
+    <ReferenceName>LDS 160</ReferenceName>
+    <Width>160</Width>
+    <Height>7</Height>
+    <UsageType>Lds</UsageType>
+    <Layer>IP - LONGDISTRVAR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LDS 160</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="1df8cb49-89b9-4f54-9e5d-86179665246a">
+    <ReferenceName>LDS50</ReferenceName>
+    <Width>50</Width>
+    <Height>7</Height>
+    <UsageType>Lds</UsageType>
+    <Layer>IP - LONGDISTRVAR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LDS 50</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="1afbf34a-4f9e-4788-a56a-db8c70aa8628">
+    <ReferenceName>LDS61</ReferenceName>
+    <Width>61</Width>
+    <Height>7</Height>
+    <UsageType>Lds</UsageType>
+    <Layer>IP - LONGDISTRVAR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LDS 61</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="02c81d0c-5aaf-48c7-aff5-ccf897877822">
+    <ReferenceName>LDS80</ReferenceName>
+    <Width>80</Width>
+    <Height>7</Height>
+    <UsageType>Lds</UsageType>
+    <Layer>IP - LONGDISTRVAR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LDS 80</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="98b96292-57a6-4add-9a7e-fa1ea3371963">
+    <ReferenceName>LDS100</ReferenceName>
+    <Width>100</Width>
+    <Height>7</Height>
+    <UsageType>Lds</UsageType>
+    <Layer>IP - LONGDISTRVAR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LDS 100</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="61040a91-b636-45f4-b180-3de17d542e19">
+    <ReferenceName>LDS122</ReferenceName>
+    <Width>122</Width>
+    <Height>7</Height>
+    <UsageType>Lds</UsageType>
+    <Layer>IP - LONGDISTRVAR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LDS 122</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="3c1ec0e2-a7d1-41a7-9653-5b2b7db4d2ed">
+    <ReferenceName>LDS150</ReferenceName>
+    <Width>150</Width>
+    <Height>7</Height>
+    <UsageType>Lds</UsageType>
+    <Layer>IP - LONGDISTRVAR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LDS 150</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="0c87dda9-c867-450a-bcd8-57856ff7ce21">
+    <ReferenceName>LDS183</ReferenceName>
+    <Width>183</Width>
+    <Height>7</Height>
+    <UsageType>Lds</UsageType>
+    <Layer>IP - LONGDISTRVAR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LDS 183</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="9dfb7702-2cfb-49b9-ba75-83870e4f97a5">
+    <ReferenceName>LD80</ReferenceName>
+    <Width>80</Width>
+    <Height>7</Height>
+    <UsageType>Ld</UsageType>
+    <Layer>IP - LONGDISTR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LD 80</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="dca20366-582b-4c33-b1aa-09d9cdb781f2">
+    <ReferenceName>LD75.5</ReferenceName>
+    <Width>75.5</Width>
+    <Height>7</Height>
+    <UsageType>Ld</UsageType>
+    <Layer>IP - LONGDISTR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LD 75.5</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="4a76e95f-4248-41e7-b8f9-169d670e2267">
+    <ReferenceName>LD115.5</ReferenceName>
+    <Width>115.5</Width>
+    <Height>7</Height>
+    <UsageType>Ld</UsageType>
+    <Layer>IP - LONGDISTR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LD 115.5</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="07984376-86fe-4ead-b2af-df5c6c89119e">
+    <ReferenceName>LD120</ReferenceName>
+    <Width>120</Width>
+    <Height>7</Height>
+    <UsageType>Ld</UsageType>
+    <Layer>IP - LONGDISTR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LD 120</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="966dbd39-392a-48ab-af7a-dd55a7fbecd4">
+    <ReferenceName>LD155.5</ReferenceName>
+    <Width>155.5</Width>
+    <Height>7</Height>
+    <UsageType>Ld</UsageType>
+    <Layer>IP - LONGDISTR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LD 155.5</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="d31a56b7-abce-4495-b4f5-10717ced0153">
+    <ReferenceName>LD160</ReferenceName>
+    <Width>160</Width>
+    <Height>7</Height>
+    <UsageType>Ld</UsageType>
+    <Layer>IP - LONGDISTR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LD 160</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="8b15d66f-17bf-4ea4-802a-ae27a9fb56bd">
+    <ReferenceName>LD50</ReferenceName>
+    <Width>50</Width>
+    <Height>7</Height>
+    <UsageType>Ld</UsageType>
+    <Layer>IP - LONGDISTR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LD 50</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="9247fce8-5068-4d3e-b9c7-08cae59433d7">
+    <ReferenceName>LD61</ReferenceName>
+    <Width>61</Width>
+    <Height>7</Height>
+    <UsageType>Ld</UsageType>
+    <Layer>IP - LONGDISTR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LD 61</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="5275da3e-3dfc-433b-8e71-ee94e0c6a836">
+    <ReferenceName>LD80</ReferenceName>
+    <Width>80</Width>
+    <Height>7</Height>
+    <UsageType>Ld</UsageType>
+    <Layer>IP - LONGDISTR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LD 80</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="211ea462-21ef-4227-94fb-e4e48eda078e">
+    <ReferenceName>LD100</ReferenceName>
+    <Width>100</Width>
+    <Height>7</Height>
+    <UsageType>Ld</UsageType>
+    <Layer>IP - LONGDISTR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LD 100</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="539ea5b1-3fdf-493c-ae3f-7e45f621c03c">
+    <ReferenceName>LD122</ReferenceName>
+    <Width>122</Width>
+    <Height>7</Height>
+    <UsageType>Ld</UsageType>
+    <Layer>IP - LONGDISTR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LD 122</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="dc1025fc-184c-4e47-a99e-66de74ef55cb">
+    <ReferenceName>LP FINAL 190</ReferenceName>
+    <Width>189.4</Width>
     <Height>4</Height>
-    <UsageType>Lp</UsageType>
-    <Layer>LONGPRINCIPAL</Layer>
+    <UsageType>EndLp</UsageType>
+    <Layer>IP - LONGPRINCIPAL</Layer>
     <PivotPointX>0</PivotPointX>
     <PivotPointY>2</PivotPointY>
     <StartOffset>0</StartOffset>
-    <Name>305</Name>
-    <Modulation>61</Modulation>
+    <Name>FINAL 190</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
   </Part>
-  <Part Id="b9409a76-6a6a-4ddd-bbc0-05e57e745597">
-    <ReferenceName>LD 144</ReferenceName>
-    <Width>144</Width>
+  <Part Id="07c1e66e-e2de-4b56-b6bd-841e48730fb4">
+    <ReferenceName>LP FINAL 150</ReferenceName>
+    <Width>149.4</Width>
+    <Height>4</Height>
+    <UsageType>EndLp</UsageType>
+    <Layer>IP - LONGPRINCIPAL</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>2</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>FINAL 150</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="811d49b3-0d2f-4191-9d9e-73b15a84211a">
+    <ReferenceName>LP PARTIDA 140</ReferenceName>
+    <Width>139.6</Width>
+    <Height>4</Height>
+    <UsageType>StartLp</UsageType>
+    <Layer>IP - LONGPRINCIPAL</Layer>
+    <PivotPointX>139.6</PivotPointX>
+    <PivotPointY>2</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>PARTIDA 140</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="f960bb3e-b616-4efc-93d2-c120337a2541">
+    <ReferenceName>LP PARTIDA 100</ReferenceName>
+    <Width>99.6</Width>
+    <Height>4</Height>
+    <UsageType>StartLp</UsageType>
+    <Layer>IP - LONGPRINCIPAL</Layer>
+    <PivotPointX>99.6</PivotPointX>
+    <PivotPointY>2</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>PARTIDA 100</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="56de8c4a-2512-47de-b613-428661b514ed">
+    <ReferenceName>LP240</ReferenceName>
+    <Width>240</Width>
+    <Height>4</Height>
+    <UsageType>Lp</UsageType>
+    <Layer>IP - LONGPRINCIPAL</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>2</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LP 240</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="0b8da8ad-79bf-47bf-af2d-ab319268ce14">
+    <ReferenceName>LP160</ReferenceName>
+    <Width>160</Width>
+    <Height>4</Height>
+    <UsageType>Lp</UsageType>
+    <Layer>IP - LONGPRINCIPAL</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>2</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LP 160</Name>
+    <Modulation>80</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="46738c41-0205-4146-9d54-b18e54d79e29">
+    <ReferenceName>LP FINAL 103</ReferenceName>
+    <Width>102.6</Width>
+    <Height>4</Height>
+    <UsageType>EndLp</UsageType>
+    <Layer>IP - LONGPRINCIPAL</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>2</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>FINAL 103</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="8a4d8b73-d6d0-4cb5-879f-6a808ddd0c1b">
+    <ReferenceName>LP FINAL 87</ReferenceName>
+    <Width>86.5</Width>
+    <Height>4</Height>
+    <UsageType>EndLp</UsageType>
+    <Layer>IP - LONGPRINCIPAL</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>2</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>FINAL 87</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="814079c3-d70c-41bc-9e66-49645d5522a3">
+    <ReferenceName>LP PART 213</ReferenceName>
+    <Width>213.1</Width>
+    <Height>4</Height>
+    <UsageType>StartLp</UsageType>
+    <Layer>IP - LONGPRINCIPAL</Layer>
+    <PivotPointX>212.9</PivotPointX>
+    <PivotPointY>2</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>PARTIDA 213</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="bb4b1599-de2f-4398-8600-21e96f513f51">
+    <ReferenceName>LP PARTIDA 138</ReferenceName>
+    <Width>137.7</Width>
+    <Height>4</Height>
+    <UsageType>StartLp</UsageType>
+    <Layer>IP - LONGPRINCIPAL</Layer>
+    <PivotPointX>137.5</PivotPointX>
+    <PivotPointY>2</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>PARTIDA 138</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="4de82b76-bd62-406f-849e-e7b7fff8ac03">
+    <ReferenceName>LP183</ReferenceName>
+    <Width>122</Width>
+    <Height>4</Height>
+    <UsageType>Lp</UsageType>
+    <Layer>IP - LONGPRINCIPAL</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>2</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LP 183</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="b9f213b8-9f7b-4dd2-9a88-443f16843a2a">
+    <ReferenceName>LP305</ReferenceName>
+    <Width>305</Width>
+    <Height>4</Height>
+    <UsageType>Lp</UsageType>
+    <Layer>IP - LONGPRINCIPAL</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>2</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LP 305</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="b9fee0fc-9976-4365-88fb-ee9b98efef54">
+    <ReferenceName>LD150</ReferenceName>
+    <Width>150</Width>
     <Height>7</Height>
     <UsageType>Ld</UsageType>
-    <Layer>LD IMPACTO</Layer>
+    <Layer>IP - LONGDISTR</Layer>
     <PivotPointX>0</PivotPointX>
-    <PivotPointY>0</PivotPointY>
+    <PivotPointY>3.5</PivotPointY>
     <StartOffset>0</StartOffset>
-    <Name>144</Name>
+    <Name>LD 150</Name>
     <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="bf1920db-4ac6-465c-b5a6-bf0bea582387">
+    <ReferenceName>LD183</ReferenceName>
+    <Width>183</Width>
+    <Height>7</Height>
+    <UsageType>Ld</UsageType>
+    <Layer>IP - LONGDISTR</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>3.5</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LD 183</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="7e37bd26-9662-4db3-aeda-4a155b1585a1">
+    <ReferenceName>LP244</ReferenceName>
+    <Width>244</Width>
+    <Height>4</Height>
+    <UsageType>Lp</UsageType>
+    <Layer>IP - LONGPRINCIPAL</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>2</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LP 244</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
+  </Part>
+  <Part Id="8738fcd6-78fb-446d-9859-248021c7bde9">
+    <ReferenceName>LP122</ReferenceName>
+    <Width>122</Width>
+    <Height>4</Height>
+    <UsageType>Lp</UsageType>
+    <Layer>IP - LONGPRINCIPAL</Layer>
+    <PivotPointX>0</PivotPointX>
+    <PivotPointY>2</PivotPointY>
+    <StartOffset>0</StartOffset>
+    <Name>LP 122</Name>
+    <Modulation>61</Modulation>
+    <OrientationAngle>0</OrientationAngle>
   </Part>
 </ArrayOfPart>

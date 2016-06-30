@@ -23,7 +23,7 @@ namespace Urbbox.SlabAssembler.ViewModels
             set { this.RaiseAndSetIfChanged(ref _hasChanges, value); }
         }
 
-        public double OrientationAngle => SelectedOrientation == Orientation.Vertical ? 90 : 0;
+        public int OrientationAngle => SelectedOrientation == Orientation.Vertical ? 90 : 0;
         public AssemblyOptions Options { get; }
         public ReactiveList<Part> StartLpList { get; }
         public ReactiveCommand<object> Reset { get; }
@@ -76,6 +76,8 @@ namespace Urbbox.SlabAssembler.ViewModels
 
         private void ResetParts()
         {
+            if (SelectedModulation == 0) return;
+
             StartLpList.Clear();
             foreach (var p in _partRepository.GetByModulaton(SelectedModulation).WhereType(UsageType.StartLp))
                 StartLpList.Add(p);

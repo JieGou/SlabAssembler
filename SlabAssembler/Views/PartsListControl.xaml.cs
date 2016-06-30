@@ -17,10 +17,10 @@ namespace Urbbox.SlabAssembler.Views
         private readonly IPartRepository _partRepository;
         private readonly AutoCadManager _acad;
 
-        public PartsListControl(IPartRepository partRepository, AutoCadManager acad)
+        public PartsListControl(IPartRepository partRepository)
         {
             _partRepository = partRepository;
-            _acad = acad;
+            _acad = new AutoCadManager();
 
             ViewModel = new PartsViewModel(_partRepository);
             ViewModel.Reset.Subscribe(ResetImpl);

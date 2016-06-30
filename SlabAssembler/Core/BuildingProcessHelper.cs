@@ -1,19 +1,19 @@
 ﻿using Autodesk.AutoCAD.Customization;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
-using Autodesk.AutoCAD.Geometry;
 using System;
+using Autodesk.AutoCAD.Geometry;
 using Urbbox.SlabAssembler.Managers;
 
 namespace Urbbox.SlabAssembler.Core
 {
     class BuildingProcessHelper
     {
-        protected AutoCadManager _acad;
+        private readonly AutoCadManager _acad;
 
-        public BuildingProcessHelper(AutoCadManager manager)
+        public BuildingProcessHelper()
         {
-            _acad = manager;
+            _acad = new AutoCadManager();
         }
 
         public Point3d GetStartPoint(ObjectId selectedOutline, bool specifyStartPoint)

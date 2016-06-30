@@ -6,3 +6,18 @@
 [0531/221912:WARNING:backend_impl.cc(1946)] Destroying invalid entry.
 [0531/221912:WARNING:backend_impl.cc(1946)] Destroying invalid entry.
 [0531/221912:WARNING:backend_impl.cc(1946)] Destroying invalid entry.
+[0627/223652:ERROR:cache_util_win.cc(48)] Unable to move the cache: 0
+[0627/223652:ERROR:backend_impl.cc(146)] Unable to move cache folder
+[0627/223652:ERROR:backend_impl.cc(287)] Unable to create cache
+[0627/224250:ERROR:cache_util_win.cc(48)] Unable to move the cache: 0
+[0627/224250:ERROR:backend_impl.cc(146)] Unable to move cache folder
+[0627/224250:ERROR:backend_impl.cc(287)] Unable to create cache
+[0628/182209:ERROR:cache_util_win.cc(48)] Unable to move the cache: 0
+[0628/182209:ERROR:backend_impl.cc(146)] Unable to move cache folder
+[0628/182209:ERROR:backend_impl.cc(287)] Unable to create cache
+[0628/182502:ERROR:cache_util_win.cc(48)] Unable to move the cache: 0
+[0628/182502:ERROR:backend_impl.cc(146)] Unable to move cache folder
+[0628/182502:ERROR:backend_impl.cc(287)] Unable to create cache
+[0628/183306:ERROR:cache_util_win.cc(48)] Unable to move the cache: 0
+[0628/183306:ERROR:backend_impl.cc(146)] Unable to move cache folder
+[0628/183306:ERROR:backend_impl.cc(287)] Unable to create cache

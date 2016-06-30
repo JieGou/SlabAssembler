@@ -5,9 +5,7 @@ using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
 using Urbbox.SlabAssembler.Core;
 using System;
-using System.Linq;
 using ReactiveUI;
-using Urbbox.SlabAssembler.Core.Models;
 using Urbbox.SlabAssembler.Managers;
 using Urbbox.SlabAssembler.Repositories;
 
@@ -16,7 +14,6 @@ namespace Urbbox.SlabAssembler
     public static class Plugin
     {
         private static PaletteSet _mainPallet;
-        private static AutoCadManager _acManager;
         private static IAlgorythimRepository _algorythimRepository;
         private static IPartRepository _partRepository;
 
@@ -28,29 +25,24 @@ namespace Urbbox.SlabAssembler
             _mainPallet.StateChanged += _mainPallet_StateChanged;
             _algorythimRepository = new AlgorythimRepository();
             _partRepository = new PartRepository();
-            _acManager = new AutoCadManager();
 
-            var especificationsView = new Views.EspecificationsControl(_partRepository, _acManager);
+            var especificationsView = new Views.EspecificationsControl(_partRepository);
             var algorythimView = new Views.AlgorythimControl(_partRepository, _algorythimRepository);
-            var partsView = new Views.PartsListControl(_partRepository, _acManager);
-            var helper = new BuildingProcessHelper(_acManager);
+            var partsView = new Views.PartsListControl(_partRepository);
+            var helper = new BuildingProcessHelper();
             var prop = new SlabProperties {
                 Algorythim = algorythimView.ViewModel,
                 Parts = especificationsView.ViewModel
             };
 
-            if (!_algorythimRepository.GetAll().Any()) _algorythimRepository.Add(new AssemblyOptions());
-
-            especificationsView.ViewModel.WhenAnyValue(x => x.SelectedModulation).ToProperty(algorythimView.ViewModel, x => x.SelectedModulation);
-            especificationsView.ViewModel.DrawSlab.Subscribe(_ =>
+            especificationsView.ViewModel.WhenAnyValue(x => x.SelectedModulation).Subscribe(m => algorythimView.ViewModel.SelectedModulation = m);
+            especificationsView.ViewModel.DrawSlab.Subscribe(async _ =>
             {
-                using (var builder = new SlabBuilder(_acManager, _partRepository))
+                using (var builder = new SlabBuilder(_partRepository))
                 {
                     prop.MaxPoint = helper.GetMaxPoint(especificationsView.ViewModel.SelectedOutline);
-                    prop.StartPoint = helper
-                        .GetStartPoint(especificationsView.ViewModel.SelectedOutline, especificationsView.ViewModel.SpecifyStartPoint)
-                        .Add(prop.StartPointDeslocation);
-                    builder.Start(prop);
+                    prop.StartPoint = helper.GetStartPoint(especificationsView.ViewModel.SelectedOutline, especificationsView.ViewModel.SpecifyStartPoint);
+                    await builder.Start(prop);
                 }
             });
 
@@ -78,7 +70,6 @@ namespace Urbbox.SlabAssembler
         {
             if (e.NewState == StateEventIndex.Hide) { 
                 _mainPallet = null;
-                _acManager = null;
                 _algorythimRepository = null;
                 _partRepository = null;
             }

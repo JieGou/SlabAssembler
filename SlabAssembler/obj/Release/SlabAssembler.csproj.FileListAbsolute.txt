@@ -34,7 +34,6 @@ C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Release\SlabAssembler.cspro
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Urbbox.SlabAssembler.dll
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Urbbox.SlabAssembler.pdb
 C:\Users\Luiz\Urbbox\SlabAssembler\SlabAssembler\obj\Release\SlabAssembler.csprojResolveAssemblyReference.cache
-D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\obj\Release\SlabAssembler.csprojResolveAssemblyReference.cache
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Views\AlgorythimControl.g.cs
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Views\LogWindow.g.cs
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Views\PartWindow.g.cs
@@ -69,3 +68,6 @@ D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Views\PartsListContro
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Urbbox.SlabAssembler.g.resources
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\obj\Release\Urbbox.SlabAssembler.Properties.Resources.resources
 D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\obj\Release\SlabAssembler.csproj.GenerateResource.Cache
+D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\obj\Release\SlabAssembler.csprojResolveAssemblyReference.cache
+D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\bin\Release\Resources\Options.Defaults.xml
+D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\bin\Release\Resources\Parts.Defaults.xml

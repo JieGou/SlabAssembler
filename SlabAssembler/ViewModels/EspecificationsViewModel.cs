@@ -139,6 +139,8 @@ namespace Urbbox.SlabAssembler.ViewModels
 
         private void RefreshParts()
         {
+            if (SelectedModulation == 0) return;
+
             var parts = _partRepository.GetByModulaton(SelectedModulation).ToList();
 
             FormsAndBoxes.Clear();
