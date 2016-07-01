@@ -48,7 +48,10 @@ namespace Urbbox.SlabAssembler
 
             especificationsView.ViewModel.SelectOutline.Subscribe(_ =>
             {
-                especificationsView.ViewModel.SelectedOutline = helper.SelectOutline();
+                try
+                {
+                    especificationsView.ViewModel.SelectedOutline = helper.SelectOutline();
+                } catch (ArgumentException) { MessageBox.Show("Selecione um contorno válido. (Polilinha fechada)"); }
             });
 
             _mainPallet.Add("Especificações", GetElementHost(especificationsView));

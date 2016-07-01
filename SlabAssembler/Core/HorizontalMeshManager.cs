@@ -5,23 +5,23 @@ using System.Threading.Tasks;
 
 namespace Urbbox.SlabAssembler.Core
 {
-    public class MeshManager : IDisposable, IMeshManager
+    public class HorizontalMeshManager : IDisposable, IMeshManager
     {
         public Task<Point3dCollection> CastList { get; private set; }
         public Task<Point3dCollection> LpList { get; private set; }
-        public Task<Point3dCollection> StartLpList { get; private set; }
         public Task<Point3dCollection> LdList { get; private set; }
         public Task<Point3dCollection> HeadList { get; private set; }
         public Task<Point3dCollection> LdsList { get; private set; }
+        public Task<Point3dCollection> StartLpList { get; private set; }
 
         private readonly SlabProperties _properties;
         private readonly double _globalOrientation;
         private readonly Polyline _outline;
 
-        public MeshManager(SlabProperties properties, Polyline ouline)
+        public HorizontalMeshManager(SlabProperties properties, Polyline outline)
         {
             _properties = properties;
-            _outline = ouline;
+            _outline = outline;
             _globalOrientation = -ToRadians(90 - _properties.Algorythim.OrientationAngle);
 
             CastList = Task.Factory.StartNew(() => InitializeCastMesh());
@@ -38,6 +38,25 @@ namespace Urbbox.SlabAssembler.Core
             HeadList = Task.Factory.StartNew(() => InitializeHeadMesh());
         }
 
+        private Point3dCollection InitializeStartLpMesh()
+        {
+            var list = new Point3dCollection();
+            var ld = _properties.Parts.SelectedLd;
+            var lp = _properties.Parts.SelectedLp;
+            var startLp = _properties.Algorythim.SelectedStartLp;
+            var cast = _properties.Parts.SelectedCast;
+            var spacing = _properties.Algorythim.Options.DistanceBetweenLpAndLd;
+            var startVector = new Vector3d(startLp?.StartOffset ?? _properties.Parts.SelectedLp.StartOffset, 0, 0);
+            var startPoint = _properties.StartPoint.Add(startVector);
+            var incrVect = new Vector2d(lp.Width + _properties.Algorythim.Options.DistanceBetweenLp, ld.Width + lp.Height + spacing * 2.0);
+
+            double y = 0;
+            for (y = startPoint.Y; y < _properties.MaxPoint.Y; y += incrVect.Y)
+                list.Add(new Point3d(startPoint.X, y, 0));
+
+            return list;
+        }
+
         private static double ToRadians(float degrees)
         {
             return degrees * Math.PI / 180.0;
@@ -50,13 +69,13 @@ namespace Urbbox.SlabAssembler.Core
             var lp = _properties.Parts.SelectedLp;
             var cast = _properties.Parts.SelectedCast;
             var spacing = _properties.Algorythim.Options.DistanceBetweenLpAndLd;
-            var startVector = new Vector3d(lp.Height + spacing, 0, 0);
+            var startVector = new Vector3d(0, lp.Height + spacing, 0);
             var startPoint = _properties.StartPoint.Add(startVector);
-            var incrVector = new Vector2d(ld.Width + spacing * 2.0 + lp.Height, cast.Width);
+            var incrVector = new Vector2d(cast.Width, ld.Width + spacing * 2.0 + lp.Height);
 
-            for (double y = startPoint.Y; y < _properties.MaxPoint.Y; y += incrVector.Y)
+            for (double x = startPoint.X; x < _properties.MaxPoint.X; x += incrVector.X)
             {
-                for (double x = startPoint.X; x < _properties.MaxPoint.X; x += incrVector.X)
+                for (double y = startPoint.Y; y < _properties.MaxPoint.Y; y += incrVector.Y)
                 {
                     list.Add(new Point3d(x, y, 0));
                 }
@@ -72,25 +91,25 @@ namespace Urbbox.SlabAssembler.Core
             var lp = _properties.Parts.SelectedLp;
             var cast = _properties.Parts.SelectedCast;
             var spacing = _properties.Algorythim.Options.DistanceBetweenLpAndLd;
-            var startVector = new Vector3d(lp.Height + spacing, 0, 0);
+            var startVector = new Vector3d(0, lp.Height + spacing, 0);
             var startPoint = _properties.StartPoint.Add(startVector);
-            var incrVector = new Vector2d(ld.Width + spacing * 2.0 + lp.Height, cast.Width);
+            var incrVector = new Vector2d(cast.Width, ld.Width + spacing * 2.0 + lp.Height);
 
-            for (double x = startPoint.X; x < _properties.MaxPoint.X; x += incrVector.X)
+            for (double y = startPoint.Y; y < _properties.MaxPoint.Y; y += incrVector.Y)
             {
-                list.Add(new Point3d(x, startPoint.Y, 0));
-                double y = 0;
-                for (y = startPoint.Y; y < _properties.MaxPoint.Y && SlabAlgorythim.IsInsidePolygon(_outline, new Point3d(x, y + incrVector.Y, 0)); y += incrVector.Y);
+                list.Add(new Point3d(startPoint.X, y, 0));
+                double x = 0;
+                for (x = startPoint.X; x < _properties.MaxPoint.X && SlabAlgorythim.IsInsidePolygon(_outline, new Point3d(x + incrVector.X, y, 0)); x += incrVector.X) ;
 
-                if (SlabAlgorythim.IsInsidePolygon(_outline, new Point3d(x, y + _properties.Algorythim.Options.OutlineDistance / 2.0, 0)))
+                if (SlabAlgorythim.IsInsidePolygon(_outline, new Point3d(x + _properties.Algorythim.Options.OutlineDistance / 2.0, y, 0)))
                 {
-                    if (SlabAlgorythim.IsInsidePolygon(_outline, new Point3d(x + cast.Width, y + _properties.Algorythim.Options.OutlineDistance / 2.0, 0)))
+                    if (SlabAlgorythim.IsInsidePolygon(_outline, new Point3d(x + _properties.Algorythim.Options.OutlineDistance / 2.0, y + cast.Width, 0)))
                         list.Add(new Point3d(x, y, 0));
                     else
-                        list.Add(new Point3d(x, y - incrVector.Y, 0));
+                        list.Add(new Point3d(x - incrVector.Y, y, 0));
                 }
                 else
-                    list.Add(new Point3d(x, y - incrVector.Y, 0));
+                    list.Add(new Point3d(x - incrVector.Y, y, 0));
             }
 
             return list;
@@ -103,44 +122,25 @@ namespace Urbbox.SlabAssembler.Core
             var lp = _properties.Parts.SelectedLp;
             var cast = _properties.Parts.SelectedCast;
             var spacing = _properties.Algorythim.Options.DistanceBetweenLpAndLd;
-            var startVector = new Vector3d(lp.Height / 2.0, ld.Height / 2.0, 0);
+            var startVector = new Vector3d(lp.Height / 2.0 + spacing, ld.Height / 2.0, 0);
             var startPoint = _properties.StartPoint.Add(startVector);
             var useStartLp = _properties.Algorythim.SelectedStartLp != null;
-            var incrVect = new Vector2d(ld.Width + spacing * 2.0 + lp.Height, cast.Width);
+            var incrVect = new Vector2d(cast.Width, ld.Width + spacing * 2.0 + lp.Height);
 
-            for (double y = startPoint.Y; y < _properties.MaxPoint.Y; y += incrVect.Y)
+            for (double x = startPoint.X; x < _properties.MaxPoint.X; x += incrVect.X)
             {
-                for (double x = startPoint.X; x < _properties.MaxPoint.X; x += incrVect.X)
+                for (double y = startPoint.Y; y < _properties.MaxPoint.Y; y += incrVect.Y)
                 {
-                    if (_properties.Algorythim.Options.UseEndLp && (y + cast.Width) >= _properties.MaxPoint.Y)
+                    if (_properties.Algorythim.Options.UseEndLp && (x + cast.Width) >= _properties.MaxPoint.X)
                         continue;
 
-                    if (useStartLp && y <= startPoint.Y)
+                    if (useStartLp && x <= startPoint.X)
                         continue;
 
                     list.Add(new Point3d(x, y, 0));
                 }
 
             }
-
-            return list;
-        }
-
-        private Point3dCollection InitializeStartLpMesh()
-        {
-            var list = new Point3dCollection();
-            var ld = _properties.Parts.SelectedLd;
-            var lp = _properties.Parts.SelectedLp;
-            var startLp = _properties.Algorythim.SelectedStartLp;
-            var cast = _properties.Parts.SelectedCast;
-            var spacing = _properties.Algorythim.Options.DistanceBetweenLpAndLd;
-            var startVector = new Vector3d(0, startLp?.StartOffset ?? _properties.Parts.SelectedLp.StartOffset, 0);
-            var startPoint = _properties.StartPoint.Add(startVector);
-            var incrVect = new Vector2d(ld.Width + lp.Height + spacing * 2.0, lp.Width + _properties.Algorythim.Options.DistanceBetweenLp);
-
-            double x = 0;
-            for (x = startPoint.X; x < _properties.MaxPoint.X; x += incrVect.X)
-                list.Add(new Point3d(x, startPoint.Y + startLp.Width * 2.0 - _properties.Algorythim.Options.DistanceBetweenLp - 0.15, 0));
 
             return list;
         }
@@ -154,19 +154,25 @@ namespace Urbbox.SlabAssembler.Core
             var useStartLp = startLp != null;
             var cast = _properties.Parts.SelectedCast;
             var spacing = _properties.Algorythim.Options.DistanceBetweenLpAndLd;
-            var startVector = new Vector3d(0, startLp?.StartOffset ?? _properties.Parts.SelectedLp.StartOffset, 0);
+            var startVector = new Vector3d(startLp?.StartOffset ?? _properties.Parts.SelectedLp.StartOffset, 0, 0);
             var startPoint = _properties.StartPoint.Add(startVector);
-            var incrVect = new Vector2d(ld.Width + lp.Height + spacing * 2.0, lp.Width + _properties.Algorythim.Options.DistanceBetweenLp);
+            var incrVect = new Vector2d(lp.Width + _properties.Algorythim.Options.DistanceBetweenLp, ld.Width + lp.Height + spacing * 2.0);
+            //var countY = 0;
 
             if (useStartLp)
-                startPoint = startPoint.Add(new Vector3d(0, startLp.Width + _properties.Algorythim.Options.DistanceBetweenLp, 0));
+                startPoint = startPoint.Add(new Vector3d(startLp.Width + _properties.Algorythim.Options.DistanceBetweenLp, 0, 0));
 
-            for (double y = startPoint.Y; y < _properties.MaxPoint.Y; y += incrVect.Y)
+            for (double x = startPoint.X; x < _properties.MaxPoint.X; x += incrVect.X)
             {
-                for (double x = startPoint.X; x < _properties.MaxPoint.X; x += incrVect.X)
+                for (double y = startPoint.Y; y < _properties.MaxPoint.Y; y += incrVect.Y)
                 {
+                    //if (useStartLp && countY == 0) y += startLp.Width + _properties.Algorythim.Options.DistanceBetweenLp;
+                
                     list.Add(new Point3d(x, y, 0));
                 }
+
+                //if (useStartLp && countY == 0) y += _properties.Algorythim.Options.DistanceBetweenLp - lp.Width;
+                //countY++;
             }
 
             return list;
@@ -204,29 +210,22 @@ namespace Urbbox.SlabAssembler.Core
             var lp = _properties.Parts.SelectedLp;
             var cast = _properties.Parts.SelectedCast;
             var spacing = _properties.Algorythim.Options.DistanceBetweenLpAndLd;
-            var startVector = new Vector3d(lp.Height + spacing, ld.Height / 2.0, 0);
+            var startVector = new Vector3d(ld.Height / 2.0, lp.Height + cast.Width + spacing, 0);
             var spaceBetweenGroups = lp.Height + 2.0 * spacing;
             var startPt = _properties.StartPoint.Add(startVector);
             var incrVector = new Vector2d(cast.Width, cast.Height);
-            var countX = 0;
-            var countY = 0;
 
-            for (var y = startPt.Y; y < _properties.MaxPoint.Y; y += incrVector.Y)
+            for (var x = startPt.X; x < _properties.MaxPoint.X; x += incrVector.X)
             {
-                countX = 0;
-                for (var x = startPt.X; x < _properties.MaxPoint.X; x += incrVector.X)
+                var countY = 0;
+                for (var y = startPt.Y; y < _properties.MaxPoint.Y; y += incrVector.Y)
                 {
-                    if (countX > 0 && countX % _properties.CastGroupSize == 0 && _properties.Algorythim.OrientationAngle == 90)
-                        x += spaceBetweenGroups;
+                    if (countY > 0 && countY % _properties.CastGroupSize == 0)
+                        y += spaceBetweenGroups;
 
                     list.Add(new Point3d(x, y, 0));
-                    countX++;
+                    countY++;
                 }
-
-                if (countY > 0 && countY % _properties.CastGroupSize == 0 && _properties.Algorythim.OrientationAngle == 0)
-                    y += spaceBetweenGroups;
-
-                countY++;
             }
 
             return list;

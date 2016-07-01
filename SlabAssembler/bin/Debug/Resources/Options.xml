@@ -2,9 +2,9 @@
 <ArrayOfAssemblyOptions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <AssemblyOptions>
     <OutlineDistance>10</OutlineDistance>
-    <DistanceBetweenLp>0</DistanceBetweenLp>
+    <DistanceBetweenLp>0.25</DistanceBetweenLp>
     <DistanceBetweenLpAndLd>0.5</DistanceBetweenLpAndLd>
-    <UseLds>false</UseLds>
+    <UseLds>true</UseLds>
     <UseEndLp>false</UseEndLp>
   </AssemblyOptions>
 </ArrayOfAssemblyOptions>

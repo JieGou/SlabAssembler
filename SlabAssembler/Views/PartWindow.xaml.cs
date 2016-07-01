@@ -14,9 +14,11 @@ namespace Urbbox.SlabAssembler.Views
         {
             part.Save.Subscribe(x =>
             {
-                using (var t = partRepository.StartTransaction()) { 
+                using (var t = partRepository.StartTransaction()) {
                     if (partRepository.GetById(part.Id) == null)
                         partRepository.Add(part);
+                    else
+                        partRepository.PartsChanged.Execute(null);
                     t.Commit();
                 }
                 Close();

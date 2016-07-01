@@ -4,6 +4,7 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Core.Application;
+using Autodesk.AutoCAD.GraphicsInterface;
 
 namespace Urbbox.SlabAssembler.Managers
 {

@@ -68,40 +68,52 @@ namespace Urbbox.SlabAssembler.Core
         {
             SelectedCollisionObjects(prop);
             var algorythim = new SlabAlgorythim(prop);
-            
-            using (var manager = new MeshManager(prop))
-            using (_acad.WorkingDocument.LockDocument())
-            using (var t = _acad.StartTransaction())
-            {
-                /*_acad.WorkingDocument.Editor.WriteMessage("\nMontando as LPs.");
-                if (prop.Algorythim.SelectedStartLp != null) BuildStartLp(manager);
-                BuildLp(algorythim);
+            IMeshManager manager;
 
-                _acad.WorkingDocument.Editor.WriteMessage("\nMontando as LDs.");
-                */
+            if (prop.Algorythim.OrientationAngle == 90)
+                manager = new MeshManager(prop, _outline);
+            else
+                manager = new HorizontalMeshManager(prop, _outline);
+
+
+            using (manager)
+            using (_acad.WorkingDocument.LockDocument())
+            {
+                //if (prop.Algorythim.SelectedStartLp != null) BuildStartLp(manager);
 
                 try
                 {
-                    _acad.WorkingDocument.Editor.WriteMessage("\nMontando as LDs.");
-                    BuildLd(await manager.LdList, prop);
-                   
-                    _acad.WorkingDocument.Editor.WriteMessage("\nMontando as Cabeças.");
+                    if (prop.Algorythim.Options.UseLds)
+                    { 
+                        var ldsList = await manager.LdsList;
+                        BuildLds(ldsList, prop);
+                        BuildLd(await manager.LdList, ldsList, prop);
+                    } else
+                        BuildLd(await manager.LdList, new Point3dCollection(), prop);
+
+
+                    BuildLp(await manager.LpList, prop);
+
+                    if (prop.Algorythim.SelectedStartLp != null)
+                    {
+                        var list = await manager.StartLpList;
+                        BuildStartLp(await manager.StartLpList, prop);
+                        DebugPoints(list, Color.FromRgb(255, 255, 0), 3);
+                    }
                     BuildHead(await manager.HeadList, prop);
 
                     if (!prop.Algorythim.OnlyCimbrament)
-                    {
-                        _acad.WorkingDocument.Editor.WriteMessage("\nMontando as Caixas/Formas.");
                         BuildCast(await manager.CastList, prop);
-                    }
-
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     MessageBox.Show($"{e.Message}\n\n{e.StackTrace}");
                 }
 
-                t.Commit();
                 _acad.WorkingDocument.Editor.WriteMessage("\nLaje finalizada.");
             }
         }
+
+        
 
         private void ClearOutlineParts()
         {
@@ -125,18 +137,19 @@ namespace Urbbox.SlabAssembler.Core
         {
             var collisions = new Point3dCollection();
             var partOutline = GetOrCreatePartOutline(prop, part);
+            var n = 0;
 
             foreach (Point3d loc in locations)
             {
-                /*if (prop.Algorythim.Options.UseLds && part.UsageType == UsageType.Ld
-                    && SlabAlgorythim.CheckIfIsLDS(loc, locations[0], locations[locations.Count - 1], prop.Algorythim.OrientationAngle))
-                    part = _partRepository.GetRespectiveOfType(part, UsageType.Lds);*/
-
                 var orientationAngle = part.GetOrientationAngle(prop.Algorythim.OrientationAngle);
                 if (CanPlacePart(loc, part, orientationAngle, partOutline))
                     placedObjects.Add(PlacePart(part, loc, orientationAngle, GetOrCreatePart(part)));
                 else
                    collisions.Add(loc);
+
+                if (n % 25 == 0)
+                    _acad.WorkingDocument.Editor.UpdateScreen();
+                n++;
             }
 
             return collisions;
@@ -170,8 +183,6 @@ namespace Urbbox.SlabAssembler.Core
                 t.Commit();
             }
 
-            _acad.WorkingDocument.Editor.UpdateScreen();
-
             return referenceId;
         }
 
@@ -181,41 +192,41 @@ namespace Urbbox.SlabAssembler.Core
             PlaceMultipleParts(properties, points, properties.Parts.SelectedCast);
         }
 
-        /*public void BuildLp(SlabAlgorythim al)
+        public void BuildLp(Point3dCollection points, SlabProperties properties)
         {
-            var points = al.GetLpPointList();
             if (points.Count == 0) return;
 
             var dangerZoneList = new Point3dCollection();
             var normalZoneList = new Point3dCollection();
             var lastPt = points[points.Count - 1];
-            var part = al.Properties.Parts.SelectedLp;
-            var orientationAngle = al.Properties.Algorythim.OrientationAngle;
+            var part = properties.Parts.SelectedLp;
+            var orientationAngle = properties.Algorythim.OrientationAngle;
 
+            
             for (var i = 0; i < points.Count; i++)
             {
                 var p = points[i];
                 normalZoneList.Add(p);
-              
-                if (al.IsAtTheEnd(lastPt, p) || !SlabAlgorythim.IsInsidePolygon(_outline, p))
-                {
-                    var b = al.GetBelowLpPoint(points, p);
-                    if (b.HasValue && SlabAlgorythim.IsInsidePolygon(_outline, b.Value))
-                    {
-                        dangerZoneList.Add(b.Value);
-                        normalZoneList.Remove(b.Value);
-                        normalZoneList.Remove(p);
-                    }
-                }
+                /*
+                 if (al.IsAtTheEnd(lastPt, p) || !SlabAlgorythim.IsInsidePolygon(_outline, p))
+                 {
+                     var b = al.GetBelowLpPoint(points, p);
+                     if (b.HasValue && SlabAlgorythim.IsInsidePolygon(_outline, b.Value))
+                     {
+                         dangerZoneList.Add(b.Value);
+                         normalZoneList.Remove(b.Value);
+                         normalZoneList.Remove(p);
+                     }
+                */
             }
 
             do
-                normalZoneList = PlaceMultipleParts(al.Properties, normalZoneList, part, orientationAngle);
+                normalZoneList = PlaceMultipleParts(properties, normalZoneList, part);
             while (normalZoneList.Count > 0 && (part = _partRepository.GetNextSmaller(part, part.UsageType)) != null);
 
-            if (dangerZoneList.Count > 0)
-                BuildDangerZoneLp(al, dangerZoneList);
-        }*/
+            //if (dangerZoneList.Count > 0)
+                //BuildDangerZoneLp(al, dangerZoneList);
+        }
        
         private void BuildDangerZoneLp(Point3dCollection points, SlabProperties properties)
         {
@@ -248,24 +259,23 @@ namespace Urbbox.SlabAssembler.Core
             }
         }
 
-        public void BuildStartLp(Point3dCollection points, SlabAlgorythim al)
+        public void BuildStartLp(Point3dCollection points, SlabProperties properties)
         {
-            var part = al.Properties.Algorythim.SelectedStartLp;
-            var orientationAngle = al.Properties.Algorythim.OrientationAngle;
-            var placedObjects = new ObjectIdCollection();
-            var altPlacedObjects = new ObjectIdCollection();
-            var lastPoints = new Point3dCollection();
+            var part = properties.Algorythim.SelectedStartLp;
+            var orientationAngle = properties.Algorythim.OrientationAngle;
+            //var placedObjects = new ObjectIdCollection();
+            //var altPlacedObjects = new ObjectIdCollection();
+            //var lastPoints = new Point3dCollection();
 
             do
             { 
-                points = PlaceMultipleParts(al.Properties, points, part, placedObjects);
-                if (points.Count > 0) lastPoints = points;
+                points = PlaceMultipleParts(properties, points, part);
             } while (points.Count > 0 && (part = _partRepository.GetNextSmaller(part, part.UsageType)) != null);
 
-            BuildAlternativeZoneStartLp(al.Properties, lastPoints, orientationAngle, altPlacedObjects);
+            //BuildAlternativeZoneStartLp(al.Properties, lastPoints, orientationAngle, altPlacedObjects);
 
-            foreach (ObjectId altId in altPlacedObjects)
-                EraseIfColliding(altId, placedObjects);
+            /*foreach (ObjectId altId in altPlacedObjects)
+                EraseIfColliding(altId, placedObjects);*/
         }
 
         private void BuildAlternativeZoneStartLp(SlabProperties prop, Point3dCollection points, double orientationAngle, ObjectIdCollection placedObjects)
@@ -288,24 +298,35 @@ namespace Urbbox.SlabAssembler.Core
             } while (points.Count > 0 && (part = _partRepository.GetNextSmaller(part, lastPart.UsageType)) != null);
         }
 
-        public void BuildLd(Point3dCollection points, SlabProperties properties)
+        public void BuildLd(Point3dCollection points, Point3dCollection ldsPoints, SlabProperties properties)
         {
             if (points.Count == 0) return;
+            foreach (Point3d p in ldsPoints)
+                try { points.Remove(p); }
+                catch (Exception) { }
 
             var part = properties.Parts.SelectedLd;
             var orientationAngle = 90 - properties.Algorythim.OrientationAngle;
-            var lastPoints = new Point3dCollection();
-            var n = 0;
-
             do
             {
                 points = PlaceMultipleParts(properties, points, part);
-                n++;
 
-                if (points.Count > 0 && n == 1) lastPoints = points;
             } while (points.Count > 0 && (part = _partRepository.GetNextSmaller(part, part.UsageType)) != null);
 
-            BuildAlternativeZoneLd(properties, lastPoints, orientationAngle);
+            //BuildAlternativeZoneLd(properties, lastPoints, orientationAngle);
+        }
+
+        private void BuildLds(Point3dCollection points, SlabProperties prop)
+        {
+            if (points.Count == 0) return;
+
+            var part = _partRepository.GetRespectiveOfType(prop.Parts.SelectedLd, UsageType.Lds);
+            var orientationAngle = 90 - prop.Algorythim.OrientationAngle;
+
+            do
+            {
+                points = PlaceMultipleParts(prop, points, part);
+            } while (points.Count > 0 && (part = _partRepository.GetNextSmaller(part, part.UsageType)) != null);
         }
 
         private void BuildAlternativeZoneLd(SlabProperties prop, Point3dCollection points, double orientationAngle)
@@ -377,7 +398,7 @@ namespace Urbbox.SlabAssembler.Core
                 var blkTbl = t.GetObject(_acad.Database.BlockTableId, OpenMode.ForWrite) as BlockTable;
                 if (blkTbl.Has(part.OutlineReferenceName)) return blkTbl[part.OutlineReferenceName];
 
-                var border = prop.Algorythim.Options.OutlineDistance - 0.01F;
+                var border = (part.UsageType == UsageType.Head)? 0 : prop.Algorythim.Options.OutlineDistance - 0.01F;
                 using (var record = new BlockTableRecord { Name = part.OutlineReferenceName, Units = UnitsValue.Centimeters, Explodable = true })
                 {
                     record.Origin = part.PivotPoint;
@@ -452,8 +473,22 @@ namespace Urbbox.SlabAssembler.Core
                 blkRef.TransformBy(Matrix3d.Rotation(angle, _acad.UCS.Zaxis, loc));
                 if (part.UsageType != UsageType.Head)
                 {
-                    var vectorPivot = SlabAlgorythim.RotatePoint(part.PivotPoint, -orientationAngle) - Point3d.Origin;
+                    var vectorPivot = (part.PivotPoint - Point3d.Origin).RotateBy(-orientationAngle * Math.PI / 180, Vector3d.ZAxis);
                     blkRef.Position = blkRef.Position.Add(vectorPivot);
+                }
+                else
+                {
+                    if (orientationAngle == 0)
+                    {
+                        var middleVector = new Vector3d(part.Width / 2.0, part.Height / 2.0, 0);
+                        var vectorPivot = part.PivotPoint - Point3d.Origin;
+                        blkRef.Position = blkRef.Position.Subtract(middleVector.Subtract(vectorPivot));
+                    } else
+                    {
+                        var middleVector = new Vector3d(part.Height / 2.0, part.Width / 2.0, 0);
+                        var vectorPivot = part.PivotPoint - Point3d.Origin;
+                        blkRef.Position = blkRef.Position.Subtract(middleVector.Subtract(vectorPivot));
+                    }
                 }
 
                 t.Commit();
@@ -547,7 +582,7 @@ namespace Urbbox.SlabAssembler.Core
             var isInside = SlabAlgorythim.IsInsidePolygon(_outline, loc);
             if (!isInside) return false;
 
-            if (part.UsageType == UsageType.Head) return true;
+            //if (part.UsageType == UsageType.Head) return true;
             
             using (var t = _acad.StartTransaction())
             {
