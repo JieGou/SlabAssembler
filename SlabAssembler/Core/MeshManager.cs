@@ -24,7 +24,8 @@ namespace Urbbox.SlabAssembler.Core
             _outline = ouline;
             _globalOrientation = -ToRadians(90 - _properties.Algorythim.OrientationAngle);
 
-            CastList = Task.Factory.StartNew(() => InitializeCastMesh());
+            if (!properties.Algorythim.OnlyCimbrament)
+                CastList = Task.Factory.StartNew(() => InitializeCastMesh());
 
             if (properties.Algorythim.SelectedStartLp != null)
                 StartLpList = Task.Factory.StartNew(() => InitializeStartLpMesh());
@@ -140,7 +141,7 @@ namespace Urbbox.SlabAssembler.Core
 
             double x = 0;
             for (x = startPoint.X; x < _properties.MaxPoint.X; x += incrVect.X)
-                list.Add(new Point3d(x, startPoint.Y + startLp.Width * 2.0 - _properties.Algorythim.Options.DistanceBetweenLp - 0.15, 0));
+                list.Add(new Point3d(x, startPoint.Y + startLp.Width, 0));
 
             return list;
         }
@@ -164,31 +165,6 @@ namespace Urbbox.SlabAssembler.Core
             for (double y = startPoint.Y; y < _properties.MaxPoint.Y; y += incrVect.Y)
             {
                 for (double x = startPoint.X; x < _properties.MaxPoint.X; x += incrVect.X)
-                {
-                    list.Add(new Point3d(x, y, 0));
-                }
-            }
-
-            return list;
-        }
-
-        public Point3dCollection GetStartLpPointList()
-        {
-            var list = new Point3dCollection();
-            var cast = _properties.Parts.SelectedCast;
-            var ld = _properties.Parts.SelectedLd;
-            var lp = _properties.Parts.SelectedLp;
-            var selectedStartLp = _properties.Algorythim.SelectedStartLp;
-            var startLp = _properties.Algorythim.SelectedStartLp;
-            var spacing = _properties.Algorythim.Options.DistanceBetweenLpAndLd;
-            var yOffset = startLp?.StartOffset ?? _properties.Parts.SelectedLp.StartOffset;
-
-            var startDesloc = new Vector3d(0, selectedStartLp.StartOffset, 0);
-            var xIncr = lp.Height + ld.Width + spacing * 2.0D;
-
-            for (double y = _properties.StartPoint.Y + yOffset; y < _properties.MaxPoint.Y; y += lp.Width)
-            {
-                for (double x = _properties.StartPoint.X; x < _properties.MaxPoint.X; x += cast.Width * _properties.CastGroupSize + lp.Height + spacing * 2.0)
                 {
                     list.Add(new Point3d(x, y, 0));
                 }
@@ -241,10 +217,12 @@ namespace Urbbox.SlabAssembler.Core
             {
                 if (disposing)
                 {
-                    CastList.Dispose();
-                    LpList.Dispose();
-                    LdList.Dispose();
-                    HeadList.Dispose();
+                    CastList?.Dispose();
+                    LdsList?.Dispose();
+                    StartLpList?.Dispose();
+                    LpList?.Dispose();
+                    LdList?.Dispose();
+                    HeadList?.Dispose();
                 }
 
                 disposedValue = true;

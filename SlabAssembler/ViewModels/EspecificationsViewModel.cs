@@ -86,6 +86,8 @@ namespace Urbbox.SlabAssembler.ViewModels
             set { this.RaiseAndSetIfChanged(ref _selectedOutline, value); }
         }
 
+        public Part SelectedHead => _partRepository.GetByModulaton(SelectedModulation).WhereType(UsageType.Head).FirstOrDefault();
+
         private readonly IPartRepository _partRepository;
 
         public EspecificationsViewModel(IPartRepository partRepository)

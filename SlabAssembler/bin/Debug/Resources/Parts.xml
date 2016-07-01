@@ -54,8 +54,8 @@
     <Height>8</Height>
     <UsageType>Head</UsageType>
     <Layer>IP - CABEÇA</Layer>
-    <PivotPointX>5</PivotPointX>
-    <PivotPointY>4</PivotPointY>
+    <PivotPointX>15</PivotPointX>
+    <PivotPointY>15</PivotPointY>
     <StartOffset>0</StartOffset>
     <Name>CABEÇA COM PINO</Name>
     <Modulation>61</Modulation>
@@ -368,7 +368,7 @@
     <Layer>IP - LONGPRINCIPAL</Layer>
     <PivotPointX>139.6</PivotPointX>
     <PivotPointY>2</PivotPointY>
-    <StartOffset>0</StartOffset>
+    <StartOffset>10</StartOffset>
     <Name>PARTIDA 140</Name>
     <Modulation>80</Modulation>
   </Part>
@@ -434,11 +434,11 @@
   </Part>
   <Part Id="814079c3-d70c-41bc-9e66-49645d5522a3">
     <ReferenceName>LP PART 213</ReferenceName>
-    <Width>213.1</Width>
+    <Width>213</Width>
     <Height>4</Height>
     <UsageType>StartLp</UsageType>
     <Layer>IP - LONGPRINCIPAL</Layer>
-    <PivotPointX>212.9</PivotPointX>
+    <PivotPointX>213</PivotPointX>
     <PivotPointY>2</PivotPointY>
     <StartOffset>0</StartOffset>
     <Name>PARTIDA 213</Name>
@@ -526,18 +526,6 @@
     <PivotPointY>2</PivotPointY>
     <StartOffset>0</StartOffset>
     <Name>LP 122</Name>
-    <Modulation>61</Modulation>
-  </Part>
-  <Part Id="7b319f3e-2b73-45d3-acf1-836095a46b41">
-    <ReferenceName>LD NOVA 200</ReferenceName>
-    <Width>200</Width>
-    <Height>7</Height>
-    <UsageType>Ld</UsageType>
-    <Layer>LD NOVA</Layer>
-    <PivotPointX>0</PivotPointX>
-    <PivotPointY>3.5</PivotPointY>
-    <StartOffset>0</StartOffset>
-    <Name>Nova Peça</Name>
     <Modulation>61</Modulation>
   </Part>
 </ArrayOfPart>

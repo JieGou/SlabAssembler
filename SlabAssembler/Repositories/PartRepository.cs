@@ -70,11 +70,11 @@ namespace Urbbox.SlabAssembler.Repositories
                 .FirstOrDefault(p => p.Width < currentPart.Width);
         }
 
-        public Part GetRespectiveOfType(Part currentPart, UsageType usage, float tolerance = 5)
+        public Part GetRespectiveOfType(Part currentPart, UsageType usage)
         {
             return GetByModulaton(currentPart.Modulation)
                 .WhereType(usage)
-                .FirstOrDefault(p => Math.Abs(p.Width - currentPart.Width) < tolerance);
+                .FirstOrDefault(p => p.Width == currentPart.Width);
         }
 
         public void ResetParts()

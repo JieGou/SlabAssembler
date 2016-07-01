@@ -40,9 +40,15 @@ namespace Urbbox.SlabAssembler
             {
                 using (var builder = new SlabBuilder(_partRepository))
                 {
-                    prop.MaxPoint = helper.GetMaxPoint(especificationsView.ViewModel.SelectedOutline);
-                    prop.StartPoint = helper.GetStartPoint(especificationsView.ViewModel.SelectedOutline, especificationsView.ViewModel.SpecifyStartPoint);
-                    await builder.Start(prop);
+                    try
+                    {
+                        prop.MaxPoint = helper.GetMaxPoint(especificationsView.ViewModel.SelectedOutline);
+                        prop.StartPoint = helper.GetStartPoint(especificationsView.ViewModel.SelectedOutline, especificationsView.ViewModel.SpecifyStartPoint);
+                        await builder.Start(prop);
+                    }
+                    catch (NullReferenceException) { }
+                    catch (OperationCanceledException) { }
+                    catch (Autodesk.AutoCAD.Runtime.Exception e) { MessageBox.Show($"{e.Message}\n\n{e.StackTrace}"); }
                 }
             });
 

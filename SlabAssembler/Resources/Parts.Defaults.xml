@@ -86,11 +86,11 @@
   </Part>
   <Part Id="814079c3-d70c-41bc-9e66-49645d5522a3">
     <ReferenceName>LP PART 213</ReferenceName>
-    <Width>213.1</Width>
+    <Width>213</Width>
     <Height>4</Height>
     <UsageType>StartLp</UsageType>
     <Layer>IP - LONGPRINCIPAL</Layer>
-    <PivotPointX>212.9</PivotPointX>
+    <PivotPointX>213</PivotPointX>
     <PivotPointY>2</PivotPointY>
     <StartOffset>0</StartOffset>
     <Name>PARTIDA 213</Name>

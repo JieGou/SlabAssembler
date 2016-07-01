@@ -14,7 +14,7 @@ namespace Urbbox.SlabAssembler.Repositories
         IEnumerable<Part> GetByType(UsageType usage);
         IEnumerable<Part> GetByModulaton(int modulation);
         Part GetNextSmaller(Part currentPart, UsageType necessaryUsageType);
-        Part GetRespectiveOfType(Part part, UsageType usage, float tolerance = 5);
+        Part GetRespectiveOfType(Part part, UsageType usage);
         void ResetParts();
     }
 
