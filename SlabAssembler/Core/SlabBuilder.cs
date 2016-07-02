@@ -169,7 +169,7 @@ namespace Urbbox.SlabAssembler.Core
                         FixHeadOrientation(part, loc, orientationAngle, blkRef);
                     else if (part.UsageType == UsageType.StartLp && orientationAngle == 90)
                         FixStartLpOrientation(part, loc, orientationAngle, blkRef);
-                    else if (part.UsageType == UsageType.Box)
+                    else if (part.UsageType == UsageType.Box && orientationAngle == 90)
                         FixCastOrientation(part, loc, orientationAngle, blkRef);
                     else
                         FixPartOrientation(part, loc, orientationAngle, blkRef);
