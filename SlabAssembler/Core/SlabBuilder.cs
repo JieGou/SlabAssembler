@@ -8,7 +8,6 @@ using Autodesk.AutoCAD.GraphicsInterface;
 using Urbbox.SlabAssembler.Core.Models;
 using Urbbox.SlabAssembler.Managers;
 using Polyline = Autodesk.AutoCAD.DatabaseServices.Polyline;
-using System.Windows;
 using System.Threading.Tasks;
 using Autodesk.AutoCAD.Colors;
 
@@ -96,14 +95,15 @@ namespace Urbbox.SlabAssembler.Core
                 BuildHead(await manager.HeadList, prop);
 
                 if (!prop.Algorythim.OnlyCimbrament)
+                {
                     BuildCast(await manager.CastList, prop);
-          
+                    DebugPoints(await manager.CastList, Color.FromRgb(255, 255, 0), 3);
+                }
+
 
                 _acad.WorkingDocument.Editor.WriteMessage("\nLaje finalizada.");
             }
         }
-
-        
 
         private void ClearOutlineParts()
         {
@@ -228,6 +228,9 @@ namespace Urbbox.SlabAssembler.Core
                 //BuildDangerZoneLp(al, dangerZoneList);
         }
        
+        /**
+         * Monta o conjunto LP + LP Final ou LP + LP caso properties.Algorythim.Options.UseEndLp seja falso.
+         */
         private void BuildDangerZoneLp(Point3dCollection points, SlabProperties properties)
         {
             var orientationAngle = properties.Parts.SelectedLp.GetOrientationAngle(properties.Algorythim.OrientationAngle);
@@ -263,19 +266,11 @@ namespace Urbbox.SlabAssembler.Core
         {
             var part = properties.Algorythim.SelectedStartLp;
             var orientationAngle = properties.Algorythim.OrientationAngle;
-            //var placedObjects = new ObjectIdCollection();
-            //var altPlacedObjects = new ObjectIdCollection();
-            //var lastPoints = new Point3dCollection();
 
             do
             { 
                 points = PlaceMultipleParts(properties, points, part);
             } while (points.Count > 0 && (part = _partRepository.GetNextSmaller(part, part.UsageType)) != null);
-
-            //BuildAlternativeZoneStartLp(al.Properties, lastPoints, orientationAngle, altPlacedObjects);
-
-            /*foreach (ObjectId altId in altPlacedObjects)
-                EraseIfColliding(altId, placedObjects);*/
         }
 
         private void BuildAlternativeZoneStartLp(SlabProperties prop, Point3dCollection points, double orientationAngle, ObjectIdCollection placedObjects)

@@ -9,6 +9,7 @@ namespace Urbbox.SlabAssembler.Core
     {
         public Task<Point3dCollection> CastList { get; private set; }
         public Task<Point3dCollection> LpList { get; private set; }
+        public Task<Point3dCollection> EndLpList { get; private set; }
         public Task<Point3dCollection> StartLpList { get; private set; }
         public Task<Point3dCollection> LdList { get; private set; }
         public Task<Point3dCollection> HeadList { get; private set; }
@@ -31,6 +32,7 @@ namespace Urbbox.SlabAssembler.Core
                 StartLpList = Task.Factory.StartNew(() => InitializeStartLpMesh());
 
             LpList = Task.Factory.StartNew(() => InitializeLpMesh());
+            //EndLpList = Task.Factory.StartNew(() => InitializeEndLpMesh());
 
             if (properties.Algorythim.Options.UseLds)
                 LdsList = Task.Factory.StartNew(() => InitializeLdsMesh());
@@ -192,15 +194,12 @@ namespace Urbbox.SlabAssembler.Core
                 countX = 0;
                 for (var x = startPt.X; x < _properties.MaxPoint.X; x += incrVector.X)
                 {
-                    if (countX > 0 && countX % _properties.CastGroupSize == 0 && _properties.Algorythim.OrientationAngle == 90)
+                    if (countX > 0 && countX % _properties.CastGroupSize == 0 )
                         x += spaceBetweenGroups;
 
                     list.Add(new Point3d(x, y, 0));
                     countX++;
                 }
-
-                if (countY > 0 && countY % _properties.CastGroupSize == 0 && _properties.Algorythim.OrientationAngle == 0)
-                    y += spaceBetweenGroups;
 
                 countY++;
             }

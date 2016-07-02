@@ -9,6 +9,7 @@ namespace Urbbox.SlabAssembler.Core
     {
         public Task<Point3dCollection> CastList { get; private set; }
         public Task<Point3dCollection> LpList { get; private set; }
+        public Task<Point3dCollection> EndLpList { get; private set; }
         public Task<Point3dCollection> LdList { get; private set; }
         public Task<Point3dCollection> HeadList { get; private set; }
         public Task<Point3dCollection> LdsList { get; private set; }
@@ -31,6 +32,7 @@ namespace Urbbox.SlabAssembler.Core
                 StartLpList = Task.Factory.StartNew(() => InitializeStartLpMesh());
 
             LpList = Task.Factory.StartNew(() => InitializeLpMesh());
+            //EndLpList = Task.Factory.StartNew(() => InitializeEndLpMesh());
 
             if (properties.Algorythim.Options.UseLds)
                 LdsList = Task.Factory.StartNew(() => InitializeLdsMesh());
