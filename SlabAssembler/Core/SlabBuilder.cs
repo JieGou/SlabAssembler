@@ -94,7 +94,6 @@ namespace Urbbox.SlabAssembler.Core
                     BuildStartLp(await manager.StartLpList, prop);
 
                 BuildHead(await manager.HeadList, prop);
-                DebugPoints(await manager.HeadList, Color.FromRgb(255, 0, 255), 3);
 
                 if (!prop.Algorythim.OnlyCimbrament)
                     BuildCast(await manager.CastList, prop);
@@ -168,6 +167,10 @@ namespace Urbbox.SlabAssembler.Core
 
                     if (part.UsageType == UsageType.Head && orientationAngle == 90)
                         FixHeadOrientation(part, loc, orientationAngle, blkRef);
+                    else if (part.UsageType == UsageType.StartLp && orientationAngle == 90)
+                        FixStartLpOrientation(part, loc, orientationAngle, blkRef);
+                    else if (part.UsageType == UsageType.Box)
+                        FixCastOrientation(part, loc, orientationAngle, blkRef);
                     else
                         FixPartOrientation(part, loc, orientationAngle, blkRef);
 
@@ -307,10 +310,9 @@ namespace Urbbox.SlabAssembler.Core
             do
             {
                 points = PlaceMultipleParts(properties, points, part);
-
             } while (points.Count > 0 && (part = _partRepository.GetNextSmaller(part, part.UsageType)) != null);
 
-            //BuildAlternativeZoneLd(properties, lastPoints, orientationAngle);
+            //BuildAlternativeZoneLd(properties, points, orientationAngle);
         }
 
         private void BuildLds(Point3dCollection points, SlabProperties prop)
@@ -465,7 +467,6 @@ namespace Urbbox.SlabAssembler.Core
         private void FixPartOrientation(Part part, Point3d loc, float orientationAngle, BlockReference blkRef)
         {
             var angle = GetFixedRotationAngle(blkRef, orientationAngle);
-            if (part.UsageType == UsageType.StartLp) angle = -angle;
 
             blkRef.TransformBy(Matrix3d.Rotation(angle, _acad.UCS.Zaxis, loc));
             if (part.UsageType != UsageType.Head)
@@ -480,13 +481,26 @@ namespace Urbbox.SlabAssembler.Core
                     var middleVector = new Vector3d(part.Width / 2.0, part.Height / 2.0, 0);
                     var vectorPivot = part.PivotPoint - Point3d.Origin;
                     blkRef.Position = blkRef.Position.Subtract(middleVector.Subtract(vectorPivot));
-                } else
-                {
-                    var middleVector = new Vector3d(part.Height / 2.0, part.Width / 2.0, 0);
-                    var vectorPivot = part.PivotPoint - Point3d.Origin;
-                    blkRef.Position = blkRef.Position.Subtract(middleVector.Subtract(vectorPivot).Add(new Vector3d(0, 0.5, 0)));
-                }
+                } 
             }
+        }
+
+        private void FixCastOrientation(Part part, Point3d loc, float orientationAngle, BlockReference blkRef)
+        {
+            var angle = GetFixedRotationAngle(blkRef, orientationAngle);
+            var pivotVector = part.PivotPoint - Point3d.Origin;
+            blkRef.Position = blkRef.Position.Add(pivotVector);
+            blkRef.TransformBy(Matrix3d.Rotation(angle, _acad.UCS.Zaxis, loc));
+            blkRef.Position = blkRef.Position.Add(new Vector3d(part.Height, 0, 0));
+        }
+
+        private void FixStartLpOrientation(Part part, Point3d loc, float orientationAngle, BlockReference blkRef)
+        {
+            var angle = GetFixedRotationAngle(blkRef, orientationAngle);
+            var pivotVector = part.PivotPoint - Point3d.Origin;
+            blkRef.Position = blkRef.Position.Add(pivotVector);
+            blkRef.TransformBy(Matrix3d.Rotation(angle, _acad.UCS.Zaxis, loc));
+            blkRef.Position = blkRef.Position.Add(new Vector3d(part.Height, 0, 0));
         }
 
         private void FixHeadOrientation(Part part, Point3d loc, float orientationAngle, BlockReference blkRef)

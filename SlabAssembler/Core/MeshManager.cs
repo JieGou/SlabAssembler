@@ -141,7 +141,7 @@ namespace Urbbox.SlabAssembler.Core
 
             double x = 0;
             for (x = startPoint.X; x < _properties.MaxPoint.X; x += incrVect.X)
-                list.Add(new Point3d(x, startPoint.Y + startLp.Width, 0));
+                list.Add(new Point3d(x, startPoint.Y, 0));
 
             return list;
         }

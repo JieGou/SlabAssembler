@@ -188,7 +188,7 @@ namespace Urbbox.SlabAssembler.Core
             var lp = _properties.Parts.SelectedLp;
             var cast = _properties.Parts.SelectedCast;
             var spacing = _properties.Algorythim.Options.DistanceBetweenLpAndLd;
-            var startVector = new Vector3d(ld.Height / 2.0, lp.Height + cast.Width + spacing, 0);
+            var startVector = new Vector3d(ld.Height / 2.0, lp.Height + spacing, 0);
             var spaceBetweenGroups = lp.Height + 2.0 * spacing;
             var startPt = _properties.StartPoint.Add(startVector);
             var incrVector = new Vector2d(cast.Width, cast.Height);
