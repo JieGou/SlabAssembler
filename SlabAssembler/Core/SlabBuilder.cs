@@ -95,11 +95,7 @@ namespace Urbbox.SlabAssembler.Core
                 BuildHead(await manager.HeadList, prop);
 
                 if (!prop.Algorythim.OnlyCimbrament)
-                {
                     BuildCast(await manager.CastList, prop);
-                    DebugPoints(await manager.CastList, Color.FromRgb(255, 255, 0), 3);
-                }
-
 
                 _acad.WorkingDocument.Editor.WriteMessage("\nLaje finalizada.");
             }

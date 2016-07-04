@@ -102,17 +102,12 @@ namespace Urbbox.SlabAssembler.Core
             {
                 list.Add(new Point3d(startPoint.X, y, 0));
                 double x = 0;
-                for (x = startPoint.X; x < _properties.MaxPoint.X && SlabAlgorythim.IsInsidePolygon(_outline, new Point3d(x + incrVector.X, y, 0)); x += incrVector.X) ;
+                for (x = startPoint.X; x < _properties.MaxPoint.X && SlabAlgorythim.IsInsidePolygon(_outline, new Point3d(x + incrVector.X + 10, y, 0)); x += incrVector.X) ;
 
-                if (SlabAlgorythim.IsInsidePolygon(_outline, new Point3d(x + _properties.Algorythim.Options.OutlineDistance / 2.0, y, 0)))
-                {
-                    if (SlabAlgorythim.IsInsidePolygon(_outline, new Point3d(x + _properties.Algorythim.Options.OutlineDistance / 2.0, y + cast.Width, 0)))
-                        list.Add(new Point3d(x, y, 0));
-                    else
-                        list.Add(new Point3d(x - incrVector.Y, y, 0));
-                }
+                if (SlabAlgorythim.IsInsidePolygon(_outline, new Point3d(x + _properties.Algorythim.Options.OutlineDistance / 2.0 + cast.Width, y, 0)))
+                    list.Add(new Point3d(x, y, 0));
                 else
-                    list.Add(new Point3d(x - incrVector.Y, y, 0));
+                    list.Add(new Point3d(x, y, 0));
             }
 
             return list;
