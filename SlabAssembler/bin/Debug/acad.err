@@ -10,3 +10,15 @@ FATAL ERROR:  Unhandled Access Violation Reading 0x0000 Exception at fb25d522h
 
 05/31/2016 at 23:02:40.217  Drawing: Drawing1.dwg
 -------------
+
+
+FATAL ERROR:  Unhandled Access Violation Reading 0x0010 Exception at 30e084b0h
+
+07/04/2016 at 22:20:45.440  Drawing: C:\Users\luizg\Desktop\PEÇAS_17.06.16.dwg
+-------------
+
+
+ERRO FATAL:  Unhandled e0434352h Exception at 3b611f28h
+
+07/08/2016 at 22:23:00.170  Desenho: C:\Users\luizg\Desktop\Urbbox.dwg
+-------------

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfAssemblyOptions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <AssemblyOptions>
-    <OutlineDistance>0</OutlineDistance>
+    <OutlineDistance>10</OutlineDistance>
     <DistanceBetweenLp>0</DistanceBetweenLp>
-    <DistanceBetweenLpAndLd>0</DistanceBetweenLpAndLd>
-    <UseLds>false</UseLds>
-    <UseEndLp>false</UseEndLp>
+    <DistanceBetweenLpAndLd>0.25</DistanceBetweenLpAndLd>
+    <UseLds>true</UseLds>
+    <UseEndLp>true</UseEndLp>
   </AssemblyOptions>
 </ArrayOfAssemblyOptions>

@@ -131,6 +131,7 @@
     <Compile Include="Core\IMeshManager.cs" />
     <Compile Include="Core\Models\AssemblyOptions.cs" />
     <Compile Include="Core\BuildingProcessHelper.cs" />
+    <Compile Include="Core\ScanLine.cs" />
     <Compile Include="Core\SlabAlgorythim.cs" />
     <Compile Include="Core\SlabBuilder.cs" />
     <Compile Include="Core\SlabProperties.cs" />

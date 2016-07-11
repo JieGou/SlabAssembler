@@ -8,7 +8,7 @@ namespace Urbbox.SlabAssembler.Core
 {
     public class EntityGenerator
     {
-        public static Polyline3d CreateSquare(SizeF area, double border)
+        public static Polyline3d CreateSquare(SizeF area, double border = 0)
         {
             var pts = new Point3dCollection
             {

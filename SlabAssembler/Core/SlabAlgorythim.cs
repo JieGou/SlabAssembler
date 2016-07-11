@@ -2,10 +2,7 @@
 using Autodesk.AutoCAD.DatabaseServices;
 using System;
 using Autodesk.AutoCAD.Customization;
-using System.Collections.Generic;
 using Urbbox.SlabAssembler.Core.Models;
-using System.Drawing;
-using Urbbox.SlabAssembler.Core.Variations;
 
 namespace Urbbox.SlabAssembler.Core
 {
@@ -103,21 +100,24 @@ namespace Urbbox.SlabAssembler.Core
 
             foreach (var part1 in firstList)
             {
-                var tmpDelta = part1.Width - distanceToInterference;
-                if (tmpDelta <= 0 && Math.Abs(tmpDelta) < delta)
+                var tmpDelta = distanceToInterference - part1.Width;
+                if (tmpDelta >= 0 && tmpDelta < delta)
                 {
-                    delta = Math.Abs(tmpDelta);
+                    delta = tmpDelta;
                     firstPart = part1;
                 }
 
                 foreach (var part2 in secondList)
                 {
-                    tmpDelta = (part1.Width + properties.Algorythim.Options.DistanceBetweenLp + part2.Width) - distanceToInterference;
-                    if (!(tmpDelta <= 0) || !(Math.Abs(tmpDelta) < delta)) continue;
+                    tmpDelta = distanceToInterference -(part1.Width + properties.Algorythim.Options.DistanceBetweenLp + part2.Width) ;
+                    if (tmpDelta >= 0 && tmpDelta < delta)
+                    {
+                        delta = tmpDelta;
+                        firstPart = part1;
+                        secondPart = part2;
+                    }
 
-                    delta = Math.Abs(tmpDelta);
-                    firstPart = part1;
-                    secondPart = part2;
+                    
                 }
             }
 

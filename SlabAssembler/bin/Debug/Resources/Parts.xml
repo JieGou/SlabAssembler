@@ -440,7 +440,7 @@
     <Layer>IP - LONGPRINCIPAL</Layer>
     <PivotPointX>213</PivotPointX>
     <PivotPointY>2</PivotPointY>
-    <StartOffset>0</StartOffset>
+    <StartOffset>-1</StartOffset>
     <Name>PARTIDA 213</Name>
     <Modulation>61</Modulation>
   </Part>

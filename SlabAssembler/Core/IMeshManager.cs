@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Autodesk.AutoCAD.Geometry;
+using System.Collections.Generic;
 
 namespace Urbbox.SlabAssembler.Core
 {
@@ -12,5 +13,6 @@ namespace Urbbox.SlabAssembler.Core
         Task<Point3dCollection> LdsList { get; }
         Task<Point3dCollection> LpList { get; }
         Task<Point3dCollection> StartLpList { get; }
+        Task<Dictionary<Point3d, Point3dCollection>> EndLpList { get; }
     }
 }

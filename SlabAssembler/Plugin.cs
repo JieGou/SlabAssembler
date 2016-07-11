@@ -38,17 +38,21 @@ namespace Urbbox.SlabAssembler
             especificationsView.ViewModel.WhenAnyValue(x => x.SelectedModulation).Subscribe(m => algorythimView.ViewModel.SelectedModulation = m);
             especificationsView.ViewModel.DrawSlab.Subscribe(async _ =>
             {
-                using (var builder = new SlabBuilder(_partRepository))
+                try
+                { 
+                    prop.MaxPoint = helper.GetMaxPoint(especificationsView.ViewModel.SelectedOutline);
+                    prop.StartPoint = helper.GetStartPoint(especificationsView.ViewModel.SelectedOutline, especificationsView.ViewModel.SpecifyStartPoint);
+
+                    using (var builder = new SlabBuilder(_partRepository, prop))
+                        await builder.Start();
+                }
+                catch (OperationCanceledException) { }
+                catch (Autodesk.AutoCAD.Runtime.Exception e)
                 {
-                    try
-                    {
-                        prop.MaxPoint = helper.GetMaxPoint(especificationsView.ViewModel.SelectedOutline);
-                        prop.StartPoint = helper.GetStartPoint(especificationsView.ViewModel.SelectedOutline, especificationsView.ViewModel.SpecifyStartPoint);
-                        await builder.Start(prop);
-                    }
-                    catch (NullReferenceException) { }
-                    catch (OperationCanceledException) { }
-                    catch (Autodesk.AutoCAD.Runtime.Exception e) { MessageBox.Show($"{e.Message}\n\n{e.StackTrace}"); }
+                    if (e.Message == "eWasErased")
+                        MessageBox.Show("O contorno foi removido, selecione outro.");
+                    else
+                        MessageBox.Show($"{e.Message}\n\n{e.StackTrace}");
                 }
             });
 

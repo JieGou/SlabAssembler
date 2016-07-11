@@ -5,6 +5,6 @@
     <DistanceBetweenLp>0.2</DistanceBetweenLp>
     <DistanceBetweenLpAndLd>0.5</DistanceBetweenLpAndLd>
     <UseLds>true</UseLds>
-    <UseEndLp>false</UseEndLp>
+    <UseEndLp>true</UseEndLp>
   </AssemblyOptions>
 </ArrayOfAssemblyOptions>

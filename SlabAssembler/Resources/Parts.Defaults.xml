@@ -20,7 +20,7 @@
     <Layer>IP - LONGPRINCIPAL</Layer>
     <PivotPointX>0</PivotPointX>
     <PivotPointY>2</PivotPointY>
-    <StartOffset>0</StartOffset>
+    <StartOffset>-31.9</StartOffset>
     <Name>LP 244</Name>
     <Modulation>61</Modulation>
   </Part>
@@ -80,19 +80,19 @@
     <Layer>IP - LONGPRINCIPAL</Layer>
     <PivotPointX>137.5</PivotPointX>
     <PivotPointY>2</PivotPointY>
-    <StartOffset>0</StartOffset>
+    <StartOffset>13.4</StartOffset>
     <Name>PARTIDA 138</Name>
     <Modulation>61</Modulation>
   </Part>
   <Part Id="814079c3-d70c-41bc-9e66-49645d5522a3">
     <ReferenceName>LP PART 213</ReferenceName>
-    <Width>213</Width>
+    <Width>213.1</Width>
     <Height>4</Height>
     <UsageType>StartLp</UsageType>
     <Layer>IP - LONGPRINCIPAL</Layer>
-    <PivotPointX>213</PivotPointX>
+    <PivotPointX>212.9</PivotPointX>
     <PivotPointY>2</PivotPointY>
-    <StartOffset>0</StartOffset>
+    <StartOffset>-1</StartOffset>
     <Name>PARTIDA 213</Name>
     <Modulation>61</Modulation>
   </Part>
@@ -140,7 +140,7 @@
     <Layer>IP - LONGPRINCIPAL</Layer>
     <PivotPointX>0</PivotPointX>
     <PivotPointY>2</PivotPointY>
-    <StartOffset>0</StartOffset>
+    <StartOffset>18.6</StartOffset>
     <Name>LP 240</Name>
     <Modulation>80</Modulation>
   </Part>
@@ -152,7 +152,7 @@
     <Layer>IP - LONGPRINCIPAL</Layer>
     <PivotPointX>99.6</PivotPointX>
     <PivotPointY>2</PivotPointY>
-    <StartOffset>0</StartOffset>
+    <StartOffset>-1</StartOffset>
     <Name>PARTIDA 100</Name>
     <Modulation>80</Modulation>
   </Part>
@@ -164,7 +164,7 @@
     <Layer>IP - LONGPRINCIPAL</Layer>
     <PivotPointX>139.6</PivotPointX>
     <PivotPointY>2</PivotPointY>
-    <StartOffset>0</StartOffset>
+    <StartOffset>-41</StartOffset>
     <Name>PARTIDA 140</Name>
     <Modulation>80</Modulation>
   </Part>

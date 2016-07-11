@@ -203,30 +203,13 @@ namespace Urbbox.SlabAssembler.Core
             {
                 var p = points[i];
                 normalZoneList.Add(p);
-                /*
-                 if (al.IsAtTheEnd(lastPt, p) || !SlabAlgorythim.IsInsidePolygon(_outline, p))
-                 {
-                     var b = al.GetBelowLpPoint(points, p);
-                     if (b.HasValue && SlabAlgorythim.IsInsidePolygon(_outline, b.Value))
-                     {
-                         dangerZoneList.Add(b.Value);
-                         normalZoneList.Remove(b.Value);
-                         normalZoneList.Remove(p);
-                     }
-                */
             }
 
             do
                 normalZoneList = PlaceMultipleParts(properties, normalZoneList, part);
             while (normalZoneList.Count > 0 && (part = _partRepository.GetNextSmaller(part, part.UsageType)) != null);
-
-            //if (dangerZoneList.Count > 0)
-                //BuildDangerZoneLp(al, dangerZoneList);
         }
-       
-        /**
-         * Monta o conjunto LP + LP Final ou LP + LP caso properties.Algorythim.Options.UseEndLp seja falso.
-         */
+
         private void BuildDangerZoneLp(Point3dCollection points, SlabProperties properties)
         {
             var orientationAngle = properties.Parts.SelectedLp.GetOrientationAngle(properties.Algorythim.OrientationAngle);
@@ -298,12 +281,14 @@ namespace Urbbox.SlabAssembler.Core
 
             var part = properties.Parts.SelectedLd;
             var orientationAngle = 90 - properties.Algorythim.OrientationAngle;
+
+
             do
             {
                 points = PlaceMultipleParts(properties, points, part);
             } while (points.Count > 0 && (part = _partRepository.GetNextSmaller(part, part.UsageType)) != null);
 
-            //BuildAlternativeZoneLd(properties, points, orientationAngle);
+            BuildAlternativeZoneLd(properties, points, orientationAngle);
         }
 
         private void BuildLds(Point3dCollection points, SlabProperties prop)

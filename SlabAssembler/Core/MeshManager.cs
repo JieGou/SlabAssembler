@@ -2,6 +2,7 @@
 using Autodesk.AutoCAD.Geometry;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Urbbox.SlabAssembler.Core
 {
@@ -9,11 +10,11 @@ namespace Urbbox.SlabAssembler.Core
     {
         public Task<Point3dCollection> CastList { get; private set; }
         public Task<Point3dCollection> LpList { get; private set; }
-        public Task<Point3dCollection> EndLpList { get; private set; }
         public Task<Point3dCollection> StartLpList { get; private set; }
         public Task<Point3dCollection> LdList { get; private set; }
         public Task<Point3dCollection> HeadList { get; private set; }
         public Task<Point3dCollection> LdsList { get; private set; }
+        public Task<Dictionary<Point3d, Point3dCollection>> EndLpList { get; private set; }
 
         private readonly SlabProperties _properties;
         private readonly double _globalOrientation;
@@ -32,13 +33,35 @@ namespace Urbbox.SlabAssembler.Core
                 StartLpList = Task.Factory.StartNew(() => InitializeStartLpMesh());
 
             LpList = Task.Factory.StartNew(() => InitializeLpMesh());
-            //EndLpList = Task.Factory.StartNew(() => InitializeEndLpMesh());
+            EndLpList = Task.Factory.StartNew(() => InitializeEndLpMesh());
 
             if (properties.Algorythim.Options.UseLds)
                 LdsList = Task.Factory.StartNew(() => InitializeLdsMesh());
 
             LdList = Task.Factory.StartNew(() => InitializeLdMesh());
             HeadList = Task.Factory.StartNew(() => InitializeHeadMesh());
+        }
+
+        private Dictionary<Point3d, Point3dCollection> InitializeEndLpMesh()
+        {
+            var scanlines = new Dictionary<Point3d, Point3dCollection>();
+            var ld = _properties.Parts.SelectedLd;
+            var lp = _properties.Parts.SelectedLp;
+            var startLp = _properties.Algorythim.SelectedStartLp;
+            var useStartLp = startLp != null;
+            var cast = _properties.Parts.SelectedCast;
+            var spacing = _properties.Algorythim.Options.DistanceBetweenLpAndLd;
+            var startVector = new Vector3d(0, startLp?.StartOffset ?? _properties.Parts.SelectedLp.StartOffset, 0);
+            var startPoint = _properties.StartPoint.Add(startVector);
+            var incrVect = new Vector2d(ld.Width + lp.Height + spacing * 2.0, lp.Width + _properties.Algorythim.Options.DistanceBetweenLp);
+
+            if (useStartLp)
+                startPoint = startPoint.Add(new Vector3d(0, startLp.Width + _properties.Algorythim.Options.DistanceBetweenLp, 0));
+
+            for (double x = startPoint.X; x < _properties.MaxPoint.X; x += incrVect.X)
+                scanlines.Add(new Point3d(x, startPoint.Y, 0), ScanLine.GetOutlineSurroudingPointsY(new Point3d(x, startPoint.Y, 0), _properties.MaxPoint, lp.Width + _properties.Algorythim.Options.DistanceBetweenLp, _outline));
+
+            return scanlines;
         }
 
         private static double ToRadians(float degrees)
