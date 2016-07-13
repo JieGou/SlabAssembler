@@ -23,7 +23,7 @@ namespace Urbbox.SlabAssembler.Core
             get
             {
                 if (Parts.SpecifyStartPoint) {
-                    if (Algorythim.OrientationAngle == 90)
+                    if (Algorythim.GlobalOrientationAngle == 90)
                         return new Vector3d(-Parts.SelectedLp.Height - Algorythim.Options.DistanceBetweenLpAndLd, -(Parts.SelectedCast.Height / 2.0) - (Parts.SelectedLd.Height / 2.0), 0);
                     else
                         return new Vector3d(-Parts.SelectedLd.Height / 2.0, -Parts.SelectedCast.Height / 2.0, 0);

@@ -30,10 +30,7 @@ namespace Urbbox.SlabAssembler
             var algorythimView = new Views.AlgorythimControl(_partRepository, _algorythimRepository);
             var partsView = new Views.PartsListControl(_partRepository);
             var helper = new BuildingProcessHelper();
-            var prop = new SlabProperties {
-                Algorythim = algorythimView.ViewModel,
-                Parts = especificationsView.ViewModel
-            };
+            var prop = new SlabProperties { Algorythim = algorythimView.ViewModel, Parts = especificationsView.ViewModel };
 
             especificationsView.ViewModel.WhenAnyValue(x => x.SelectedModulation).Subscribe(m => algorythimView.ViewModel.SelectedModulation = m);
             especificationsView.ViewModel.DrawSlab.Subscribe(async _ =>
@@ -49,10 +46,7 @@ namespace Urbbox.SlabAssembler
                 catch (OperationCanceledException) { }
                 catch (Autodesk.AutoCAD.Runtime.Exception e)
                 {
-                    if (e.Message == "eWasErased")
-                        MessageBox.Show("O contorno foi removido, selecione outro.");
-                    else
-                        MessageBox.Show($"{e.Message}\n\n{e.StackTrace}");
+                    MessageBox.Show($"{e.Message}\n\n{e.StackTrace}");
                 }
             });
 

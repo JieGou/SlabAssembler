@@ -23,7 +23,7 @@ namespace Urbbox.SlabAssembler.ViewModels
             set { this.RaiseAndSetIfChanged(ref _hasChanges, value); }
         }
 
-        public int OrientationAngle => SelectedOrientation == Orientation.Vertical ? 90 : 0;
+        public int GlobalOrientationAngle => SelectedOrientation == Orientation.Vertical ? 90 : 0;
         public AssemblyOptions Options { get; }
         public ReactiveList<Part> StartLpList { get; }
         public ReactiveCommand<object> Reset { get; }

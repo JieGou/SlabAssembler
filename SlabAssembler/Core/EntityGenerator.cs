@@ -2,7 +2,6 @@
 using Autodesk.AutoCAD.Geometry;
 using System.Collections.Generic;
 using System.Drawing;
-using Urbbox.SlabAssembler.Core.Models;
 
 namespace Urbbox.SlabAssembler.Core
 {
@@ -24,7 +23,7 @@ namespace Urbbox.SlabAssembler.Core
             return polyline;
         }
 
-        public static IEnumerable<Line> CreateCrossLines(SizeF size, float border)
+        public static IEnumerable<Line> CreateCrossLines(SizeF size, float border = 0)
         {
             yield return new Line(
                 new Point3d(size.Width / 2.0, -border, 0),

@@ -4,15 +4,24 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Core.Application;
-using Autodesk.AutoCAD.GraphicsInterface;
 
 namespace Urbbox.SlabAssembler.Managers
 {
     public class AutoCadManager
     {
-        public Document WorkingDocument => AcApplication.DocumentManager.MdiActiveDocument;
+        public Document WorkingDocument { get; private set; }
         public Database Database => WorkingDocument.Database;
         public CoordinateSystem3d UCS => WorkingDocument.Editor.CurrentUserCoordinateSystem.CoordinateSystem3d;
+
+        public AutoCadManager()
+        {
+            WorkingDocument = AcApplication.DocumentManager.MdiActiveDocument;
+        }
+
+        public AutoCadManager(Document document)
+        {
+            WorkingDocument = document;
+        }
 
         public Transaction StartOpenCloseTransaction()
         {
@@ -109,5 +118,9 @@ namespace Urbbox.SlabAssembler.Managers
                 return new ObjectIdCollection();
         }
 
+        public void WriteMessage(string message)
+        {
+            WorkingDocument.Editor.WriteMessage($"\n{message}");
+        }
     }
 }

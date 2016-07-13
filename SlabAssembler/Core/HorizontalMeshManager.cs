@@ -24,7 +24,7 @@ namespace Urbbox.SlabAssembler.Core
         {
             _properties = properties;
             _outline = outline;
-            _globalOrientation = -ToRadians(90 - _properties.Algorythim.OrientationAngle);
+            _globalOrientation = -ToRadians(90 - _properties.Algorythim.GlobalOrientationAngle);
 
             if (!properties.Algorythim.OnlyCimbrament)
                 CastList = Task.Factory.StartNew(() => InitializeCastMesh());
