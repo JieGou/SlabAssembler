@@ -48,9 +48,9 @@ namespace Urbbox.SlabAssembler.Core
                 { 
                     var ldsList = await manager.LdsList;
                     BuildLds(ldsList);
-                    BuildLd(await manager.LdList, ldsList);
+                    BuildLd(ldsList);
                 } else
-                    BuildLd(await manager.LdList, new Point3dCollection());
+                    BuildLd(new Point3dCollection());
 
                 var endings = await manager.EndLpList;
                 BuildEndLp(endings);
@@ -228,14 +228,16 @@ namespace Urbbox.SlabAssembler.Core
             } while (points.Count > 0 && (part = _partRepository.GetNextSmaller(part, lastPart.UsageType)) != null);
         }
 
-        public void BuildLd(Point3dCollection points, Point3dCollection ldsPoints)
+        public void BuildLd(Point3dCollection ldsPoints)
         {
             IStrategy ldStrategy;
 
             if (_properties.Algorythim.GlobalOrientationAngle == 90)
-                ldStrategy = new VerticalLDStrategy(_properties, _partRepository, _environment);
+                ldStrategy = new VerticalLDStrategy(ldsPoints, _properties, _partRepository, _environment);
             else
-                ldStrategy = new HorizontalLDStrategy(_properties, _partRepository, _environment);
+                ldStrategy = new HorizontalLDStrategy(ldsPoints, _properties, _partRepository, _environment);
+
+            ldStrategy.Run();
         }
 
         private void BuildLds(Point3dCollection points)

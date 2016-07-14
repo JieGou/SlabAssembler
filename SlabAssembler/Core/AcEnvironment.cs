@@ -1,5 +1,4 @@
 ﻿using Autodesk.AutoCAD.DatabaseServices;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Urbbox.SlabAssembler.Managers;

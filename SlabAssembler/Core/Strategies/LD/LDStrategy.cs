@@ -8,14 +8,19 @@ namespace Urbbox.SlabAssembler.Core.Strategies.LD
     public abstract class LDStrategy : Strategy
     {
         protected Part MainPart { get; private set; }
+        private Point3dCollection _ldsPoints;
 
-        public LDStrategy(SlabProperties properties, IPartRepository repo, AcEnvironment env) : base(properties, repo, env)
+        public LDStrategy(Point3dCollection ldsPoints, SlabProperties properties, IPartRepository repo, AcEnvironment env) : base(properties, repo, env)
         {
             MainPart = Properties.Parts.SelectedLd;
+            _ldsPoints = ldsPoints;
         }
 
         protected override bool CanPlace(BlockReference blkRef)
         {
+            if (_ldsPoints.Contains(CurrentPoint))
+                return false;
+
             if (IsCollidingOutline(blkRef))
                 return false;
 

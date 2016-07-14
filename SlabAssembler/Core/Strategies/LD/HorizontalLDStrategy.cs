@@ -6,7 +6,13 @@ namespace Urbbox.SlabAssembler.Core.Strategies.LD
 {
     public class HorizontalLDStrategy : LDStrategy
     {
-        public HorizontalLDStrategy(SlabProperties properties, IPartRepository repo, AcEnvironment env) : base(properties, repo, env)
+        public HorizontalLDStrategy(SlabProperties prop, IPartRepository repo, AcEnvironment env)
+            : base(new Point3dCollection(), prop, repo, env)
+        {
+        }
+
+        public HorizontalLDStrategy(Point3dCollection ldsPoints, SlabProperties prop, IPartRepository repo, AcEnvironment env)
+            : base(ldsPoints, prop, repo, env)
         {
         }
 

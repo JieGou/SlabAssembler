@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using Autodesk.AutoCAD.Geometry;
 using Urbbox.SlabAssembler.Core.Models;
 using Urbbox.SlabAssembler.Repositories;
@@ -11,7 +7,13 @@ namespace Urbbox.SlabAssembler.Core.Strategies.LD
 {
     public class VerticalLDStrategy : LDStrategy
     {
-        public VerticalLDStrategy(SlabProperties properties, IPartRepository repo, AcEnvironment env) : base(properties, repo, env)
+        public VerticalLDStrategy(SlabProperties prop, IPartRepository repo, AcEnvironment env)
+            : base(new Point3dCollection(), prop, repo, env)
+        {
+        }
+
+        public VerticalLDStrategy(Point3dCollection ldsPoints, SlabProperties prop, IPartRepository repo, AcEnvironment env)
+            : base(ldsPoints, prop, repo, env)
         {
         }
 

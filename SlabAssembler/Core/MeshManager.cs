@@ -11,7 +11,6 @@ namespace Urbbox.SlabAssembler.Core
         public Task<Point3dCollection> CastList { get; private set; }
         public Task<Point3dCollection> LpList { get; private set; }
         public Task<Point3dCollection> StartLpList { get; private set; }
-        public Task<Point3dCollection> LdList { get; private set; }
         public Task<Point3dCollection> HeadList { get; private set; }
         public Task<Point3dCollection> LdsList { get; private set; }
         public Task<Dictionary<Point3d, Point3dCollection>> EndLpList { get; private set; }
@@ -38,7 +37,6 @@ namespace Urbbox.SlabAssembler.Core
             if (properties.Algorythim.Options.UseLds)
                 LdsList = Task.Factory.StartNew(() => InitializeLdsMesh());
 
-            LdList = Task.Factory.StartNew(() => InitializeLdMesh());
             HeadList = Task.Factory.StartNew(() => InitializeHeadMesh());
         }
 
@@ -67,28 +65,6 @@ namespace Urbbox.SlabAssembler.Core
         private static double ToRadians(float degrees)
         {
             return degrees * Math.PI / 180.0;
-        }
-
-        private Point3dCollection InitializeLdMesh()
-        {
-            var list = new Point3dCollection();
-            var ld = _properties.Parts.SelectedLd;
-            var lp = _properties.Parts.SelectedLp;
-            var cast = _properties.Parts.SelectedCast;
-            var spacing = _properties.Algorythim.Options.DistanceBetweenLpAndLd;
-            var startVector = new Vector3d(lp.Height + spacing, 0, 0);
-            var startPoint = _properties.StartPoint.Add(startVector);
-            var incrVector = new Vector2d(ld.Width + spacing * 2.0 + lp.Height, cast.Width);
-
-            for (double y = startPoint.Y; y < _properties.MaxPoint.Y; y += incrVector.Y)
-            {
-                for (double x = startPoint.X; x < _properties.MaxPoint.X; x += incrVector.X)
-                {
-                    list.Add(new Point3d(x, y, 0));
-                }
-            }
-
-            return list;
         }
 
         private Point3dCollection InitializeLdsMesh()
@@ -243,7 +219,6 @@ namespace Urbbox.SlabAssembler.Core
                     LdsList?.Dispose();
                     StartLpList?.Dispose();
                     LpList?.Dispose();
-                    LdList?.Dispose();
                     HeadList?.Dispose();
                 }
 

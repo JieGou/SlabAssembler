@@ -10,31 +10,30 @@
        <Types>
         <Type Name="SlabBuilder" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2016-07-13 21:23:08Z" FixCategory="Breaking">
+          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2016-07-14 10:41:16Z" FixCategory="Breaking">
            <Issue Name="ProvideDisposeBool" Certainty="95" Level="Error">Provide an overridable implementation of Dispose(bool) on 'SlabBuilder' or mark the type as sealed. A call to Dispose(false) should only clean up native resources. A call to Dispose(true) should clean up both managed and native resources.</Issue>
           </Message>
          </Messages>
          <Members>
           <Member Name="#Dispose()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2016-07-13 21:23:08Z" FixCategory="Breaking">
-             <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\Core" File="SlabBuilder.cs" Line="515">Modify 'SlabBuilder.Dispose()' so that it calls Dispose(true), then calls GC.SuppressFinalize on the current object instance ('this' or 'Me' in Visual Basic), and then returns.</Issue>
+            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2016-07-14 10:41:16Z" FixCategory="Breaking">
+             <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\Core" File="SlabBuilder.cs" Line="517">Modify 'SlabBuilder.Dispose()' so that it calls Dispose(true), then calls GC.SuppressFinalize on the current object instance ('this' or 'Me' in Visual Basic), and then returns.</Issue>
             </Message>
            </Messages>
           </Member>
          </Members>
         </Type>
-        <Type Name="SlabConstructor" Kind="Class" Accessibility="Public" ExternallyVisible="True">
-         <Messages>
-          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2016-07-13 21:23:08Z" FixCategory="Breaking">
-           <Issue Name="ProvideDisposeBool" Certainty="95" Level="Error">Provide an overridable implementation of Dispose(bool) on 'SlabConstructor' or mark the type as sealed. A call to Dispose(false) should only clean up native resources. A call to Dispose(true) should clean up both managed and native resources.</Issue>
-          </Message>
-         </Messages>
+       </Types>
+      </Namespace>
+      <Namespace Name="Urbbox.SlabAssembler.Core.Assemblers">
+       <Types>
+        <Type Name="SlabAssembler" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Members>
           <Member Name="#Dispose()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2016-07-13 21:23:08Z" FixCategory="Breaking">
-             <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\Core" File="SlabConstructor.cs" Line="54">Modify 'SlabConstructor.Dispose()' so that it calls Dispose(true), then calls GC.SuppressFinalize on the current object instance ('this' or 'Me' in Visual Basic), and then returns.</Issue>
+            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2016-07-14 10:41:16Z" FixCategory="Breaking">
+             <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\Core\Assemblers" File="SlabAssembler.cs" Line="35">Modify 'SlabAssembler.Dispose()' so that it calls Dispose(true), then calls GC.SuppressFinalize on the current object instance ('this' or 'Me' in Visual Basic), and then returns.</Issue>
             </Message>
            </Messages>
           </Member>
@@ -48,7 +47,7 @@
          <Members>
           <Member Name="#.ctor(Urbbox.SlabAssembler.Core.SlabProperties,Urbbox.SlabAssembler.Repositories.IPartRepository,Urbbox.SlabAssembler.Core.AcEnvironment)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2016-07-13 21:23:08Z" FixCategory="NonBreaking">
+            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2016-07-14 10:41:16Z" FixCategory="NonBreaking">
              <Issue Certainty="95" Level="CriticalWarning" Path="D:\Projetos\Urbbox\SlabAssembler\SlabAssembler\Core\Strategies" File="Strategy.cs" Line="29">'Strategy.Strategy(SlabProperties, IPartRepository, AcEnvironment)' contains a call chain that results in a call to a virtual method defined by the class. Review the following call stack for unintended consequences: &#xD;&#xA;&#xD;&#xA;Strategy..ctor(SlabProperties, IPartRepository, AcEnvironment)&#xD;&#xA;Strategy.get_StartVector():Vector3d</Issue>
             </Message>
            </Messages>

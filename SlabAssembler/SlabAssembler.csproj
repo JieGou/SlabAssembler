@@ -136,7 +136,8 @@
     <Compile Include="Core\ScanLine.cs" />
     <Compile Include="Core\SlabAlgorythim.cs" />
     <Compile Include="Core\SlabBuilder.cs" />
-    <Compile Include="Core\SlabConstructor.cs" />
+    <Compile Include="Core\Assemblers\HorizontalSlabAssembler.cs" />
+    <Compile Include="Core\Assemblers\SlabAssembler.cs" />
     <Compile Include="Core\SlabProperties.cs" />
     <Compile Include="Core\MeshManager.cs" />
     <Compile Include="Core\Strategies\IStrategy.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Core\Strategies\LD\LDStrategy.cs" />
     <Compile Include="Core\Strategies\Strategy.cs" />
     <Compile Include="Core\Strategies\LD\VerticalLDStrategy.cs" />
+    <Compile Include="Core\Assemblers\VerticalSlabAssembler.cs" />
     <Compile Include="Core\Variations\UsageType.cs" />
     <Compile Include="Core\Variations\UsageTypeExtensions.cs" />
     <Compile Include="Repositories\AlgorythimRepository.cs" />

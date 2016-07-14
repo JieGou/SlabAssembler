@@ -9,7 +9,6 @@ namespace Urbbox.SlabAssembler.Core
     {
         Task<Point3dCollection> CastList { get; }
         Task<Point3dCollection> HeadList { get; }
-        Task<Point3dCollection> LdList { get; }
         Task<Point3dCollection> LdsList { get; }
         Task<Point3dCollection> LpList { get; }
         Task<Point3dCollection> StartLpList { get; }
