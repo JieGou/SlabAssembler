@@ -1,16 +1,16 @@
 ﻿<Window x:Class="Urbbox.SlabAssembler.Views.LogWindow"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-            xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:local="clr-namespace:Urbbox.SlabAssembler.Views"
             xmlns:viewModels="clr-namespace:Urbbox.SlabAssembler.ViewModels"
             mc:Ignorable="d"
             d:DataContext="{d:DesignData viewModels:LogWindowViewModel}"
             Height="300" Width="400"
-            Title="Log de Resultados" ResizeMode="NoResize" Background="#FFEBEBEB">
+            Title="结果记录Log" ResizeMode="NoResize" Background="#FFEBEBEB">
     <StackPanel>
-        <Label Content="{Binding ResultsMessage, Mode=OneWay}" Height="30" Margin="10,5,10,0"/>
-        <TextBox x:Name="textBox" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Height="215" Margin="10,0,0,0" TextWrapping="Wrap" Text="{Binding LogMessage, Mode=OneWay}" Width="365"/>
+        <Label Content="{Binding ResultsMessage, Mode=OneWay}" Height="30" Margin="10,5,10,0" />
+        <TextBox x:Name="textBox" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Height="215" Margin="10,0,0,0" TextWrapping="Wrap" Text="{Binding LogMessage, Mode=OneWay}" Width="365" />
     </StackPanel>
 </Window>

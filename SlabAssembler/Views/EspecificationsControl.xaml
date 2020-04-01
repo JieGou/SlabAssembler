@@ -1,63 +1,63 @@
 ﻿<UserControl x:Class="Urbbox.SlabAssembler.Views.EspecificationsControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Urbbox.SlabAssembler"
              xmlns:vm="clr-namespace:Urbbox.SlabAssembler.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="300" Background="White"
              d:DataContext="{d:DesignInstance vm:EspecificationsViewModel}">
-    
+
     <StackPanel CanHorizontallyScroll="True" MinWidth="300">
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
-            <Label Content="Modulação" Grid.ColumnSpan="2"/>
-            <ComboBox Grid.Column="1" Width="203" Height="22" ItemsSource="{Binding Modulations}" SelectedItem="{Binding SelectedModulation, Mode=TwoWay}" VerticalAlignment="Center"/>
+            <Label Content="调制方式" Grid.ColumnSpan="2" />
+            <ComboBox Grid.Column="1" Width="203" Height="22" ItemsSource="{Binding Modulations}" SelectedItem="{Binding SelectedModulation, Mode=TwoWay}" VerticalAlignment="Center" />
         </Grid>
-        <GroupBox Header="Selecione as Peças" Margin="10,5,10,0" VerticalAlignment="Top" Padding="5">
+        <GroupBox Header="选择零件" Margin="10,5,10,0" VerticalAlignment="Top" Padding="5">
             <StackPanel>
-                <Label Content="Forma/Caixa"/>
+                <Label Content="形状/盒" />
                 <ComboBox ItemsSource="{Binding FormsAndBoxes}" SelectedItem="{Binding SelectedCast, Mode=TwoWay}" DisplayMemberPath="Name" />
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="45*"/>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="45*"/>
+                        <ColumnDefinition Width="45*" />
+                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="45*" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0">
-                        <Label Content="LP"/>
-                        <ComboBox ItemsSource="{Binding Path=LpList}" SelectedItem="{Binding SelectedLp, Mode=TwoWay}" DisplayMemberPath="Name"/>
+                        <Label Content="LP" />
+                        <ComboBox ItemsSource="{Binding Path=LpList}" SelectedItem="{Binding SelectedLp, Mode=TwoWay}" DisplayMemberPath="Name" />
                     </StackPanel>
-                    <StackPanel Grid.Column="2" >
-                        <Label Content="LD"/>
-                        <ComboBox ItemsSource="{Binding LdList}" SelectedItem="{Binding SelectedLd, Mode=TwoWay}" DisplayMemberPath="Name"/>
+                    <StackPanel Grid.Column="2">
+                        <Label Content="LD" />
+                        <ComboBox ItemsSource="{Binding LdList}" SelectedItem="{Binding SelectedLd, Mode=TwoWay}" DisplayMemberPath="Name" />
                     </StackPanel>
                 </Grid>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Obstáculos (Camadas)" Margin="10,5,10,0">
+        <GroupBox Header="障碍物（图层）" Margin="10,5,10,0">
             <StackPanel>
-                <Label Content="Pilares"/>
-                <ComboBox x:Name="PillarsComboBox" Margin="0,0,5,0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedColumnsLayer, Mode=TwoWay}"/>
-                <Label Content="Vigas"/>
-                <ComboBox x:Name="GirdersComboBox" Margin="0,0,5,0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedGirdersLayer, Mode=TwoWay}"/>
-                <Label Content="Vazios"/>
-                <ComboBox x:Name="EmptiesComboBox" Margin="0,0,5,0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedEmptiesLayer, Mode=TwoWay}"/>
+                <Label Content="支柱" />
+                <ComboBox x:Name="PillarsComboBox" Margin="0,0,5,0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedColumnsLayer, Mode=TwoWay}" />
+                <Label Content="横梁" />
+                <ComboBox x:Name="GirdersComboBox" Margin="0,0,5,0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedGirdersLayer, Mode=TwoWay}" />
+                <Label Content="空洞" />
+                <ComboBox x:Name="EmptiesComboBox" Margin="0,0,5,0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedEmptiesLayer, Mode=TwoWay}" />
             </StackPanel>
         </GroupBox>
-        
-        <GroupBox Header="Contorno e ponto de Partida" Margin="10">
+
+        <GroupBox Header="轮廓和起点" Margin="10">
             <StackPanel>
-                <Label Content="{Binding SelectionStatus, Mode=OneWay}" Height="25" Padding="5" FontSize="10"/>
-                <Button Command="{Binding SelectOutline}" Content="Selecionar Contorno" Height="30" />
-                <CheckBox Margin="0,4,0,0" Content="Selecionar ponto de partida" IsChecked="{Binding SpecifyStartPoint, Mode=TwoWay}"/>
+                <Label Content="{Binding SelectionStatus, Mode=OneWay}" Height="25" Padding="5" FontSize="10" />
+                <Button Command="{Binding SelectOutline}" Content="选择轮廓" Height="30" />
+                <CheckBox Margin="0,4,0,0" Content="选择起点" IsChecked="{Binding SpecifyStartPoint, Mode=TwoWay}" />
             </StackPanel>
         </GroupBox>
-        
-        <Button Command="{Binding DrawSlab}" Content="Desenhar Laje" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="280" Height="30" />
+
+        <Button Command="{Binding DrawSlab}" Content="创建板" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="280" Height="30" />
     </StackPanel>
 </UserControl>
