@@ -20,7 +20,7 @@
         </ObjectDataProvider>
     </Window.Resources>
     <StackPanel>
-        <Label Padding="10,5" Content="询问" FontSize="21.333" BorderThickness="0" Background="White" Margin="0" Foreground="#FF6C46FF" />
+        <Label Padding="10,5" Content="设置" FontSize="21.333" BorderThickness="0" Background="White" Margin="0" Foreground="#FF6C46FF" />
 
         <Grid>
             <Grid.ColumnDefinitions>
@@ -32,7 +32,7 @@
                 <StackPanel>
                     <Label Content="显示名称:" />
                     <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <Label Content="参考名称（AutoCAD）:" />
+                    <Label Content="块参考名称（AutoCAD）:" />
                     <TextBox Text="{Binding ReferenceName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Label Content="图层名称（AutoCAD）:" />
                     <TextBox Text="{Binding Layer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

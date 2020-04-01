@@ -11,6 +11,7 @@
             Title="结果记录Log" ResizeMode="NoResize" Background="#FFEBEBEB">
     <StackPanel>
         <Label Content="{Binding ResultsMessage, Mode=OneWay}" Height="30" Margin="10,5,10,0" />
-        <TextBox x:Name="textBox" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Height="215" Margin="10,0,0,0" TextWrapping="Wrap" Text="{Binding LogMessage, Mode=OneWay}" Width="365" />
+        <TextBox x:Name="textBox" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                 HorizontalAlignment="Left" Height="215" Margin="10,0,0,0" TextWrapping="Wrap" Text="{Binding LogMessage, Mode=OneWay}" Width="365" />
     </StackPanel>
 </Window>

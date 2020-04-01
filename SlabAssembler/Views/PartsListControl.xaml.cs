@@ -37,7 +37,10 @@ namespace Urbbox.SlabAssembler.Views
         private void DeleteSelectedPartImpl(object p)
         {
             var part = p as Part;
-            if (part != null) _partRepository.Remove(part);
+            if (part != null)
+            {
+                _partRepository.Remove(part);
+            }
         }
 
         private void ResetImpl(object x)
@@ -45,7 +48,9 @@ namespace Urbbox.SlabAssembler.Views
             var result = MessageBox.Show("Deseja realmente resetar todas as peças para o padrão?", "Resetar Permanentemente", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
             if (result == MessageBoxResult.Yes)
+            {
                 _partRepository.ResetParts();
+            }
         }
 
         private void OpenPartWindow(Part part)
@@ -66,18 +71,27 @@ namespace Urbbox.SlabAssembler.Views
                 var l = _acad.CheckLayerExists(part.Layer);
                 log += $"{part.ReferenceName}\n";
                 if (e && l)
+                {
                     log += "OK";
+                }
                 else
                 {
-                    if (!e) log += "\tReferência Inexistente\n";
-                    if (!l) log += "\tCamada Inexistente";
+                    if (!e)
+                    {
+                        log += "\t块参照不存在\n";
+                    }
+
+                    if (!l)
+                    {
+                        log += "\t图层不存在";
+                    }
                 }
 
                 log += "\n";
                 logWindow.SetLogMessage(log);
             }
 
-            logWindow.SetResultTitle($"{ViewModel.Parts.Count} peças analizadas.");
+            logWindow.SetResultTitle($"{ViewModel.Parts.Count} 个零件已完成分析.");
         }
     }
 }

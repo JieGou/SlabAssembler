@@ -8,6 +8,7 @@ using AcApplication = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 namespace Urbbox.SlabAssembler.Views
 {
     /// <summary>
+    /// 技术指标窗口
     /// Interaction logic for EspecificationsControl.xaml
     /// </summary>
     public partial class EspecificationsControl : UserControl
@@ -28,8 +29,9 @@ namespace Urbbox.SlabAssembler.Views
         public void UpdateLayers(IEnumerable<string> layers)
         {
             foreach (var l in layers)
+            {
                 ViewModel.Layers.Add(l);
+            }
         }
-
     }
 }

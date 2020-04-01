@@ -1,13 +1,13 @@
 ﻿using Autodesk.AutoCAD.Customization;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
-using System;
 using Autodesk.AutoCAD.Geometry;
+using System;
 using Urbbox.SlabAssembler.Managers;
 
 namespace Urbbox.SlabAssembler.Core
 {
-    class BuildingProcessHelper
+    internal class BuildingProcessHelper
     {
         private readonly AutoCadManager _acad;
 
@@ -21,9 +21,11 @@ namespace Urbbox.SlabAssembler.Core
             if (specifyStartPoint)
             {
                 Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
-                var result = _acad.GetPoint("\nInforme o ponto de partida");
+                var result = _acad.GetPoint("\n选择起点:");
                 if (result.Status == PromptStatus.OK)
+                {
                     return result.Value;
+                }
 
                 throw new OperationCanceledException();
             }
@@ -31,10 +33,13 @@ namespace Urbbox.SlabAssembler.Core
             using (var t = _acad.StartTransaction())
             {
                 var outline = t.GetObject(selectedOutline, OpenMode.ForRead);
-                if (outline.Bounds != null) return outline.Bounds.Value.MinPoint;
+                if (outline.Bounds != null)
+                {
+                    return outline.Bounds.Value.MinPoint;
+                }
             }
 
-            throw new InvalidOperationException("Não foi possível descobrir o ponto de partida do contorno selecionada.");
+            throw new InvalidOperationException("找不到所选轮廓的起点.");
         }
 
         public Point3d GetMaxPoint(ObjectId selectedOutline)
@@ -48,18 +53,22 @@ namespace Urbbox.SlabAssembler.Core
                     return bounds.MaxPoint;
                 }
 
-                throw new InvalidOperationException("Não foi possível obter o ponto máximo do contorno.");
+                throw new InvalidOperationException("无法获得最大轮廓点.");
             }
         }
 
         public Orientation GetOrientation()
         {
             Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
-            var result = _acad.GetKeywords("\nSelecione uma orientação", new[] { "Vertical", "Horizontal" });
+            var result = _acad.GetKeywords("\n选择方向", new[] { "Vertical", "Horizontal" });
             if (result.Status == PromptStatus.OK)
+            {
                 return (result.StringResult == "Vertical") ? Orientation.Vertical : Orientation.Horizontal;
+            }
             else
+            {
                 throw new OperationCanceledException();
+            }
         }
 
         public bool ValidateOutline(ObjectId objectId)
@@ -74,14 +83,16 @@ namespace Urbbox.SlabAssembler.Core
         public ObjectId SelectOutline()
         {
             Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
-            var result = _acad.GetEntity("\nSelecione o contorno da laje");
+            var result = _acad.GetEntity("\n选择板轮廓");
             if (result.Status == PromptStatus.OK)
             {
                 var selected = result.ObjectId;
                 if (ValidateOutline(selected))
+                {
                     return selected;
+                }
 
-                throw new ArgumentException("\nSelecione um contorno válido.");
+                throw new ArgumentException("\n选择一个有效的轮廓.");
             }
 
             return ObjectId.Null;

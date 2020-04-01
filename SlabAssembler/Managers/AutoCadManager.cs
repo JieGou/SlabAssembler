@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Autodesk.AutoCAD.ApplicationServices;
+﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
+using System.Collections.Generic;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 namespace Urbbox.SlabAssembler.Managers
@@ -35,17 +35,27 @@ namespace Urbbox.SlabAssembler.Managers
 
         public List<string> GetLayers()
         {
-            if (WorkingDocument == null) return new List<string>();
+            if (WorkingDocument == null)
+            {
+                return new List<string>();
+            }
 
             var list = new List<string>();
             using (var t = StartOpenCloseTransaction())
             {
                 var layerTable = t.GetObject(Database.LayerTableId, OpenMode.ForRead) as LayerTable;
-                if (layerTable == null) return list;
+                if (layerTable == null)
+                {
+                    return list;
+                }
+
                 foreach (var layerId in layerTable)
                 {
-                    var layer = t.GetObject(layerId, OpenMode.ForRead) as LayerTableRecord; 
-                    if (layer != null && !layer.IsOff) list.Add(layer.Name);
+                    var layer = t.GetObject(layerId, OpenMode.ForRead) as LayerTableRecord;
+                    if (layer != null && !layer.IsOff)
+                    {
+                        list.Add(layer.Name);
+                    }
                 }
             }
 
@@ -69,6 +79,11 @@ namespace Urbbox.SlabAssembler.Managers
             }
         }
 
+        /// <summary>
+        /// 判断块参照是否存在
+        /// </summary>
+        /// <param name="blockName">块名称</param>
+        /// <returns></returns>
         public bool CheckBlockExists(string blockName)
         {
             using (var t = StartOpenCloseTransaction())
@@ -78,6 +93,11 @@ namespace Urbbox.SlabAssembler.Managers
             }
         }
 
+        /// <summary>
+        /// 判断图层是否存在
+        /// </summary>
+        /// <param name="layerName">图层名称</param>
+        /// <returns></returns>
         public bool CheckLayerExists(string layerName)
         {
             using (var t = StartOpenCloseTransaction())
@@ -101,21 +121,28 @@ namespace Urbbox.SlabAssembler.Managers
             {
                 var options = new PromptKeywordOptions(message);
                 foreach (var k in keywords)
+                {
                     options.Keywords.Add(k);
+                }
+
                 return WorkingDocument.Editor.GetKeywords(options);
             }
         }
 
         public ObjectIdCollection GetLayerObjects(string layerName)
         {
-            var tvs = new[] { new TypedValue((int) DxfCode.LayerName, layerName) };
+            var tvs = new[] { new TypedValue((int)DxfCode.LayerName, layerName) };
             var sf = new SelectionFilter(tvs);
             var psr = WorkingDocument.Editor.SelectAll(sf);
 
             if (psr.Status == PromptStatus.OK)
+            {
                 return new ObjectIdCollection(psr.Value.GetObjectIds());
+            }
             else
+            {
                 return new ObjectIdCollection();
+            }
         }
 
         public void WriteMessage(string message)
