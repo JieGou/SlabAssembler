@@ -1,2 +1,2 @@
-# Construtor de Lajes Automatizado
+# 自动化创建板插件
 AutoCAD Plugin
